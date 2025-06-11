@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device‐width, initial‐scale=1.0">
+<link rel="stylesheet" th:href="@{/css/service.css}">
+<link rel="stylesheet" th:href="@{/css/loginPopup.css}">
+</head>
+<body>
+	<!-- 1) header: container로 감싸서 내부만 중앙 정렬 -->
+	<header class="header">
+		<a href="javascript:history.back()" class="btn-back"> <img
+			th:src="@{/images/vector-icon.png}" alt="뒤로가기" class="back-icon" />
+		</a>
+		<h1>전체 메뉴</h1>
+	</header>
+
+	<!-- 2) 스크롤 콘텐츠 -->
+	<div class="content">
+		<div class="container">
+			<!-- 커뮤니티 섹션 -->
+			<section class="section-card">
+				<div class="section-header">커뮤니티</div>
+				<div class="card-items">
+					<!-- 공지사항 - 로그인 여부 관계없이 접근 가능 -->
+					<a th:href="@{notice}" class="card-item"> <img
+						th:src="@{/images/service/notice-icon.png}" alt="공지사항" /> <span>공지사항</span>
+					</a>
+
+					<!-- 이벤트 - 로그인 여부 관계없이 접근 가능 -->
+					<a th:href="@{event}" class="card-item"> <img
+						th:src="@{/images/service/event-icon.png}" alt="이벤트" /> <span>이벤트</span>
+					</a>
+
+					<!-- 게시판 - 로그인 필요 -->
+					<div th:if="${loggedInMember != null}" class="card-item"
+						onclick="navigateTo('/board')">
+						<img th:src="@{/images/service/board-icon.png}" alt="게시판" /> <span>게시판</span>
+					</div>
+					<div th:if="${loggedInMember == null}" class="card-item"
+						onclick="showLoginRequiredPopup()">
+						<img th:src="@{/images/service/board-icon.png}" alt="게시판" /> <span>게시판</span>
+					</div>
+
+					<!-- 문의하기 - 로그인 필요 -->
+					<div th:if="${loggedInMember != null}" class="card-item"
+						onclick="navigateTo('/inquiry')">
+						<img th:src="@{/images/service/chat-icon.png}" alt="문의하기" /> <span>문의하기</span>
+					</div>
+					<div th:if="${loggedInMember == null}" class="card-item"
+						onclick="showLoginRequiredPopup()">
+						<img th:src="@{/images/service/chat-icon.png}" alt="문의하기" /> <span>문의하기</span>
+					</div>
+
+					<!-- 음식뽑기 - 로그인 여부 관계없이 접근 가능 -->
+					<a th:href="@{/foodRecommend}" class="card-item"> <img
+						th:src="@{/images/service/random-food.png}" alt="음식뽑기" /> <span>음식뽑기</span>
+					</a>
+				</div>
+			</section>
+
+			<!-- 운영 섹션 -->
+			<section class="section-card">
+				<div class="section-header">운영</div>
+				<div class="card-items">
+					<!-- 가게등록양식 - 로그인 필요 -->
+					<div th:if="${loggedInMember != null}" class="card-item"
+						onclick="navigateTo('/storeRegister')">
+						<img th:src="@{/images/service/form-icon.png}" alt="가게등록양식" /> <span>가게등록양식</span>
+					</div>
+					<div th:if="${loggedInMember == null}" class="card-item"
+						onclick="showLoginRequiredPopup()">
+						<img th:src="@{/images/service/form-icon.png}" alt="가게등록양식" /> <span>가게등록양식</span>
+					</div>
+
+					<!-- 하루맛집코스 - 로그인 여부 관계없이 접근 가능 -->
+					<a th:href="@{/tasteCourse}" class="card-item"> <img
+						th:src="@{/images/service/route-icon.png}" alt="하루맛집코스" /> <span>하루맛집코스</span>
+					</a>
+				</div>
+			</section>
+
+			<!-- 설정 및 활동 섹션 -->
+			<section class="section-card">
+				<div class="section-header">설정 및 활동</div>
+
+				<!-- 1) 이용 정보 -->
+				<div class="subsection">
+					<div class="sub-header">이용 정보</div>
+					<div class="card-items">
+						<!-- 나의 리뷰 - 로그인 필요 -->
+						<div th:if="${loggedInMember != null}" class="card-item"
+							onclick="navigateTo('/myReview')">
+							<img th:src="@{/images/service/review-icon.png}" alt="나의 리뷰" />
+							<span>나의 리뷰</span>
+						</div>
+						<div th:if="${loggedInMember == null}" class="card-item"
+							onclick="showLoginRequiredPopup()">
+							<img th:src="@{/images/service/review-icon.png}" alt="나의 리뷰" />
+							<span>나의 리뷰</span>
+						</div>
+
+						<!-- 나의 문의 - 로그인 필요 -->
+						<div th:if="${loggedInMember != null}" class="card-item"
+							onclick="navigateTo('/myInquiry')">
+							<img th:src="@{/images/service/inquiry-icon.png}" alt="나의 문의" />
+							<span>나의 문의</span>
+						</div>
+						<div th:if="${loggedInMember == null}" class="card-item"
+							onclick="showLoginRequiredPopup()">
+							<img th:src="@{/images/service/inquiry-icon.png}" alt="나의 문의" />
+							<span>나의 문의</span>
+						</div>
+
+						<!-- 내가 쓴 게시글 - 로그인 필요 -->
+						<div th:if="${loggedInMember != null}" class="card-item"
+							onclick="navigateTo('/myPost')">
+							<img th:src="@{/images/service/posts-icon.png}" alt="내가 쓴 게시글" />
+							<span>내가 쓴 게시글</span>
+						</div>
+						<div th:if="${loggedInMember == null}" class="card-item"
+							onclick="showLoginRequiredPopup()">
+							<img th:src="@{/images/service/posts-icon.png}" alt="내가 쓴 게시글" />
+							<span>내가 쓴 게시글</span>
+						</div>
+
+						<!-- 나의 찜 목록 - 로그인 필요 -->
+						<div th:if="${loggedInMember != null}" class="card-item"
+							onclick="navigateTo('/myFavorites')">
+							<img th:src="@{/images/service/heart-icon.png}" alt="나의 찜 목록" />
+							<span>나의 찜 목록</span>
+						</div>
+						<div th:if="${loggedInMember == null}" class="card-item"
+							onclick="showLoginRequiredPopup()">
+							<img th:src="@{/images/service/heart-icon.png}" alt="나의 찜 목록" />
+							<span>나의 찜 목록</span>
+						</div>
+					</div>
+				</div>
+
+				<!-- 2) 계정 -->
+				<div class="subsection">
+					<div class="sub-header">계정</div>
+					<div class="card-items">
+						<!-- 내 정보 수정 - 로그인 필요 -->
+						<div th:if="${loggedInMember != null}" class="card-item"
+							onclick="navigateTo('/myInfo')">
+							<img th:src="@{/images/service/profile-icon.png}" alt="내 정보 수정" />
+							<span>내 정보 수정</span>
+						</div>
+						<div th:if="${loggedInMember == null}" class="card-item"
+							onclick="showLoginRequiredPopup()">
+							<img th:src="@{/images/service/profile-icon.png}" alt="내 정보 수정" />
+							<span>내 정보 수정</span>
+						</div>
+					</div>
+				</div>
+
+				<!-- 3) 사용자 관리 -->
+				<div class="subsection">
+					<div class="sub-header">사용자 관리</div>
+					<div class="card-items">
+						<!-- 신고 내역 - 로그인 필요 -->
+						<div th:if="${loggedInMember != null}" class="card-item"
+							onclick="navigateTo('/report')">
+							<img th:src="@{/images/service/report-icon.png}" alt="신고 내역" />
+							<span>신고 내역</span>
+						</div>
+						<div th:if="${loggedInMember == null}" class="card-item"
+							onclick="showLoginRequiredPopup()">
+							<img th:src="@{/images/service/report-icon.png}" alt="신고 내역" />
+							<span>신고 내역</span>
+						</div>
+					</div>
+				</div>
+
+				<!-- 4) 가게 관리 -->
+				<div class="subsection">
+					<div class="sub-header">가게 관리</div>
+					<div class="card-items">
+						<!-- 내 가게 목록 - 로그인 필요 -->
+						<div th:if="${loggedInMember != null}" class="card-item"
+							onclick="navigateTo('/storeManage?tab=myStores')">
+							<img th:src="@{/images/service/storelist-icon.png}" alt="내 가게 목록" />
+							<span>내 가게 목록</span>
+						</div>
+						<div th:if="${loggedInMember == null}" class="card-item"
+							onclick="showLoginRequiredPopup()">
+							<img th:src="@{/images/service/storelist-icon.png}" alt="내 가게 목록" />
+							<span>내 가게 목록</span>
+						</div>
+
+						<!-- 가게 신청 내역 - 로그인 필요 -->
+						<div th:if="${loggedInMember != null}" class="card-item"
+							onclick="navigateTo('/storeManage?tab=appRequests')">
+							<img th:src="@{/images/service/request-icon.png}" alt="가게 신청 내역" />
+							<span>가게 신청 내역</span>
+						</div>
+						<div th:if="${loggedInMember == null}" class="card-item"
+							onclick="showLoginRequiredPopup()">
+							<img th:src="@{/images/service/request-icon.png}" alt="가게 신청 내역" />
+							<span>가게 신청 내역</span>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<!-- 로그인 / 계정 탈퇴 섹션 -->
+			<section class="section-card">
+				<div class="section-header">로그인</div>
+				<div class="btn-group">
+					<!-- 로그인한 경우 -->
+					<th:block th:if="${loggedInMember != null}">
+						<a th:href="@{/myInfo/logout}" class="btn-link btn-logout">로그아웃</a>
+						<a th:href="@{/myInfo/withdrawal}" class="btn-link btn-withdraw">회원탈퇴</a>
+					</th:block>
+
+					<!-- 비로그인한 경우 -->
+					<th:block th:if="${loggedInMember == null}">
+						<a th:href="@{/login}" class="btn-link btn-login">로그인</a>
+					</th:block>
+				</div>
+			</section>
+		</div>
+	</div>
+
+	<!-- 로그인 팝업 -->
+	<div th:replace="loginPopup.html :: loginPopup"></div>
+
+	<!-- 푸터 -->
+	<div class="footer" th:replace="/footer.html"></div>
+
+	<script>
+    // 페이지 이동 함수
+    function navigateTo(url) {
+      window.location.href = url;
+    }
+    
+    // 로그인 필요 팝업 표시
+    function showLoginRequiredPopup() {
+      document.getElementById('loginRequiredPopup').classList.add('active');
+    }
+    
+    // 로그인 필요 팝업 숨기기
+    function hideLoginPopup() {
+      document.getElementById('loginRequiredPopup').classList.remove('active');
+    }
+    
+    // 로그인 페이지로 이동
+    function goToLogin() {
+      window.location.href = '/login';
+    }
+  </script>
+</body>
+</html>

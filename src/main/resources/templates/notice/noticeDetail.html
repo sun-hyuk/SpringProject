@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>공지사항 상세</title>
+<link rel="stylesheet" th:href="@{/css/notice/noticeEvent.css}" />
+</head>
+<body>
+	<header class="header">
+		<a href="javascript:history.back()" class="btn-back"> <img
+			th:src="@{/images/vector-icon.png}" alt="뒤로가기" class="back-icon" />
+		</a>
+		<h1>공지사항</h1>
+	</header>
+
+	<div class="container">
+		<div class="detail-header">
+			<div class="header-top">
+				<!-- 공지 유형 -->
+				<span class="badge" th:text="${notice.announcementType}">공지
+					유형</span>
+				<!-- 공지 제목 -->
+				<div class="detail-title" th:text="${notice.title}">공지 제목</div>
+			</div>
+			<!-- 작성일: #dates.format 사용 -->
+			<div class="detail-date"
+				th:text="${#dates.format(notice.createdAt, 'yyyy.MM.dd')}">
+				2025.05.20</div>
+		</div>
+		<hr/>
+
+		<!-- 공지 내용 -->
+		<div class="detail-content">
+			<!-- 내용에 HTML 태그가 포함되어 있다면 th:utext, 일반 텍스트만 있으면 th:text -->
+			<p th:utext="${notice.content}">여기에 상세 본문이 보입니다.(임시 텍스트)</p>
+		</div>
+
+		<!-- 이미지로 미리보기 표시 -->
+		<div class="preview-image" th:if="${notice.filePath != null}">
+			<img th:src="@{${notice.filePath}}" alt="첨부 이미지"
+				style="max-width: 100%; height: auto; margin-top: 20px;" />
+		</div>
+
+		<!-- 첨부파일이 있을 경우 다운로드 링크 출력 -->
+		<div class="attachment" th:if="${notice.fileName != null}">
+			<strong>첨부파일: </strong> <a th:href="@{${notice.filePath}}"
+				th:text="${notice.fileName}" download>파일 다운로드</a>
+		</div>
+	</div>
+</body>
+</html>

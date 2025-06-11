@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>공지사항 관리 - EatoMeter</title>
+<link rel="stylesheet" th:href="@{/css/admin/adminNotices.css}">
+</head>
+<body>
+	<!-- 사이드바 및 헤더 인클루드 -->
+	<div th:replace="~{admin/adminHeader}"></div>
+
+	<!-- 메인 컨텐츠 영역 -->
+	<div class="main-content">
+		<div class="content-header">
+			<h2>공지 관리</h2>
+			<button class="action-btn"
+				onclick="window.location.href='/adminNoticeWrite'">작성</button>
+		</div>
+
+		<div class="content-body">
+			<!-- 1) 검색/필터 폼: GET 방식으로 /adminNotices에 파라미터 전송 -->
+			<form th:action="@{/adminNotices}" method="get"
+				class="filter-wrapper">
+				<div class="filter-select-wrapper">
+					<select name="type" class="filter-select">
+						<!-- selectedType은 컨트롤러에서 model에 담아둔 값 -->
+						<option value="" th:selected="${selectedType == ''}">전체
+							유형</option>
+						<option value="공지" th:selected="${selectedType == '공지'}">공지</option>
+						<option value="이벤트" th:selected="${selectedType == '이벤트'}">이벤트</option>
+						<option value="점검" th:selected="${selectedType == '점검'}">점검</option>
+					</select>
+				</div>
+				<div class="search-wrapper">
+					<!-- keyword는 컨트롤러에서 model에 담아둔 값 -->
+					<input type="text" name="keyword" class="search-input"
+						placeholder="검색어를 입력하세요" th:value="${keyword}" />
+					<button type="submit" class="search-btn">검색</button>
+				</div>
+			</form>
+
+			<!-- 공지사항 테이블 -->
+			<div class="table-wrapper">
+				<table class="notice-table">
+					<colgroup>
+						<col width="5%">
+						<col width="15%">
+						<col width="50%">
+						<col width="15%">
+						<col width="10%">
+						<col width="5%">
+					</colgroup>
+					<thead>
+						<tr>
+							<th>번호</th>
+							<th>공지 유형</th>
+							<th>공지내용</th>
+							<th>작성일</th>
+							<th>상세보기</th>
+							<th>관리</th>
+						</tr>
+					</thead>
+					<tbody>
+						<!-- 공지가 존재할 때 반복 출력 -->
+						<tr th:each="notice : ${noticeList}">
+							<td th:text="${notice.announcementId}">1</td>
+							<td th:text="${notice.announcementType}">공지</td>
+							<td th:text="${notice.title}">제목</td>
+							<td
+								th:text="${#dates.format(notice.createdAt, 'yyyy-MM-dd HH:mm')}">
+								2025-06-03 10:00</td>
+							<td><a class="detail-btn"
+								th:href="@{/adminNoticeDetail/{id}(id=${notice.announcementId})}">
+									상세보기 </a></td>
+							<td>
+								<button class="delete-btn" th:data-id="${notice.announcementId}">삭제</button>
+							</td>
+						</tr>
+
+						<!-- 검색/필터 결과가 없을 때 -->
+						<tr th:if="${noticeList == null or noticeList.isEmpty()}">
+							<td colspan="6" style="text-align: center; color: #777;">검색
+								결과가 없습니다.</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<!-- 페이지네이션: type과 keyword 파라미터 포함 -->
+			<div class="pagination" th:if="${totalPages > 0}">
+				<th:block th:each="i : ${#numbers.sequence(1, totalPages)}">
+					<strong th:if="${i == currentPage + 1}" th:text="${i}">1</strong>
+					<a th:unless="${i == currentPage + 1}"
+						th:href="@{/adminNotices(page=${i - 1}, size=${10}, type=${selectedType}, keyword=${keyword})}"
+						th:text="${i}">1</a>
+				</th:block>
+			</div>
+		</div>
+	</div>
+
+	<script src="/js/admin/adminNotices.js"></script>
+</body>
+</html>

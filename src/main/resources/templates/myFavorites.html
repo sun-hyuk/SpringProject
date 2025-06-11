@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>나의 찜 목록</title>
+<!-- CSS 파일 로드 -->
+<link rel="stylesheet" th:href="@{/css/myFavorites.css}" />
+<script th:src="@{/js/myFavorites.js}" defer></script>
+</head>
+<body>
+	<header class="header">
+		<a href="javascript:history.back()" class="btn-back"> <img
+			th:src="@{/images/vector-icon.png}" alt="뒤로가기" class="back-icon" />
+		</a>
+		<h1>나의 찜 목록</h1>
+	</header>
+
+	<div class="container">
+		<div class="tab-menu">
+			<button class="tab-btn active" data-tab="tab1">찜한 맛집</button>
+			<button class="tab-btn" data-tab="tab2">찜한 코스</button>
+		</div>
+
+		<!-- 찜한 맛집 탭 -->
+		<div class="tab-content">
+			<div class="tab-pane active" id="tab1">
+				<div class="favorite-count">
+					<p>
+						내가 찜한 맛집 <span th:text="${favoriteCount}">0</span>개
+					</p>
+					<div class="view-options">
+						<img th:src="@{/images/myFavorites/grid.png}" alt="그리드 보기"
+							class="active-view" id="grid-view-restaurant" /> <img
+							th:src="@{/images/myFavorites/list.png}" alt="리스트 보기"
+							id="list-view-restaurant" />
+					</div>
+				</div>
+
+				<div th:if="${#lists.isEmpty(favoriteList)}" class="no-favorites">
+					<p>찜한 맛집이 없습니다.</p>
+				</div>
+
+				<!-- (1) 그리드 뷰 영역 -->
+				<div class="favorite-grid" id="grid-container-restaurant">
+					<div th:each="rstJjim : ${favoriteList}"
+						class="favorite-item restaurant-item">
+						<div class="favorite-image">
+							<img
+								th:src="${rstJjim.restaurantImage} != null ? @{${rstJjim.restaurantImage}} : @{/images/myFavorites/food.png}"
+								alt="음식 이미지" class="item-img" />
+						</div>
+						<div class="favorite-info">
+							<div class="restaurant-header">
+								<p class="store-name" th:text="${rstJjim.restaurantName}">식당
+									이름</p>
+								<button class="bookmark-btn"
+									th:attr="data-rst-id=${rstJjim.rstId}">
+									<img th:src="@{/images/myFavorites/bookmark-filled.png}"
+										alt="북마크" class="bookmark-icon"
+										th:attr="data-default=@{/images/myFavorites/bookmark.png}, data-filled=@{/images/myFavorites/bookmark-filled.png}" />
+								</button>
+							</div>
+							<div class="rating">
+								<span class="star">★</span> <span class="score"
+									th:text="${rstJjim.restaurantRating}">0.0</span>
+							</div>
+							<!-- 그리드 -->
+							<div class="details"
+								th:text="
+							       ${(#strings.length(rstJjim.restaurantTag + ' · ' + rstJjim.restaurantAddress) > 15)
+							         ? #strings.substring(rstJjim.restaurantTag + ' · ' + rstJjim.restaurantAddress, 0, 15) + '...'
+							         : (rstJjim.restaurantTag + ' · ' + rstJjim.restaurantAddress)
+							       }">
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- (2) 리스트 뷰 -->
+				<div class="favorite-list" id="list-container-restaurant"
+					style="display: none;">
+					<div th:each="rstJjim : ${favoriteList}"
+						class="favorite-item restaurant-item">
+						<div class="favorite-image">
+							<img
+								th:src="${rstJjim.restaurantImage} != null ? @{${rstJjim.restaurantImage}} : @{/images/myFavorites/food.png}"
+								alt="음식 이미지" class="item-img" />
+						</div>
+						<div class="favorite-info">
+							<div class="restaurant-header">
+								<p class="store-name" th:text="${rstJjim.restaurantName}">식당
+									이름</p>
+								<button class="bookmark-btn"
+									th:attr="data-rst-id=${rstJjim.rstId}">
+									<img th:src="@{/images/myFavorites/bookmark-filled.png}"
+										alt="북마크" class="bookmark-icon"
+										th:attr="data-default=@{/images/myFavorites/bookmark.png}, data-filled=@{/images/myFavorites/bookmark-filled.png}" />
+								</button>
+							</div>
+							<div class="rating">
+								<span class="star">★</span> <span class="score"
+									th:text="${rstJjim.restaurantRating}">0.0</span>
+							</div>
+							<!-- 그리드 -->
+							<div class="details"
+								th:text="
+							       ${(#strings.length(rstJjim.restaurantTag + ' · ' + rstJjim.restaurantAddress) > 15)
+							         ? #strings.substring(rstJjim.restaurantTag + ' · ' + rstJjim.restaurantAddress, 0, 15) + '...'
+							         : (rstJjim.restaurantTag + ' · ' + rstJjim.restaurantAddress)
+							       }">
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- 찜한 코스 탭 -->
+			<div class="tab-pane" id="tab2">
+				<div class="favorite-count">
+					<p>
+						내가 찜한 코스 <span
+							th:text="${courseList != null ? #lists.size(courseList) : 0}">0</span>개
+					</p>
+					<div class="view-options">
+						<img th:src="@{/images/myFavorites/grid.png}" alt="그리드 보기"
+							class="active-view" id="grid-view-course" /> <img
+							th:src="@{/images/myFavorites/list.png}" alt="리스트 보기"
+							id="list-view-course" />
+					</div>
+				</div>
+				<div th:if="${#lists.isEmpty(courseList)}" class="no-favorites">
+					<p>찜한 코스가 없습니다.</p>
+				</div>
+				<div class="favorite-grid" id="grid-container-course">
+					<div th:each="course : ${courseList}"
+						class="favorite-item course-item"
+						th:onclick="|location.href='/tasteCourseDetail?course=${course.course_id}'|"
+						style="cursor: pointer;">
+						<div class="favorite-image">
+							<img th:src="@{${course.image}}" alt="코스 이미지" class="item-img" />
+						</div>
+						<div class="favorite-info">
+							<p class="store-name" th:text="${course.title}">코스 제목</p>
+							<p class="details" th:text="${course.intro}">코스 설명</p>
+						</div>
+					</div>
+				</div>
+
+				<!-- 리스트 뷰 -->
+				<div class="favorite-list" id="list-container-course"
+					style="display: none;">
+					<div th:each="course : ${courseList}"
+						class="favorite-item course-item"
+						th:onclick="|location.href='/tasteCourseDetail?course=${course.course_id}'|"
+						style="cursor: pointer;">
+						<div class="favorite-image">
+							<img th:src="@{${course.image}}" alt="코스 이미지" class="item-img" />
+						</div>
+						<div class="favorite-info">
+							<p class="store-name" th:text="${course.title}">코스 제목</p>
+							<p class="details" th:text="${course.intro}">코스 설명</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- footer fragment -->
+	<div th:replace="~{footer.html}"></div>
+</body>
+</html>

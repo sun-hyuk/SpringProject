@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EatoMeter 메인</title>
+<link rel="stylesheet" th:href="@{/css/main/main.css}">
+<link rel="stylesheet" th:href="@{/css/main/regionModal.css}">
+<link rel="stylesheet" th:href="@{/css/loginPopup.css}">
+</head>
+<body>
+	<div class="top-bar">
+		<img src="/images/main/search/eatometer-logo.png" alt="로고"
+			class="icon">
+		<div class="search-box">
+			<img src="/images/main/search/search-icon.png" alt="검색"
+				class="search-icon-img"> <input type="text"
+				placeholder="매장, 지역명으로 검색해 보세요" class="search-bar">
+		</div>
+		<div aria-label="북마크" class="icon2 bookmark-icon"></div>
+		<div class="alarm-container">
+			<img src="/images/main/search/alarm.png" alt="알림" class="icon2" /> <span
+				class="alarm-dot" id="alarmDot"></span>
+		</div>
+	</div>
+
+	<div class="container">
+		<div class="search-header">
+			<span class="brand">EatoMeter</span>
+
+			<div class="right-group">
+				<div class="realtime-box" onclick="toggleKeywordBar()">
+					<span class="realtime-label">인기 검색어</span> <span
+						class="dropdown-icon" id="dropdownIcon">▲</span>
+				</div>
+
+				<span class="rank-info"><strong>1</strong> </span>
+			</div>
+		</div>
+
+		<!-- 펼쳐지는 키워드 목록 (기본 숨김) -->
+		<div class="keyword-dropdown" id="keywordDropdown">
+			<h4>인기 검색어</h4>
+			<div class="keyword-grid">
+				<span class="ellipsis"><strong>1</strong> 후발대</span> <span
+					class="ellipsis"><strong>2</strong> 진짜길게쓰는검색어예시</span> <span
+					class="ellipsis"><strong>3</strong> 후발대</span>
+			</div>
+		</div>
+
+		<div class="banner-slider">
+			<div class="slides">
+				<div class="slide">
+					<img src="/images/main/banner/banner1.png" alt="배너1">
+				</div>
+				<div class="slide">
+					<img src="/images/main/banner/banner2.png" alt="배너2">
+				</div>
+				<div class="slide">
+					<img src="/images/main/banner/banner3.png" alt="배너3">
+				</div>
+			</div>
+			<div class="indicators">
+				<span class="dot active"></span> <span class="dot"></span> <span
+					class="dot"></span>
+			</div>
+		</div>
+
+		<div class="category-tabs">
+			<div class="tab-buttons">
+				<button class="tab active" data-tab="0">음식</button>
+				<button class="tab" data-tab="1">커뮤니티</button>
+				<button class="tab" data-tab="2">운영</button>
+			</div>
+
+			<div class="tab-slider" id="tabSlider">
+				<div class="tab-content">
+					<div class="category-grid">
+						<a th:href="@{/rstSearch(types='카페','디저트')}" class="category-item">
+							<img src="/images/main/food/cafe.png" alt="카페·디저트">
+							<p>카페·디저트</p>
+						</a> <a th:href="@{/rstSearch(types='한식')}" class="category-item">
+							<img src="/images/main/food/korean.png" alt="한식">
+							<p>한식</p>
+						</a> <a th:href="@{/rstSearch(types='중식')}" class="category-item">
+							<img src="/images/main/food/chinese.png" alt="중식">
+							<p>중식</p>
+						</a> <a th:href="@{/rstSearch(types='일식')}" class="category-item">
+							<img src="/images/main/food/japanese.png" alt="일식">
+							<p>일식</p>
+						</a> <a th:href="@{/rstSearch(types='양식')}" class="category-item">
+							<img src="/images/main/food/steamed.png" alt="양식">
+							<p>양식</p>
+						</a> <a th:href="@{/rstSearch(types='치킨')}" class="category-item">
+							<img src="/images/main/food/chicken.png" alt="치킨">
+							<p>치킨</p>
+						</a> <a th:href="@{/rstSearch(types='햄버거')}" class="category-item">
+							<img src="/images/main/food/burger.png" alt="햄버거">
+							<p>햄버거</p>
+						</a> <a th:href="@{/rstSearch(types='피자')}" class="category-item">
+							<img src="/images/main/food/pizza.png" alt="피자">
+							<p>피자</p>
+						</a> <a th:href="@{/rstSearch(types='분식')}" class="category-item">
+							<img src="/images/main/food/tteok.png" alt="분식">
+							<p>분식</p>
+						</a> <a th:href="@{/rstSearch(types='고기')}" class="category-item">
+							<img src="/images/main/food/meat.png" alt="고기">
+							<p>고기</p>
+						</a> <a th:href="@{/rstSearch(types='해산물')}" class="category-item">
+							<img src="/images/main/food/seafood.png" alt="해산물">
+							<p>해산물</p>
+						</a>
+					</div>
+				</div>
+
+				<div class="tab-content" id="tab-community">
+					<!-- 커뮤니티 아이콘 그리드 -->
+					<div class="category-grid">
+						<!-- 비로그인시에도 접근 가능 -->
+						<a th:href="@{/notice}" class="category-item"> <img
+							src="/images/main/community/notice.png">
+							<p>공지사항</p>
+						</a> <a th:href="@{/board}" class="category-item"> <img
+							src="/images/main/community/board.png">
+							<p>게시판</p>
+						</a> <a th:href="@{/event}" class="category-item"> <img
+							src="/images/main/community/event.png">
+							<p>이벤트</p>
+						</a> <a th:href="@{/foodRecommend}" class="category-item"> <img
+							src="/images/main/community/random-food.png">
+							<p>음식뽑기</p>
+						</a>
+
+						<!-- 로그인 필요한 메뉴 - 문의하기 -->
+						<div th:if="${loggedInMember != null}">
+							<a th:href="@{/inquiry}" class="category-item"> <img
+								src="/images/main/community/inquiry.png">
+								<p>문의하기</p>
+							</a>
+						</div>
+						<div th:if="${loggedInMember == null}">
+							<a href="javascript:void(0)" onclick="showLoginRequiredPopup()"
+								class="category-item"> <img
+								src="/images/main/community/inquiry.png">
+								<p>문의하기</p>
+							</a>
+						</div>
+					</div>
+				</div>
+
+				<div class="tab-content" id="tab-management">
+					<!-- 운영 아이콘 그리드 -->
+					<div class="category-grid">
+						<!-- 로그인 필요한 메뉴 - 가게등록양식 -->
+						<div th:if="${loggedInMember != null}">
+							<a th:href="@{/storeRegister}" class="category-item"> <img
+								src="/images/main/management/store_register.png">
+								<p>가게등록양식</p>
+							</a>
+						</div>
+						<div th:if="${loggedInMember == null}">
+							<a href="javascript:void(0)" onclick="showLoginRequiredPopup()"
+								class="category-item"> <img
+								src="/images/main/management/store_register.png">
+								<p>가게등록양식</p>
+							</a>
+						</div>
+
+						<!-- 비로그인시에도 접근 가능 -->
+						<a th:href="@{/tasteCourse}" class="category-item"> <img
+							src="/images/main/management/daily_course.png">
+							<p>하루맛집코스</p>
+						</a>
+
+						<!-- 설정 및 활동 - 비로그인시에도 접근 가능 -->
+						<a th:href="@{/setting}" class="category-item"> <img
+							src="/images/main/management/settings.png">
+							<p>설정 및 활동</p>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- 전체 너비 실선 -->
+		<div class="category-divider"></div>
+
+		<div class="category-best-section">
+			<div class="section-header">
+				<div class="section-title">
+					<h3>음식 종류별 BEST</h3>
+					<p>많은 이용자들이 선택한 베스트 맛집</p>
+				</div>
+				<a th:href="@{/rstSearch(page=0, sort='jjim')}" class="view-all">
+					전체 보기 &gt; </a>
+			</div>
+			<div class="category-thumbnail-grid">
+				<!-- 한식 -->
+				<a th:href="@{/rstSearch(page=0, types='한식', sort='jjim')}"
+					class="category-thumbnail-item"> <img
+					src="/images/main/bestFood/korean.png" alt="한식">
+					<p>한식</p>
+				</a>
+				<!-- 중식 -->
+				<a th:href="@{/rstSearch(page=0, types='중식', sort='jjim')}"
+					class="category-thumbnail-item"> <img
+					src="/images/main/bestFood/chinese.png" alt="중식">
+					<p>중식</p>
+				</a>
+				<!-- 일식 -->
+				<a th:href="@{/rstSearch(page=0, types='일식', sort='jjim')}"
+					class="category-thumbnail-item"> <img
+					src="/images/main/bestFood/japan.png" alt="일식">
+					<p>일식</p>
+				</a>
+				<!-- 양식 -->
+				<a th:href="@{/rstSearch(page=0, types='양식', sort='jjim')}"
+					class="category-thumbnail-item"> <img
+					src="/images/main/bestFood/america.png" alt="양식">
+					<p>양식</p>
+				</a>
+				<!-- 치킨 -->
+				<a th:href="@{/rstSearch(page=0, types='치킨', sort='jjim')}"
+					class="category-thumbnail-item"> <img
+					src="/images/main/bestFood/chicken.png" alt="치킨">
+					<p>치킨</p>
+				</a>
+				<!-- 햄버거 -->
+				<a th:href="@{/rstSearch(page=0, types='햄버거', sort='jjim')}"
+					class="category-thumbnail-item"> <img
+					src="/images/main/bestFood/burger.png" alt="햄버거">
+					<p>햄버거</p>
+				</a>
+				<!-- 피자 -->
+				<a th:href="@{/rstSearch(page=0, types='피자', sort='jjim')}"
+					class="category-thumbnail-item"> <img
+					src="/images/main/bestFood/pizza.png" alt="피자">
+					<p>피자</p>
+				</a>
+				<!-- 분식 -->
+				<a th:href="@{/rstSearch(page=0, types='분식', sort='jjim')}"
+					class="category-thumbnail-item"> <img
+					src="/images/main/bestFood/tteok.png" alt="분식">
+					<p>분식</p>
+				</a>
+				<!-- 고기 -->
+				<a th:href="@{/rstSearch(page=0, types='고기', sort='jjim')}"
+					class="category-thumbnail-item"> <img
+					src="/images/main/bestFood/meat.png" alt="고기">
+					<p>고기</p>
+				</a>
+				<!-- 해산물 -->
+				<a th:href="@{/rstSearch(page=0, types='해산물', sort='jjim')}"
+					class="category-thumbnail-item"> <img
+					src="/images/main/bestFood/seafood.png" alt="해산물">
+					<p>해산물</p>
+				</a>
+			</div>
+		</div>
+
+		<!-- 최근 방문한 맛집 -->
+		<div class="visited-section">
+			<div class="section-header">
+				<div class="section-title">
+					<h3>최근 방문한 맛집</h3>
+					<p>최근에 다녀온 그 집, 또 가고 싶진 않나요?</p>
+				</div>
+				<a href="#" class="view-all">전체 보기 &gt;</a>
+			</div>
+
+			<div class="restaurant-card-list">
+				<!-- 1) 비로그인 안내 -->
+				<div th:if="${recentVisited == null}">
+					<p class="no-data">로그인 후 방문 기록을 볼 수 있습니다.</p>
+				</div>
+				<!-- 2) 방문 기록이 없을 때 -->
+				<div
+					th:if="${recentVisited != null and #lists.isEmpty(recentVisited)}">
+					<p class="no-data">아직 방문한 맛집이 없습니다.</p>
+				</div>
+				<!-- 3) 방문 기록 반복 -->
+				<div
+					th:if="${recentVisited != null and !#lists.isEmpty(recentVisited)}"
+					th:each="v : ${recentVisited}" class="restaurant-card">
+					<!-- 이미지 -->
+					<a th:href="@{/rstDetail(rstId=${v.restaurantId})}"> <img
+						th:src="@{${v.thumbnailUrl}}" th:alt="${v.restaurantName}" />
+					</a>
+					<!-- 제목 + (북마크 생략) -->
+					<div class="card-header-row">
+						<a th:href="@{/rstDetail(rstId=${v.restaurantId})}">
+							<h4 th:text="${v.restaurantName}">가게명</h4>
+						</a>
+					</div>
+					<!-- 별점 · 분류·지역 -->
+					<div class="rating">
+						<span class="star">★</span> <span class="score"
+							th:text="${v.averageRating}">0.0</span> <span class="region"
+							th:text="${v.region}">한식 · 부산 해운대</span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<!-- 새로 오픈한 가게 표시 영역 -->
+		<div class="visited-section">
+			<div class="section-header">
+				<div class="section-title">
+					<h3>새로 오픈 했어요!</h3>
+					<p>따끈따끈하게 오픈했어요!</p>
+				</div>
+				<a th:href="@{/rstSearch(page=0, new=${'최근 등록'})}" class="view-all">전체
+					보기 &gt; </a>
+			</div>
+
+			<div class="restaurant-card-list">
+				<!-- recentRestaurants 리스트를 돌면서 카드 반복 생성 -->
+				<div th:each="rst : ${recentRestaurants}" class="restaurant-card">
+					<!-- 1) 이미지: DTO의 image 필드를 사용 -->
+					<a th:href="@{/rstDetail(rstId=${rst.rstId})}"> <img
+						th:src="@{${rst.image}}" alt="식당 이미지" />
+					</a>
+
+					<!-- 2) 가게 이름 클릭 시 가게 상세 페이지로 이동 -->
+					<div class="card-header-row">
+						<a th:href="@{/rstDetail(rstId=${rst.rstId})}">
+							<h4 th:text="${rst.name}">식당명</h4>
+						</a>
+					</div>
+
+					<!-- 3) 별점과 지역 -->
+					<div class="rating">
+						<span class="star">★</span> <span class="score"
+							th:text="${rst.rating}">0.0</span> <span class="region"
+							th:text="${#strings.length(rst.tag + ' · ' + rst.regionLabel + ' ' + rst.region2Label) > 20} ? ${#strings.substring(rst.tag + ' · ' + rst.regionLabel + ' ' + rst.region2Label, 0, 20) + '...'} : ${rst.tag + ' · ' + rst.regionLabel + ' ' + rst.region2Label}"></span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- 지역 모달 -->
+		<div th:insert="main/regionModal :: modal"></div>
+
+		<!-- 기존 loginPopup.html fragment 사용 -->
+		<div th:replace="loginPopup.html :: loginPopup"></div>
+
+		<!-- footer.html 포함 -->
+		<div th:replace="/footer.html"></div>
+
+		<!-- JavaScript 파일 참조 -->
+		<script src="/js/main/main.js"></script>
+		<script src="/js/main/regionModal.js"></script>
+
+		<script>
+			// 로그인 필요 팝업 표시
+			function showLoginRequiredPopup() {
+				console.log('showLoginRequiredPopup 함수 호출됨');
+				const popup = document.getElementById('loginRequiredPopup');
+				if (popup) {
+					popup.classList.add('active');
+					console.log('팝업 활성화됨');
+				} else {
+					console.error('loginRequiredPopup 요소를 찾을 수 없습니다');
+				}
+			}
+			
+			// 로그인 필요 팝업 숨기기
+			function hideLoginPopup() {
+				console.log('hideLoginPopup 함수 호출됨');
+				const popup = document.getElementById('loginRequiredPopup');
+				if (popup) {
+					popup.classList.remove('active');
+				}
+			}
+			
+			// 로그인 페이지로 이동
+			function goToLogin() {
+				console.log('로그인 페이지로 이동');
+				window.location.href = '/login';
+			}
+			
+			// main.js의 이벤트보다 우선 실행되도록 document ready 이전에 설정
+			document.addEventListener('DOMContentLoaded', function() {
+				// 로그인이 필요한 항목들에 대한 이벤트 처리
+				const loginRequiredItems = document.querySelectorAll('a[onclick="showLoginRequiredPopup()"]');
+				loginRequiredItems.forEach(item => {
+					item.addEventListener('click', function(e) {
+						e.preventDefault();
+						e.stopPropagation();
+						showLoginRequiredPopup();
+					});
+				});
+			});
+		</script>
+</body>
+</html>

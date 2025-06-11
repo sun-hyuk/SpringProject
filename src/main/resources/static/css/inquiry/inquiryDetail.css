@@ -1,0 +1,271 @@
+/* ─ reset & 전체박스 */
+html, body {
+  margin: 0; padding: 0;
+  width: 100%; height: 100%;
+  font-family: "Apple SD Gothic Neo", sans-serif;
+  background: #fff;
+}
+body { overflow: hidden; }
+
+/* ─ 스크롤 영역 컨테이너 */
+.container {
+  position: absolute;
+  top: 80px;    /* header 높이 */
+  bottom: 80px; /* footer 높이 */
+  left: 0; right: 0;
+  max-width: 375px; margin: 0 auto;
+  padding: 0 16px; box-sizing: border-box;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ─ 헤더 (기존 그대로) */
+.header {
+  position: fixed; top: 0; left: 0; right: 0;
+  background: #fff;
+  display: flex; align-items: center;
+  height: 60px; border-bottom: 1px solid #eee;
+  z-index: 100;
+}
+.btn-back {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+.back-icon { width: 12px; height: 15px; }
+.header h1 { margin: 0 auto; font-size: 18px; color: #333; }
+
+/* ─ 상세 헤더 */
+.detail-header {
+  margin-top: 16px;
+}
+.user-info {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: #555;
+}
+.avatar {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+.username {
+  font-weight: 600;
+  margin-right: 4px;
+}
+.lock-icon {
+  width: 14px; height: 14px;
+  margin-right: 4px;
+}
+.timestamp {
+  font-size: 12px;
+  color: #888;
+}
+
+.inquiry-title {
+  margin: 12px 0 4px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+.inquiry-content {
+  font-size: 14px;
+  color: #333;
+  line-height: 1.6;
+}
+
+/* 오류 메시지 스타일 */
+.error-message {
+  text-align: center;
+  padding: 40px 20px;
+  color: #666;
+}
+
+.error-message p {
+  margin-bottom: 20px;
+  font-size: 16px;
+}
+
+.btn-back-to-list {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.btn-back-to-list:hover {
+  background-color: #0056b3;
+}
+
+/* 문의 타입 스타일 */
+.inquiry-type {
+  color: #007bff;
+  font-weight: normal;
+  font-size: 0.9em;
+  margin-right: 8px;
+}
+
+/* 문의 상태 스타일 */
+.inquiry-status {
+  margin-top: 15px;
+}
+
+.status-badge {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.status-badge.ongoing {
+  background-color: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffeaa7;
+}
+
+.status-badge.completed {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+/* 답변 대기 중 스타일 */
+.waiting-section {
+  margin-top: 20px;
+}
+
+.waiting-message {
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+}
+
+.waiting-message p {
+  margin: 0;
+  color: #6c757d;
+  font-style: italic;
+}
+
+/* ─ 구분선 */
+hr {
+  border: none;
+  border-top: 1px solid #eee;
+  /* 좌우 컨테이너 패딩(16px)을 상쇄 */
+  margin: 16px -16px;
+  /* 전체 너비 +32px(=16px*2) 로 늘리기 */
+  width: calc(100% + 32px);
+}
+
+/* ─ 답변글 섹션 */
+.answer-section {
+  margin-bottom: 24px;
+}
+.section-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 12px;
+}
+.answer-card {
+  display: flex;
+  align-items: flex-start;
+  background: #fafafa;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 12px;
+}
+.admin-icon {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  margin-right: 12px;
+}
+.answer-body {
+  flex: 1;
+}
+.answer-author {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 4px;
+}
+.answer-content {
+  font-size: 14px;
+  color: #333;
+  margin: 0 0 8px;
+  line-height: 1.6;
+}
+.answer-timestamp {
+  font-size: 12px;
+  color: #888;
+}
+
+/* 더보기 버튼 */
+.more-btn {
+  position: absolute;
+  top: 50%; right: 16px;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  z-index: 150;
+}
+.more-icon {
+  width: 8px;
+  height: 28px;
+}
+
+.delete-item {
+  display: flex;
+  align-items: center;
+}
+
+/* 삭제 메뉴 박스 */
+.action-menu {
+  display: none;              /* 초기에는 숨김 */
+  position: absolute;
+  top: 60px;                  /* 헤더 높이만큼 아래 */
+  right: 16px;
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  z-index: 140;
+}
+
+/* 메뉴 아이템 */
+.action-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  background: transparent;
+  border: none;
+  width: 100%;
+  text-align: left;
+  font-size: 14px;
+  color: #666;
+  cursor: pointer;
+}
+.action-item:hover {
+  background: #f5f5f5;
+}
+.action-icon {
+  width: 13px;
+  height: 16px;
+  margin-left: 8px;
+}
+

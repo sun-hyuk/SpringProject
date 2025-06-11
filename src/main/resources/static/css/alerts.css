@@ -1,0 +1,214 @@
+/* reset & 전체박스 */
+:root {
+  --header-height: 60px;
+  --footer-height: 60px;
+  --max-mobile-width: 390px;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  font-family: "Apple SD Gothic Neo", sans-serif;
+  background: #fff;
+  overflow: hidden; /* 전체 페이지 스크롤 방지 */
+}
+
+/* 헤더 고정 */
+.header {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: var(--max-mobile-width);
+  height: var(--header-height);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid #eee;
+  background: #fff;
+  z-index: 1000;
+  box-sizing: border-box;
+}
+
+.btn-back {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+.back-icon {
+  display: block;
+  width: 12px;
+  height: 15px;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+}
+
+/* 스크롤 컨테이너 - 헤더와 푸터 사이 */
+.container {
+  position: fixed;
+  top: var(--header-height);
+  bottom: var(--footer-height);
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: var(--max-mobile-width);
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  background: #fff;
+  box-sizing: border-box;
+}
+
+/* 웹킷 브라우저 스크롤바 숨김 */
+.container::-webkit-scrollbar {
+  display: none;
+}
+
+/* 탭 메뉴 */
+.tab-container {
+  display: flex;
+  width: 100%;
+  border-bottom: 1px solid #eee;
+  background-color: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.tab-button {
+  flex: 1;
+  text-align: center;
+  padding: 12px 0;
+  background: transparent;
+  font-size: 14px;
+  color: #888;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.2s, border-bottom 0.2s;
+  border-bottom: 2px solid transparent;
+  display: inline-block;
+}
+
+.tab-button.active {
+  color: #222;
+  font-weight: 600;
+  border-bottom: 2px solid #333;
+}
+
+/* 알림 목록 */
+.alerts-list {
+  width: 100%;
+  padding-bottom: 24px; /* 하단 여백 추가 */
+}
+
+/* 날짜 구분선 */
+.date-divider {
+  padding: 10px 16px;
+  background-color: #E4D6CE;
+  font-size: 13px;
+  color: #555;
+  font-weight: 600;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+}
+
+/* 알림 항목 */
+.alert-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  border-bottom: 1px solid #eee;
+  background-color: #fff;
+  transition: opacity 0.3s ease;
+}
+
+.alert-content {
+  font-size: 14px;
+  color: #333;
+  flex: 1;
+}
+
+.alert-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: transparent;
+  color: #888;
+  font-size: 20px;
+  cursor: pointer;
+  margin-left: 8px;
+}
+
+.alert-close:hover {
+  color: #333;
+}
+
+.login-link {
+  font-weight: bold;
+  text-decoration: underline;
+  color: #000; /* 검은색 */
+  cursor: pointer;
+}
+
+/* 빈 메시지 스타일 */
+.empty-message {
+  text-align: center;
+  padding: 40px 0;
+  color: #888;
+  font-size: 16px;
+}
+
+/* 푸터 고정 */
+footer, .footer {
+  position: fixed !important;
+  bottom: 0 !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  width: 100% !important;
+  max-width: var(--max-mobile-width) !important;
+  z-index: 1000 !important;
+}
+
+/* 반응형 대응 */
+@media screen and (max-width: 390px) {
+  .header,
+  .container,
+  footer, .footer {
+    max-width: 100vw;
+  }
+}
+
+/* 안전 영역 대응 (아이폰 노치 등) */
+@supports (padding: max(0px)) {
+  .header {
+    padding-top: env(safe-area-inset-top);
+    height: calc(var(--header-height) + env(safe-area-inset-top));
+  }
+  
+  .container {
+    top: calc(var(--header-height) + env(safe-area-inset-top));
+    bottom: calc(var(--footer-height) + env(safe-area-inset-bottom));
+  }
+}

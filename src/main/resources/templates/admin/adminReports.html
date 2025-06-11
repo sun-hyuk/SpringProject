@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>신고 관리</title>
+<link rel="stylesheet" href="/css/admin/adminReports.css">
+</head>
+<body>
+	<!-- 사이드바 및 헤더 인클루드 -->
+	<div th:replace="~{admin/adminHeader}"></div>
+
+	<div class="main-content">
+		<section class="report-section">
+			<h2>신고 관리</h2>
+
+			<div class="filters">
+				<form method="get" id="filterForm" th:action="@{/adminReports}">
+					<select id="statusSelect" name="status">
+						<option value="전체 상태"
+							th:selected="${status == null || status == ''}">전체 상태</option>
+						<option value="대기" th:selected="${status == '대기'}">대기</option>
+						<option value="완료" th:selected="${status == '완료'}">완료</option>
+					</select> <select id="typeSelect" name="type">
+						<option value="전체 유형" th:selected="${type == null || type == ''}">전체
+							유형</option>
+						<option value="게시글" th:selected="${type == '게시글'}">게시글</option>
+						<option value="댓글" th:selected="${type == '댓글'}">댓글</option>
+						<option value="리뷰" th:selected="${type == '리뷰'}">리뷰</option>
+					</select> <input type="text" id="keywordInput" name="keyword"
+						placeholder="검색어(신고자)" th:value="${keyword}">
+					<button type="submit" class="search-btn">검색</button>
+				</form>
+			</div>
+
+			<table>
+				<thead>
+					<tr>
+						<th>번호</th>
+						<th>신고 유형</th>
+						<th>신고 내용</th>
+						<th>신고자</th>
+						<th>신고 대상</th>
+						<th>신고일</th>
+						<th>상태</th>
+						<th>관리</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:if="${reports != null && !reports.isEmpty()}"
+						th:each="report, status : ${reports}" class="report-row">
+						<td th:text="${totalCount - (startRow + status.index)}">1</td>
+						<td th:text="${report.reportType}">게시글</td>
+						<td><a href="#" class="view-btn"
+							th:data-reportid="${report.id}"
+							onclick="event.stopPropagation();"> 신고 내용보기 </a></td>
+						<td th:text="${report.reporterNickname}">신고자</td>
+						<td th:text="${report.reportedNickname}">피신고자</td>
+						<td
+							th:text="${#temporals.format(report.reportedAt, 'yyyy-MM-dd')}">2025-01-01</td>
+						<td th:text="${report.statusName}">대기</td>
+						<td><img src="/images/main/location/x.png" alt="삭제"
+							class="delete-icon"
+							th:onclick="'deleteReport(' + ${report.id} + ', event)'"></td>
+					</tr>
+					<tr th:if="${reports == null || reports.isEmpty()}">
+						<td colspan="8">신고된 내역이 없습니다.</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<!-- 페이지네이션 -->
+			<div class="pagination" th:if="${totalPages > 0}">
+				<th:block th:each="i : ${#numbers.sequence(1, totalPages)}">
+					<strong th:if="${i == currentPage}" th:text="${i}">1</strong>
+					<a th:unless="${i == currentPage}"
+						th:href="@{/adminReports(status=${status},type=${type},keyword=${keyword},sort=${sort},order=${order},page=${i})}"
+						th:text="${i}">1</a>
+				</th:block>
+			</div>
+		</section>
+	</div>
+
+	<script src="/js/admin/adminReports.js"></script>
+</body>
+</html>

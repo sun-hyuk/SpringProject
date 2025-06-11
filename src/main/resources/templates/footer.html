@@ -1,0 +1,33 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" th:href="@{/css/footer.css}" />
+</head>
+<body>
+	<footer class="footer">
+		<nav class="footer-nav">
+			<ul>
+				<li><a th:href="@{/main}"> <img
+						th:src="@{/images/footer/home-icon.png}" alt="홈 아이콘"
+						class="footer-icon" /> <span>홈</span>
+				</a></li>
+				<li><a th:href="@{/rstSearch}"> <img
+						th:src="@{/images/footer/search-icon.png}" alt="맛집 검색 아이콘"
+						class="footer-icon" /> <span>맛집 검색</span>
+				</a></li>
+				<li><a th:href="@{/myPage}"> <img
+						th:src="@{/images/footer/mypage-icon.png}" alt="마이페이지 아이콘"
+						class="footer-icon" /> <span>마이페이지</span>
+				</a></li>
+				<li><a th:href="@{/service}"> <img
+						th:src="@{/images/footer/menu-icon.png}" alt="전체 서비스 아이콘"
+						class="footer-icon" /> <span>전체 메뉴</span>
+				</a></li>
+			</ul>
+		</nav>
+	</footer>
+</body>
+</html>

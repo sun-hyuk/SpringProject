@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title>가게 등록 완료</title>
+<style>
+.container {
+	text-align: center;
+	padding: 100px 20px;
+}
+
+.message {
+	font-size: 30px; /* 글자 크기 약간 증가 */
+	margin-bottom: 40px; /* 간격 더 넓게 */
+	color: #666666;
+}
+
+.button {
+	padding: 12px 36px;
+	background-color: #4CAF50;
+	color: white;
+	font-size: 24px; /* 약간 키움 */
+	border: none;
+	border-radius: 6px;
+	cursor: pointer;
+	text-decoration: none; /* 밑줄 제거 */
+	display: inline-block;
+	margin-top: 20px; /* 버튼 위쪽 간격 */
+}
+
+.button:hover {
+	background-color: #45a049;
+}
+</style>
+</head>
+<body>
+	<div class="container">
+		<div class="message" th:if="${type == 'update'}">수정이 완료되었습니다.</div>
+		<div class="message" th:if="${type != 'update'}">제출이 완료되었습니다.</div>
+
+		<a th:if="${type == 'update'}" href="/storeManage?tab=myStores"
+			class="button">확인</a> <a th:if="${type != 'update'}" href="/main"
+			class="button">확인</a>
+	</div>
+</body>
+</html>

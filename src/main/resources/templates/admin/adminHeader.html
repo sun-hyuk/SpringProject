@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<!-- 필수 폰트만 로드 -->
+<link rel="stylesheet"
+	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap">
+<!-- 헤더 CSS 로드 -->
+<link rel="stylesheet" th:href="@{/css/admin/adminHeader.css}">
+</head>
+<body>
+	<!-- 사이드바 영역 -->
+	<div id="adminSidebar" class="admin-sidebar">
+		<h2>EatoMeter</h2>
+		<ul>
+			<li class="admin-disabled">사이트 관리</li>
+			<li><a th:href="@{/admin/adminMain}"
+				th:class="${isDashboard} ? 'admin-active' : ''">대시보드</a></li>
+			<li><a th:href="@{/admin/users}"
+				th:class="${isUserManagement} ? 'admin-active' : ''">사용자 관리</a></li>
+			<li><a th:href="@{/adminRstApproval}"
+				th:class="${isRestaurantManagement} ? 'admin-active' : ''">가게
+					승인/관리</a></li>
+			<li><a th:href="@{/adminCourses}"
+				th:class="${isCourseRegister} ? 'admin-active' : ''">맛집 코스 등록</a></li>
+			<li><a th:href="@{/adminEvent}"
+				th:class="${isEventManagement} ? 'admin-active' : ''">이벤트 등록/관리</a></li>
+			<li><a th:href="@{/adminInquiry}"
+				th:class="${isInquiryManagement} ? 'admin-active' : ''">문의 관리</a></li>
+			<li><a th:href="@{/adminReports}"
+				th:class="${isReportManagement} ? 'admin-active' : ''">신고 관리</a></li>
+			<li><a th:href="@{/adminNotices}"
+				th:class="${isNoticesManagement} ? 'admin-active' : ''">공지 관리</a></li>
+		</ul>
+	</div>
+
+	<!-- 헤더 영역 -->
+	<div id="adminHeader" class="admin-header">
+		<h2>EatoMeter</h2>
+		<button class="admin-logout" onclick="logout()">로그아웃</button>
+	</div>
+
+	<!-- 자바스크립트 로드 -->
+	<script th:src="@{/js/admin/adminHeader.js}"></script>
+</body>
+</html>

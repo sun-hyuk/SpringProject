@@ -1,0 +1,269 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  font-family: "Apple SD Gothic Neo", sans-serif;
+  background: #fff;
+}
+
+body {
+  overflow: hidden;
+}
+
+.container {
+  position: absolute;
+  top: 80px;             /* header 높이 만큼 내려서 시작 */
+  bottom: 80px;          /* footer 높이 만큼 위에서 끝나도록 */
+  left: 0;
+  right: 0;
+  max-width: 375px;
+  margin: 0 auto;
+  padding: 0 16px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* 헤더 (기존) */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  max-width: 100%;     /* 모바일 컨테이너와 너비 맞추기 */
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  height: 60px;
+  border-bottom: 1px solid #eee;
+  background: #fff;      /* 헤더 뒤로 콘텐츠가 비치지 않도록 */
+  z-index: 100;          /* 스크롤 영역 위에 표시 */
+}
+
+/* 헤더 안의 콘텐츠만 중앙 정렬 */
+.header .container {
+  max-width: 375px;
+  margin: 0 auto;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.btn-back {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+.back-icon {
+  display: block;
+  width: 12px;
+  height: 15px;
+}
+
+.header h1 {
+  margin: 0 auto;
+  font-size: 18px;
+  color: #333;
+}
+
+/* (기존 inquiry.css 상단에 reset, body, container, header 부분 그대로 두세요) */
+
+/* ──────────────────────────────────────────
+   탭 스타일
+────────────────────────────────────────── */
+.tabs {
+  display: flex;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 16px;
+}
+.tab {
+  flex: 1;
+  text-align: center;
+  padding: 12px 0;
+  font-size: 14px;
+  color: #888;
+  cursor: pointer;
+}
+.tab.active {
+  color: #333;
+  font-weight: bold;
+  border-bottom: 2px solid #9E6A4F;
+}
+
+/* ──────────────────────────────────────────
+   폼 스타일
+────────────────────────────────────────── */
+.inquiry-form {
+  display: flex;
+  flex-direction: column;
+}
+.form-group {
+  margin-bottom: 16px;
+  position: relative;
+}
+
+.form-group select,
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  background: #fff;
+  appearance: none;
+  box-sizing: border-box; /* 패딩 포함하여 너비 계산 */
+}
+
+.form-group select {
+  /* 오른쪽에 ▼ 아이콘 */
+  background:
+    url('/images/inquiry/inquiry-icon.png')   no-repeat calc(100% - 12px) center;
+  background-size: 20px 10px, 16px 16px;
+  
+}
+
+.form-group .error {
+  display: block;
+  color: #e74c3c;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+/* ──────────────────────────────────────────
+   버튼
+────────────────────────────────────────── */
+.btn-submit {
+  width: 100%;
+  padding: 14px 0;
+  background: #9E6A4F;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 8px;
+}
+
+/* 빈 상태 메시지 */
+.empty {
+  text-align: center;
+  color: #aaa;
+  margin-top: 40px;
+  font-size: 14px;
+}
+
+/* ──────────────────────────────────────
+   문의내역확인 전용 스타일
+────────────────────────────────────── */
+.history-header {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 12px;
+}
+
+/* 2차 탭 */
+.history-tabs {
+  display: flex;
+  background: #EFECE6;
+  border-radius: 20px;
+  padding: 4px;
+  margin-bottom: 12px;
+}
+.pill {
+  flex: 1;
+  text-align: center;
+  padding: 8px 0;
+  font-size: 13px;
+  color: #8C8C8C;
+  border-radius: 16px;
+  cursor: pointer;
+}
+.pill.active {
+  background: #FFF;
+  color: #333;
+  font-weight: bold;
+}
+
+/* 카운트 텍스트 */
+.history-count {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 12px;
+}
+
+/* 리스트 */
+.history-list {
+  list-style: none;
+  margin: 0; padding: 0;
+}
+
+.history-item {
+  position: relative;
+  background: #fff;
+  border: 1px solid #DDD;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  overflow: hidden;
+  padding-top: 12px;      /* 상단 헤더+여백 */
+}
+
+.history-item:last-child {
+  margin-bottom: 0;
+}
+
+/* 상태 배지 */
+.status-badge {
+  display: inline-block;
+  padding: 2px 6px;
+  font-size: 11px;
+  border-radius: 8px;
+  margin-right: 6px;
+}
+.status-badge.ongoing {
+  background: #FDEBD0; color: #D68910;
+}
+.status-badge.completed {
+  background: #D6EAF8; color: #21618C;
+}
+.status-divider {
+  color: #ccc;
+  margin: 0 6px;
+}
+
+/* 메시지 본문 */
+.item-message {
+  margin: 8px 12px 12px;
+  font-size: 14px;
+  color: #333;
+}
+
+/* 카드 헤더 */
+.item-header {
+  padding: 0 12px;
+}
+
+/* 닫기 버튼 */
+.close-btn {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  border: none;
+  background: transparent;
+  font-size: 16px;
+  line-height: 1;
+  color: #999;
+  cursor: pointer;
+}
+

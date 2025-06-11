@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>리뷰 작성 - EatoMeter</title>
+<link rel="stylesheet" href="/css/rstSearch/writeReview.css">
+</head>
+<body>
+	<div class="write-review-container">
+		<!-- 헤더 -->
+		<header class="write-review-header">
+			<button class="back-btn" onclick="history.back()">
+				<svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M15 18L9 12L15 6" stroke="currentColor"
+						stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+			</button>
+			<h1 class="header-title">리뷰 작성</h1>
+			<div class="header-placeholder"></div>
+		</header>
+
+		<form action="/reviews/reviewWrite" method="post"
+			enctype="multipart/form-data">
+			<input type="hidden" name="rstId" th:value="${restaurant.rstId}" />
+			<input type="hidden" id="selectedMenus" name="menuNames" value="">
+			<input type="hidden" id="ratingInput" name="rating" value="0" />
+
+			<!-- 식당 정보 요약 -->
+			<div class="restaurant-summary">
+				<div class="restaurant-thumb">
+					<img th:src="${restaurant.image}" alt="식당 이미지">
+				</div>
+				<div class="restaurant-info-summary">
+					<h2 class="restaurant-name-summary" th:text="${restaurant.name}">청회병</h2>
+					<div class="restaurant-meta">
+						<div class="restaurant-address" th:text="${restaurant.address}">부산광역시
+							중구 남포동...</div>
+						<div class="restaurant-phone" th:text="${restaurant.phone}">051-123-4567</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- 메뉴 선택 섹션 -->
+			<section class="menu-select-section">
+				<div class="section-header">
+					<h2 class="section-title">
+						<svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                        <path
+								d="M12 2L13.09 8.26L20 9L13.09 9.74L12 16L10.91 9.74L4 9L10.91 8.26L12 2Z"
+								stroke="currentColor" stroke-width="2" stroke-linecap="round"
+								stroke-linejoin="round" />
+                    </svg>
+						어떤 메뉴를 드셨나요?
+					</h2>
+					<span class="required-badge">필수</span>
+				</div>
+				<div class="menu-grid" id="menuButtons">
+					<button type="button" th:each="menu : ${menus}"
+						th:text="${menu.name}" th:attr="data-name=${menu.name}"
+						class="menu-btn">메뉴명</button>
+				</div>
+			</section>
+
+			<!-- 별점 섹션 -->
+			<section class="rating-section">
+				<div class="section-header">
+					<h2 class="section-title">
+						<svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                        <path
+								d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
+								stroke="currentColor" stroke-width="2" />
+                    </svg>
+						음식이 어떠셨나요?
+					</h2>
+					<span class="required-badge">필수</span>
+				</div>
+				<div class="star-rating">
+					<svg class="star" data-rating="1" viewBox="0 0 24 24">
+						<path
+							d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" /></svg>
+					<svg class="star" data-rating="2" viewBox="0 0 24 24">
+						<path
+							d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" /></svg>
+					<svg class="star" data-rating="3" viewBox="0 0 24 24">
+						<path
+							d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" /></svg>
+					<svg class="star" data-rating="4" viewBox="0 0 24 24">
+						<path
+							d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" /></svg>
+					<svg class="star" data-rating="5" viewBox="0 0 24 24">
+						<path
+							d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" /></svg>
+				</div>
+				<div class="rating-description">별점을 선택해주세요</div>
+			</section>
+
+			<!-- 텍스트 리뷰 섹션 -->
+			<section class="text-review-section">
+				<div class="section-header">
+					<h2 class="section-title">
+						<svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                        <path
+								d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z"
+								stroke="currentColor" stroke-width="2" stroke-linecap="round"
+								stroke-linejoin="round" />
+                        <path d="M14 2V8H20" stroke="currentColor"
+								stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M16 13H8" stroke="currentColor"
+								stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M16 17H8" stroke="currentColor"
+								stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M10 9H9H8" stroke="currentColor"
+								stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+						솔직한 후기를 들려주세요
+					</h2>
+					<span class="required-badge">필수</span>
+				</div>
+				<div class="textarea-wrapper">
+					<textarea class="review-textarea" name="content"
+						placeholder="맛, 서비스, 분위기 등 자세한 후기를 남겨주세요! 다른 분들에게 도움이 되는 솔직한 리뷰 부탁드려요 😊"
+						maxlength="500" oninput="updateCharCount(this)">
+                </textarea>
+					<div class="char-count">0/500자</div>
+				</div>
+			</section>
+
+			<!-- 사진 추가 섹션 -->
+			<section class="photo-section">
+				<div class="section-header">
+					<h2 class="section-title">
+						<svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                        <path
+								d="M23 19C23 19.5304 22.7893 20.0391 22.4142 20.4142C22.0391 20.7893 21.5304 21 21 21H3C2.46957 21 1.96086 20.7893 1.58579 20.4142C1.21071 20.0391 1 19.5304 1 19V8C1 7.46957 1.21071 6.96086 1.58579 6.58579C1.96086 6.21071 2.46957 6 3 6H7L9 3H15L17 6H21C21.5304 6 22.0391 6.21071 22.4142 6.58579C22.7893 6.96086 23 7.46957 23 8V19Z"
+								stroke="currentColor" stroke-width="2" stroke-linecap="round"
+								stroke-linejoin="round" />
+                        <circle cx="12" cy="13" r="4"
+								stroke="currentColor" stroke-width="2" />
+                    </svg>
+						사진 추가 (선택)
+					</h2>
+					<span class="optional-badge">선택</span>
+				</div>
+				<div class="photo-upload-area">
+					<div class="photo-upload" onclick="uploadPhoto()">
+						<div class="upload-icon">
+							<svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+                            <path d="M12 5V19M5 12H19"
+									stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                        </svg>
+						</div>
+						<div class="upload-text">
+							<div class="upload-title">사진 추가하기</div>
+							<div class="upload-subtitle">방문 인증 사진을 업로드해주세요</div>
+						</div>
+					</div>
+
+					<!-- ✅ 사진 미리보기 영역 -->
+					<div id="photoPreviewContainer" class="photo-preview-container"></div>
+
+					<input type="file" name="photos" id="photoInput" accept="image/*"
+						multiple onchange="handlePhoto(this)" style="display: none;">
+				</div>
+				<div class="photo-requirements">
+					<div class="requirement-item">
+						<svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                        <path d="M20 6L9 17L4 12" stroke="#4CAF50"
+								stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+						<span>식당에서 500m 이내에서 촬영한 사진</span>
+					</div>
+					<div class="requirement-item">
+						<svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                        <path d="M20 6L9 17L4 12" stroke="#4CAF50"
+								stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+						<span>2주 이내에 촬영한 사진</span>
+					</div>
+				</div>
+			</section>
+
+			<!-- 제출 버튼 영역 -->
+			<div class="submit-section">
+				<button type="submit" class="submit-btn" id="submitBtn" disabled>
+					<svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                    <path d="M22 2L11 13" stroke="currentColor"
+							stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M22 2L15 22L11 13L2 9L22 2Z"
+							stroke="currentColor" stroke-width="2" stroke-linecap="round"
+							stroke-linejoin="round" />
+                </svg>
+					리뷰 등록하기
+				</button>
+			</div>
+
+			<!-- 하단 여백 -->
+			<div class="bottom-padding"></div>
+		</form>
+	</div>
+
+	<!-- 위치 데이터 (전역 변수로 선언) -->
+	<script th:inline="javascript">
+    window.restaurantLat = /*[[${restaurant.latitude != null} ? ${#numbers.formatDecimal(restaurant.latitude, 1, 6)} : 0.0]]*/ 0.0;
+    window.restaurantLon = /*[[${restaurant.longitude != null} ? ${#numbers.formatDecimal(restaurant.longitude, 1, 6)} : 0.0]]*/ 0.0;
+</script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/exif-js/2.3.0/exif.min.js"></script>
+	<script src="/js/rstSearch/writeReview.js"></script>
+</body>
+</html>

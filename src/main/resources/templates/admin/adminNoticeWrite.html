@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>공지 작성 - EatoMeter 관리자</title>
+<link rel="stylesheet" th:href="@{/css/admin/adminNoticeWrite.css}" />
+<link rel="stylesheet"
+	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" />
+</head>
+<body>
+	<!-- 헤더 및 사이드바 인클루드 -->
+	<div th:replace="~{admin/adminHeader}"></div>
+
+	<!-- 메인 콘텐츠 -->
+	<div class="main-content">
+		<section class="event-section">
+			<h2>공지 작성</h2>
+
+			<!-- 결과 메시지 -->
+			<p th:if="${successMessage}" style="color: green;"
+				th:text="${successMessage}">✅ 공지가 성공적으로 등록되었습니다.</p>
+			<p th:if="${errorMessage}" style="color: red;"
+				th:text="${errorMessage}">❌ 등록에 실패했습니다. 입력값을 확인해주세요.</p>
+
+			<!-- 공지 작성 폼 -->
+			<form method="post" th:action="@{/adminNoticeWrite}"
+				enctype="multipart/form-data" class="event-form">
+				<!-- ① CSRF 토큰 필드 (스프링 시큐리티 활성화 시 반드시 필요) -->
+				<input type="hidden" name="${_csrf.parameterName}"
+					value="${_csrf.token}" />
+
+				<div class="form-group">
+					<label for="notice-title">공지 제목</label> <input type="text"
+						id="notice-title" name="title" maxlength="100"
+						class="form-control" placeholder="제목을 입력하세요"
+						th:value="${notice != null ? notice.title : ''}" required />
+				</div>
+
+				<div class="form-group">
+					<label for="notice-type">공지 유형</label> <select id="notice-type"
+						name="announcementType" class="form-control" required>
+						<option value="" disabled th:selected="${notice == null}">공지
+							유형을 선택해주세요</option>
+						<option value="공지"
+							th:selected="${notice != null && notice.announcementType == '공지'}">공지</option>
+						<option value="이벤트"
+							th:selected="${notice != null && notice.announcementType == '이벤트'}">이벤트</option>
+						<option value="점검"
+							th:selected="${notice != null && notice.announcementType == '점검'}">점검</option>
+					</select>
+				</div>
+
+				<div class="form-group">
+					<label>첨부 파일</label>
+					<div class="image-upload">
+						<div class="upload-box"
+							onclick="document.getElementById('notice-file').click();">
+							<img id="preview" style="display: none;" /> <span
+								id="uploadText">파일 선택</span>
+						</div>
+						<input type="file" id="notice-file" name="file"
+							style="display: none" onchange="previewFile(event)" />
+						<div class="image-buttons">
+							<button type="button"
+								onclick="document.getElementById('notice-file').click();">🔄
+								다시 선택</button>
+							<button type="button" onclick="clearPreview()">❌ 삭제</button>
+						</div>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="notice-content">공지 내용</label>
+					<textarea id="notice-content" name="content" class="form-control"
+						placeholder="내용을 입력하세요" rows="8" required
+						th:text="${notice != null ? notice.content : ''}"></textarea>
+				</div>
+
+				<!-- 수정 모드일 때만 가져오는 히든 필드 -->
+				<input type="hidden" name="announcementId"
+					th:value="${notice != null ? notice.announcementId : ''}" />
+
+				<button type="submit" class="submit-btn"
+					th:text="${notice != null} ? '수정' : '등록'">등록</button>
+			</form>
+
+		</section>
+	</div>
+	<script src="/js/admin/adminNoticeWrite.js"></script>
+</body>
+</html>

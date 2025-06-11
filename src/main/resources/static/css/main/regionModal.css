@@ -1,0 +1,85 @@
+.region-selector {
+  display: flex;
+  gap: 16px;
+  margin-top: 10px;
+}
+
+/* 왼쪽 지역 목록 */
+.region-left ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 90px;
+  border-right: 1px solid #ddd;
+}
+
+.region-left li {
+  padding: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #555;
+}
+
+.region-left li.active {
+  font-weight: bold;
+  color: #000;
+  background-color: #f2f2f2;
+}
+
+/* 오른쪽 상세 지역 */
+.region-right {
+  flex: 1;
+}
+
+.region-right h4 {
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.region-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.region-tag {
+  padding: 6px 12px;
+  font-size: 13px;
+  border: 1px solid #ccc;
+  border-radius: 16px;
+  cursor: pointer;
+  color: #555;
+}
+
+.region-tag.selected {
+  background-color: #ffe4b3;
+  border-color: #ff9800;
+  color: #000;
+}
+
+/* 하단 버튼 */
+.region-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  gap: 10px;
+}
+
+.reset-btn,
+.confirm-btn {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.reset-btn {
+  background-color: #eee;
+}
+
+.confirm-btn {
+  background-color: #ff9800;
+  color: #fff;
+}

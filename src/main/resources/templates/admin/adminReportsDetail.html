@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>신고 상세 정보</title>
+<link rel="stylesheet" href="/css/admin/adminReportsDetail.css">
+</head>
+<body>
+	<div class="modal-overlay" id="reportModal">
+		<div class="modal-content">
+			<div class="modal-close" onclick="closeModal()">✕</div>
+			<h2>신고 상세 정보</h2>
+
+			<div class="info-box">
+				<span class="label">신고 번호:</span> <span th:text="${report.reportId}">1</span>
+			</div>
+			<div class="info-box">
+				<span class="label">신고 유형:</span> <span
+					th:text="${report.type.name()}">리뷰</span>
+			</div>
+			<div class="info-box">
+				<span class="label">신고자:</span> <span
+					th:text="${report.reporterMember.nickname}">신고자 닉네임</span>
+			</div>
+			<div class="info-box">
+				<span class="label">신고 대상:</span> <span
+					th:text="${report.reportedMember.nickname}">피신고자 닉네임</span>
+			</div>
+			<div class="info-box">
+				<span class="label">작성일:</span> <span
+					th:text="${#temporals.format(report.reportedAt, 'yyyy-MM-dd HH:mm')}">2023-01-01
+					12:30</span>
+			</div>
+			<div class="info-box">
+				<span class="label">상태:</span> <span class="status-label"
+					th:classappend="${report.status.name() == '대기'} ? 'status-pending' : 'status-completed'"
+					th:text="${report.status.name()}">대기</span>
+			</div>
+
+			<h4>신고 내용</h4>
+			<div class="info-box">
+				<textarea readonly th:if="${report.type.name() == '리뷰'}"
+					th:text="${reviewContent}">리뷰 내용입니다.</textarea>
+				<textarea readonly th:unless="${report.type.name() == '리뷰'}"
+					th:text="'해당 신고 유형의 상세 내용은 추후 구현됩니다.'">내용</textarea>
+			</div>
+
+			<!-- 상태에 따라 처리 버튼 또는 메시지 표시 -->
+			<div th:switch="${report.status.name()}">
+				<div th:case="'대기'">
+					<form id="processForm">
+						<input type="hidden" id="reportId" th:value="${report.reportId}" />
+						<div class="btn-group">
+							<button type="button" class="approve-btn"
+								onclick="processReport()">처리 완료</button>
+							<button type="button" class="reject-btn" onclick="rejectReport()">거절</button>
+						</div>
+					</form>
+				</div>
+				<div th:case="'완료'">
+					<p class="status-message">
+						✅ 이 신고는 <strong>완료 처리</strong> 되었습니다.
+					</p>
+				</div>
+				<div th:case="'거절'">
+					<p class="status-message">
+						🚫 이 신고는 <strong>거절 처리</strong> 되었습니다.
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script src="/js/admin/adminReportsDetail.js"></script>
+</body>
+</html>

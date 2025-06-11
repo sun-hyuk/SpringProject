@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>알림 내역</title>
+<link rel="stylesheet" th:href="@{/css/alerts.css}">
+</head>
+<body
+	th:attr="data-logged-in=${loggedInMember != null}, data-member-id=${loggedInMember != null ? loggedInMember.memberId : ''}">
+
+	<header class="header">
+		<a href="javascript:history.back()" class="btn-back"> <img
+			th:src="@{/images/vector-icon.png}" alt="뒤로가기" class="back-icon" />
+		</a>
+		<h1>알림 내역</h1>
+	</header>
+
+	<div class="container">
+		<!-- 탭 메뉴 -->
+		<div class="tab-container">
+			<a th:href="@{/alerts(type='전체')}" class="tab-button" data-tab="all"
+				th:classappend="${activeType == '전체'} ? 'active'">전체</a> <a
+				th:href="@{/alerts(type='식당')}" class="tab-button" data-tab="store"
+				th:classappend="${activeType == '식당'} ? 'active'">가게등록</a> <a
+				th:href="@{/alerts(type='문의')}" class="tab-button"
+				data-tab="inquiry" th:classappend="${activeType == '문의'} ? 'active'">문의</a>
+			<a th:href="@{/alerts(type='신고')}" class="tab-button"
+				data-tab="report" th:classappend="${activeType == '신고'} ? 'active'">신고</a>
+		</div>
+
+		<!-- 알림 목록 -->
+		<div class="alerts-list" id="alertsList">
+			<div th:if="${alertsGroupedByDate.isEmpty()}">
+				<div class="empty-message">알림이 없습니다.</div>
+			</div>
+
+			<!-- 날짜별 그룹 반복 -->
+			<div th:each="entry : ${alertsGroupedByDate}">
+				<div class="date-divider" th:text="${entry.key}">2025-06-07</div>
+
+				<!-- 해당 날짜의 알림 반복 -->
+				<div th:each="alert : ${entry.value}" class="alert-item"
+					th:attr="data-type=${alert.type}, data-alert-id=${alert.alertsId}">
+
+					<div class="alert-content">
+
+						<!-- 문의 알림 -->
+						<a th:if="${alert.type == '문의'}"
+							th:href="@{'/inquiryDetail/' + ${alert.targetId}}"
+							style="text-decoration: none; color: inherit;"> 문의글에 대한 답변이
+							등록되었습니다. </a>
+
+						<!-- 신고 알림 (피신고자 → 리뷰 상세로 이동) -->
+						<a
+							th:if="${alert.type == '신고'} and ${#strings.contains(alertMessageMap[alert.alertsId], '리뷰')}"
+							th:href="@{'/reviewDetail/' + ${alert.targetId}}"
+							style="text-decoration: none; color: inherit;">[[${alertMessageMap[alert.alertsId]}]]</a>
+
+						<!-- 신고 알림 (신고자에게 표시) -->
+						<span
+							th:if="${alert.type == '신고'} and ${!#strings.contains(alertMessageMap[alert.alertsId], '리뷰')}"
+							th:text="${alertMessageMap[alert.alertsId]}">신고가 처리되었습니다.</span>
+
+						<!-- 기타 알림 -->
+						<span th:if="${alert.type != '문의' and alert.type != '신고'}"
+							th:text="${#strings.equals(alert.type, '식당') ? '가게 등록이 승인되었습니다.' : '알림이 도착했습니다.'}">
+						</span>
+					</div>
+
+					<!-- 알림 닫기 버튼 -->
+					<button class="alert-close"
+						onclick="this.closest('.alert-item').remove()">×</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- 공통 푸터 -->
+	<div th:replace="/footer.html"></div>
+	<script th:src="@{/js/alerts.js}"></script>
+</body>
+</html>

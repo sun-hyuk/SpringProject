@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>이벤트</title>
+<link rel="stylesheet" th:href="@{/css/event/event.css}">
+</head>
+<body>
+	<!-- 헤더 -->
+	<header class="header">
+		<a href="javascript:history.back()" class="btn-back"> <img
+			th:src="@{/images/vector-icon.png}" alt="뒤로가기" class="back-icon" />
+		</a>
+		<h1>이벤트</h1>
+	</header>
+
+	<!-- 탭 -->
+	<nav class="tabs">
+		<div class="tab active" data-target="ongoing">
+			<span>진행중인 이벤트</span>
+		</div>
+		<div class="tab" data-target="ended">
+			<span>종료된 이벤트</span>
+		</div>
+	</nav>
+
+	<!-- 스크롤 영역 -->
+	<div class="container">
+		<!-- 진행중인 이벤트 리스트 -->
+		<ul class="event-list" id="ongoing">
+			<li th:each="event : ${ongoingEvents}" class="event-item"><a
+				th:href="@{'/event/' + ${event.eventId}}">
+					<div class="event-thumb-wrap">
+						<img th:src="@{${event.imageUrl}}" th:alt="${event.title}"
+							class="thumb" />
+					</div>
+					<div class="event-text-wrap">
+						<h3 class="event-title" th:text="${event.title}">이벤트 제목</h3>
+						<p class="event-period"
+							th:text="${#temporals.format(event.startDate, 'yyyy.MM.dd')} + ' ~ ' + ${#temporals.format(event.endDate, 'yyyy.MM.dd')}">
+							2025.06.07 ~ 2025.06.08</p>
+					</div>
+			</a></li>
+		</ul>
+
+		<!-- 종료된 이벤트 리스트 -->
+		<ul class="event-list" id="ended" style="display: none">
+			<li th:each="event : ${endedEvents}" class="event-item"><a
+				th:href="@{'/event/' + ${event.eventId}}">
+					<div class="event-thumb-wrap">
+						<img th:src="@{${event.imageUrl}}" th:alt="${event.title}"
+							class="thumb" />
+					</div>
+					<div class="event-text-wrap">
+						<h3 class="event-title" th:text="${event.title}">이벤트 제목</h3>
+						<p class="event-period"
+							th:text="${#temporals.format(event.startDate, 'yyyy.MM.dd')} + ' ~ ' + ${#temporals.format(event.endDate, 'yyyy.MM.dd')}">
+							2025.05.01 ~ 2025.05.31</p>
+					</div>
+			</a></li>
+		</ul>
+	</div>
+
+	<!-- 푸터 포함 -->
+	<div th:replace="/footer.html"></div>
+
+	<!-- 탭 전환 스크립트 -->
+	<script>
+    document.querySelectorAll('.tabs .tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        // 탭 active 토글
+        document.querySelectorAll('.tabs .tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        // 목록 전환
+        document.querySelectorAll('.event-list').forEach(list => list.style.display = 'none');
+        document.getElementById(tab.dataset.target).style.display = 'block';
+      });
+    });
+  </script>
+</body>
+</html>

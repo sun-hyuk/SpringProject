@@ -1,0 +1,84 @@
+/* reset & 전체박스 */
+html, body {
+  margin: 0; padding: 0;
+  width: 100%; height: 100%;
+  font-family: "Apple SD Gothic Neo", sans-serif;
+  background: #fff;
+}
+body { overflow: hidden; }
+
+/* 스크롤 컨테이너 */
+.container {
+  position: absolute;
+  top: 80px;    /* 헤더(60px) + 여유 */
+  bottom: 80px; /* 푸터 높이 */
+  left: 0; right: 0;
+  max-width: 375px; margin: 0 auto;
+  padding: 0 16px; box-sizing: border-box;
+  overflow-y: auto; -webkit-overflow-scrolling: touch;
+}
+
+/* 헤더 (기존) */
+.header {
+  position: fixed; top: 0; left: 0; right: 0;
+  display: flex; align-items: center;
+  height: 60px; border-bottom: 1px solid #eee;
+  background: #fff; z-index: 100;
+}
+.btn-back { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); }
+.back-icon { width: 12px; height: 15px; }
+.header h1 { margin: 0 auto; font-size: 18px; color: #333; }
+.btn-complete {
+  position: absolute; right: 16px;
+  background: none; border: none;
+  font-size: 14px; color: #007AFF;
+  cursor: pointer;
+}
+
+/* ───── 회원탈퇴 유의사항 ───── */
+.withdraw-warning {
+  margin-top: 16px;
+}
+.warning-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px;
+}
+.warning-sub {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 12px;
+}
+.warning-list {
+  margin: 0;
+  padding-left: 20px;
+  color: #333;
+  font-size: 14px;
+  line-height: 1.6;
+}
+.warning-list li {
+  margin-bottom: 8px;
+}
+/* 마지막 항목 밑 여유 */
+.warning-list li:last-child {
+  margin-bottom: 0;
+}
+
+/* ───── 동의 체크박스 ───── */
+.agree-box {
+  display: flex;
+  align-items: center;
+  margin: 24px 0 40px; /* 리스트 끝 + 아래 여유 */
+}
+.agree-box input[type="checkbox"] {
+  width: 18px; height: 18px;
+  margin-right: 8px;
+  cursor: pointer;
+}
+.agree-box label {
+  font-size: 14px;
+  color: #555;
+  cursor: pointer;
+  font-weight: bold;
+}

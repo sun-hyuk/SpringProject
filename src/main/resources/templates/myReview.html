@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>나의 리뷰</title>
+<link rel="stylesheet" th:href="@{/css/myReview.css}">
+<script th:src="@{/js/myReview.js}" defer></script>
+</head>
+<body>
+	<header class="header">
+		<a href="javascript:history.back()" class="btn-back"> <img
+			th:src="@{/images/vector-icon.png}" alt="뒤로가기" class="back-icon" />
+		</a>
+		<h1>나의 리뷰</h1>
+	</header>
+
+	<div class="container">
+		<div class="content">
+			<div class="review-count">
+				<p>
+					내가 쓴 리뷰 <span th:text="${reviewList.size()} + '개'">0개</span>
+				</p>
+				<div class="view-options">
+					<img th:src="@{/images/myReview/grid.png}" alt="그리드 보기"
+						class="active-view" id="grid-view" /> <img
+						th:src="@{/images/myReview/list.png}" alt="리스트 보기" id="list-view" />
+				</div>
+			</div>
+
+			<!-- 그리드 뷰 -->
+			<div class="review-grid" id="grid-container">
+
+				<!-- 리뷰 반복 출력 -->
+				<div class="review-item" th:each="review : ${reviewList}"
+					th:attr="data-rstid=${review.rstId}">
+					<div class="review-profile">
+						<!-- profileImagePath 에 이미 “/uploads/…jpg” 가 들어 있으므로, 그대로 사용 -->
+						<img th:src="@{${review.profileImagePath}}" alt="프로필"
+							class="profile-img" />
+						<div class="profile-info">
+							<p class="username" th:text="${review.nickname}">닉네임</p>
+							<p class="date"
+								th:text="${#temporals.format(review.createdAt, 'yyyy.MM.dd')}">작성일</p>
+						</div>
+					</div>
+
+
+					<div class="review-content">
+						<!-- 이미지 표시 (첫 이미지만) -->
+						<img
+							th:if="${review.imageUrls != null and !review.imageUrls.isEmpty()}"
+							th:src="@{${review.imageUrls[0]}}" alt="음식 이미지" class="food-img" />
+						<img
+							th:if="${review.imageUrls == null or review.imageUrls.isEmpty()}"
+							th:src="@{/images/myReview/food.png}" alt="기본 이미지"
+							class="food-img" />
+
+						<p class="review-text" th:text="${review.content}">리뷰 내용</p>
+
+						<div class="review-stats">
+							<div class="likes">
+								<img th:src="@{/images/myReview/heart.png}" alt="평점" /> <span
+									th:text="${review.rating}">0.0</span>
+							</div>
+							<div class="comments">
+								<img th:src="@{/images/myReview/good.png}" alt="좋아요 수" /> <span
+									th:text="${review.likeCount}">0</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- footer.html 포함 -->
+	<div th:replace="/footer.html"></div>
+</body>
+</html>

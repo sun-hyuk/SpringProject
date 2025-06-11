@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>마이페이지 - EatoMeter</title>
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="/css/myPage.css">
+<link rel="stylesheet" th:href="@{/css/loginPopup.css}">
+</head>
+<body
+	th:attr="data-logged-in=${loggedInMember != null}, data-member-id=${loggedInMember != null ? loggedInMember.memberId : ''}">
+	<div class="container">
+		<!-- 상단 헤더 -->
+		<header class="top-header">
+			<h1>마이페이지</h1>
+			<div class="header-icons">
+				<div class="alarm-wrapper" style="position: relative;">
+					<a href="/alerts" class="icon-bell"> <img
+						src="/images/bell-icon.png" alt="알림"
+						style="width: 25px; height: 25px;">
+					</a> <span class="alarm-dot" id="alarmDot"></span>
+				</div>
+				<a href="/setting" class="icon-settings"> <img
+					src="/images/settings-icon.png" alt="설정"
+					style="width: 25px; height: 25px;">
+				</a>
+			</div>
+		</header>
+
+		<!-- 프로필 섹션 -->
+		<section class="profile-section">
+			<div class="profile-container">
+				<div class="profile-image">
+					<!-- 1) 모델에 담긴 loggedInMember.image가 null이 아닌 경우 실제 이미지를 출력 -->
+					<div
+						th:if="${loggedInMember != null and loggedInMember.image != null}">
+						<img th:src="@{${loggedInMember.image}}" alt="프로필 사진"
+							class="profile-img" />
+					</div>
+					<!-- 2) 이미지 경로가 없으면 기본 placeholder 아이콘을 보여줌 -->
+					<div
+						th:unless="${loggedInMember != null and loggedInMember.image != null}"
+						class="placeholder-image profile-placeholder">
+						<i class="fa-solid fa-user"></i>
+					</div>
+				</div>
+
+				<div class="profile-info">
+					<h2
+						th:text="${loggedInMember != null} ? ${loggedInMember.name} : '게스트'">
+						게스트</h2>
+					<div class="profile-meta">
+						<span th:text="'찜한 맛집 ' + ${jjimTotalCount}">찜한 맛집 0</span> <span
+							class="divider">|</span> <span
+							th:text="'찜한 코스 ' + (${courseTotalCount} ?: 0)">찜한 코스 0</span> <span
+							class="divider">|</span> <span
+							th:text="'나의 문의 ' + ${inquiryTotalCount}">나의 문의 0</span>
+					</div>
+				</div>
+			</div>
+
+			<!-- 프로필 버튼 영역 -->
+			<div class="profile-buttons" th:if="${loggedInMember != null}">
+				<a th:href="@{/myPage/myInfo}" class="btn btn-outline">내 정보 수정</a> <a
+					th:href="@{/logout}" class="btn btn-outline">로그아웃</a>
+			</div>
+		</section>
+
+		<!-- 최근 방문한 맛집 섹션 -->
+		<section class="section">
+			<div class="section-header">
+				<h3>최근 방문한 맛집</h3>
+				<a th:if="${loggedInMember != null}" th:href="@{/rstVisited}"
+					class="more-link"> 더보기 <i class="fa-solid fa-chevron-right"></i>
+				</a> <a th:unless="${loggedInMember != null}" href="javascript:void(0);"
+					class="more-link" onclick="showLoginPopup()"> 더보기 <i
+					class="fa-solid fa-chevron-right"></i>
+				</a>
+			</div>
+
+			<div th:if="${loggedInMember != null}">
+				<div th:if="${recentList != null and !#lists.isEmpty(recentList)}"
+					class="order-grid">
+					<div th:each="visit : ${recentList}" class="order-item"
+						th:onclick="'window.location.href=\'/rstDetail?rstId=' + ${visit.restaurantId} + '\';'">
+						<div class="order-image">
+							<div th:if="${visit.thumbnailUrl != null}">
+								<img th:src="@{${visit.thumbnailUrl}}" alt="식당 이미지" />
+							</div>
+							<div th:unless="${visit.thumbnailUrl != null}"
+								class="placeholder-image food-placeholder">
+								<i class="fa-solid fa-utensils"></i>
+							</div>
+						</div>
+
+						<div class="order-details">
+							<div class="order-title" th:text="${visit.restaurantName}">식당
+								이름</div>
+							<div class="order-info">
+								<span class="order-rating"> <i class="fa-solid fa-star"></i>
+									<span
+									th:text="${#numbers.formatDecimal(visit.averageRating, 1, 1)}">0.0</span>
+								</span> <span class="order-tag" th:text="${visit.region}">지역</span>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- 최근 방문한 맛집이 없을 때 -->
+				<div th:if="${recentList == null or #lists.isEmpty(recentList)}"
+					class="no-favorites-message">
+					<p>최근 방문한 맛집이 없습니다.</p>
+					<a href="/rstSearch" class="favorites-link">맛집 찾아보기</a>
+				</div>
+			</div>
+
+			<div th:unless="${loggedInMember != null}"
+				class="no-favorites-message">
+				<p>로그인 후 최근 방문한 맛집을 확인할 수 있습니다.</p>
+				<a href="/login" class="favorites-link">로그인하기</a>
+			</div>
+		</section>
+
+		<div th:unless="${loggedInMember != null}"
+			class="no-favorites-message">
+			<p>로그인 후 최근 방문한 맛집을 확인할 수 있습니다.</p>
+			<a href="/login" class="favorites-link">로그인하기</a>
+		</div>
+		</section>
+
+		<!-- 찜한 맛집 섹션 -->
+		<section class="section">
+			<div class="section-header">
+				<h3>찜한 맛집</h3>
+				<!-- 로그인된 경우 -->
+				<a th:if="${loggedInMember != null}" th:href="@{/myFavorites}"
+					class="more-link"> 더보기 <i class="fa-solid fa-chevron-right"></i>
+				</a>
+				<!-- 비로그인 상태일 때: 팝업 띄우기 -->
+				<a th:unless="${loggedInMember != null}" href="javascript:void(0);"
+					class="more-link" onclick="showLoginPopup()"> 더보기 <i
+					class="fa-solid fa-chevron-right"></i>
+				</a>
+			</div>
+
+			<!-- 로그인된 경우 -->
+			<div th:if="${loggedInMember != null}">
+				<!-- 찜한 맛집이 있는 경우 -->
+				<div th:if="${jjimList != null and !#lists.isEmpty(jjimList)}"
+					class="order-grid">
+					<div th:each="jjim : ${jjimList}" class="order-item"
+						th:onclick="'window.location.href=\'/rstDetail?rstId=' + ${jjim.rstId} + '\';'">
+						<div class="order-image">
+							<!-- 실제 이미지가 있으면 출력 -->
+							<div th:if="${jjim.restaurantImage != null}">
+								<img th:src="@{${jjim.restaurantImage}}" alt="식당 이미지"
+									class="profile-img" />
+							</div>
+							<!-- 이미지 없으면 placeholder 아이콘 -->
+							<div th:unless="${jjim.restaurantImage != null}"
+								class="placeholder-image food-placeholder">
+								<i class="fa-solid fa-utensils"></i>
+							</div>
+						</div>
+
+						<div class="order-details">
+							<!-- 식당 이름 -->
+							<div class="order-title" th:text="${jjim.restaurantName}">
+								식당 이름</div>
+							<div class="order-info">
+								<!-- 평점(소수점 첫째 자리까지 포맷) -->
+								<span class="order-rating"> <i class="fa-solid fa-star"></i>
+									<span
+									th:text="${#numbers.formatDecimal(jjim.restaurantRating, 1, 1)}">
+										0.0 </span>
+								</span>
+								<!-- 태그 -->
+								<span class="order-tag" th:text="${jjim.restaurantTag}">
+									태그 </span>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- 찜한 맛집이 없는 경우 -->
+				<div th:if="${jjimList == null or #lists.isEmpty(jjimList)}"
+					class="no-favorites-message">
+					<p>아직 찜한 맛집이 없습니다.</p>
+					<a href="/rstSearch" class="favorites-link">맛집 찾아보기</a>
+				</div>
+			</div>
+
+			<!-- 비로그인 상태일 때 -->
+			<div th:unless="${loggedInMember != null}"
+				class="no-favorites-message">
+				<p>로그인 후 찜한 맛집을 확인할 수 있습니다.</p>
+				<a href="/login" class="favorites-link">로그인하기</a>
+			</div>
+		</section>
+
+		<!-- 찜한 코스 섹션 -->
+		<section class="section">
+			<div class="section-header">
+				<h3>찜한 코스</h3>
+				<!-- 로그인된 경우 -->
+				<a th:if="${loggedInMember != null}"
+					th:href="@{/myFavorites(tab='course')}" class="more-link"> 더보기
+					<i class="fa-solid fa-chevron-right"></i>
+				</a>
+				<!-- 비로그인 상태일 때: 팝업 띄우기 -->
+				<a th:unless="${loggedInMember != null}" href="javascript:void(0);"
+					class="more-link" onclick="showLoginPopup()"> 더보기 <i
+					class="fa-solid fa-chevron-right"></i>
+				</a>
+			</div>
+
+			<!-- 로그인된 경우 -->
+			<div th:if="${loggedInMember != null}">
+				<!-- 찜한 코스가 있는 경우 -->
+				<div th:if="${courseList != null and !#lists.isEmpty(courseList)}"
+					class="recommend-grid">
+					<div class="recommend-item" th:each="course : ${courseList}"
+						th:data-course-id="${course.course_id}"
+						th:onclick="|location.href='/tasteCourseDetail?course=${course.course_id}'|"
+						style="cursor: pointer;">
+						<div class="recommend-image">
+							<div th:if="${course.image != null}">
+								<img th:src="@{${course.image}}" alt="코스 이미지" />
+							</div>
+							<div th:unless="${course.image != null}"
+								class="placeholder-image recommend-placeholder">
+								<i class="fa-solid fa-route"></i>
+							</div>
+						</div>
+						<div class="recommend-details">
+							<div class="recommend-title" th:text="${course.title}">코스명</div>
+							<div class="recommend-info">
+								<span class="recommend-likes"><i
+									class="fa-regular fa-thumbs-up"></i> <span
+									th:text="${course.likes}">0</span></span> <span
+									class="recommend-comments"><i
+									class="fa-regular fa-comment"></i> 0</span>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- 찜한 코스가 없는 경우 -->
+				<div th:if="${courseList == null or #lists.isEmpty(courseList)}"
+					class="no-favorites-message">
+					<p>아직 찜한 코스가 없습니다.</p>
+					<a href="/tasteCourse" class="favorites-link">코스 찾아보기</a>
+				</div>
+			</div>
+
+			<!-- 비로그인 상태일 때 -->
+			<div th:unless="${loggedInMember != null}"
+				class="no-favorites-message">
+				<p>로그인 후 찜한 코스를 확인할 수 있습니다.</p>
+				<a href="/login" class="favorites-link">로그인하기</a>
+			</div>
+		</section>
+
+		<!-- 나의 리뷰 섹션 -->
+		<section class="section">
+			<div class="section-header">
+				<h3>나의 리뷰</h3>
+				<!-- 로그인된 경우 -->
+				<a th:if="${loggedInMember != null}" href="/myReview"
+					class="more-link"> 더보기 <i class="fa-solid fa-chevron-right"></i>
+				</a>
+				<!-- 비로그인 상태일 때: 팝업 띄우기 -->
+				<a th:unless="${loggedInMember != null}" href="javascript:void(0);"
+					class="more-link" onclick="showLoginPopup()"> 더보기 <i
+					class="fa-solid fa-chevron-right"></i>
+				</a>
+			</div>
+
+			<!-- 로그인된 경우 -->
+			<div th:if="${loggedInMember != null}">
+				<!-- 리뷰가 있는 경우 -->
+				<div th:if="${reviewList != null and !#lists.isEmpty(reviewList)}"
+					class="review-grid">
+					<div th:each="review : ${reviewList}" class="review-item"
+						th:onclick="'window.location.href=\'/rstDetail?rstId=' + ${review.rstId} + '\';'">
+
+						<!-- 리뷰 이미지들 (최대 2개까지 작은 크기로 표시) -->
+						<div class="review-images"
+							th:if="${review.imageUrls != null and !#lists.isEmpty(review.imageUrls)}">
+							<div class="review-image-item"
+								th:each="image, iterStat : ${review.imageUrls}"
+								th:if="${iterStat.index < 2}">
+								<img th:src="@{${image}}" alt="리뷰 이미지" />
+							</div>
+						</div>
+
+						<!-- 이미지가 없는 경우 placeholder -->
+						<div
+							th:unless="${review.imageUrls != null and !#lists.isEmpty(review.imageUrls)}"
+							class="review-image">
+							<div class="placeholder-image food-placeholder">
+								<i class="fa-solid fa-camera"></i>
+							</div>
+						</div>
+
+						<div class="review-details">
+							<!-- 식당명 -->
+							<div class="review-restaurant" th:text="${review.restaurantName}">맛있는
+								식당</div>
+
+							<!-- 평점 -->
+							<div class="review-rating" th:if="${review.rating != null}">
+								<i class="fa-solid fa-star"></i> <span
+									th:text="${#numbers.formatDecimal(review.rating, 1, 1)}">4.5</span>
+							</div>
+
+							<!-- 리뷰 내용 -->
+							<div class="review-content" th:text="${review.content}">리뷰
+								내용</div>
+
+							<div class="review-info">
+								<!-- 좋아요 수 -->
+								<span class="review-likes"> <i
+									class="fa-regular fa-thumbs-up"></i> <span
+									th:text="${review.likeCount}">0</span>
+								</span>
+								<!-- 작성일 -->
+								<span class="review-date"
+									th:text="${#temporals.format(review.createdAt, 'MM.dd')}">3일전</span>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- 리뷰가 없는 경우 -->
+				<div th:if="${reviewList == null or #lists.isEmpty(reviewList)}"
+					class="no-favorites-message">
+					<p>아직 작성한 리뷰가 없습니다.</p>
+					<a href="/rstSearch" class="favorites-link">맛집 리뷰 작성하기</a>
+				</div>
+			</div>
+
+			<!-- 비로그인 상태일 때 -->
+			<div th:unless="${loggedInMember != null}"
+				class="no-favorites-message">
+				<p>로그인 후 나의 리뷰를 확인할 수 있습니다.</p>
+				<a href="/login" class="favorites-link">로그인하기</a>
+			</div>
+		</section>
+
+		<!-- 나의 문의 섹션 -->
+		<section class="section">
+			<div class="section-header">
+				<h3>나의 문의</h3>
+				<!-- 로그인된 경우 -->
+				<a th:if="${loggedInMember != null}" href="/myInquiry"
+					class="more-link"> 더보기 <i class="fa-solid fa-chevron-right"></i>
+				</a>
+				<!-- 비로그인 상태일 때: 팝업 띄우기 -->
+				<a th:unless="${loggedInMember != null}" href="javascript:void(0);"
+					class="more-link" onclick="showLoginPopup()"> 더보기 <i
+					class="fa-solid fa-chevron-right"></i>
+				</a>
+			</div>
+
+			<!-- 로그인된 경우 실제 문의 데이터 표시 -->
+			<div th:if="${loggedInMember != null}" class="inquiry-list">
+				<!-- 문의가 있는 경우 -->
+				<div th:if="${inquiryList != null and !#lists.isEmpty(inquiryList)}"
+					class="inquiry-item" th:each="inquiry : ${inquiryList}">
+					<div class="inquiry-user">
+						<div class="user-avatar">
+							<!-- 프로필 이미지가 있으면 실제 이미지 -->
+							<div
+								th:if="${loggedInMember != null and loggedInMember.image != null}">
+								<img th:src="@{${loggedInMember.image}}" alt="프로필"
+									class="avatar-img" />
+							</div>
+							<!-- 없으면 placeholder 아이콘 -->
+							<div
+								th:unless="${loggedInMember != null and loggedInMember.image != null}"
+								class="placeholder-image avatar-placeholder">
+								<i class="fa-solid fa-user"></i>
+							</div>
+						</div>
+						<div class="user-info">
+							<div class="user-name">
+								<span th:text="${loggedInMember.name}">사용자</span> <span
+									class="inquiry-time" th:text="${inquiry.formattedCreatedAt}">3일전</span>
+							</div>
+							<div class="inquiry-status"
+								th:text="${inquiry.status == '대기중' ? '답변대기' : '답변완료'}"
+								th:class="${inquiry.status == '대기중' ? 'status-waiting' : 'status-completed'}">
+								답변완료</div>
+						</div>
+					</div>
+					<div class="inquiry-content" style="cursor: pointer;"
+						th:onclick="'location.href=\'/inquiryDetail/' + ${inquiry.inquiryId} + '\''">
+						<div class="inquiry-title"
+							th:text="'[' + ${inquiry.typeDisplayName} + '] ' + ${inquiry.title}">
+							[계정 문의] 결제 관련 문의드립니다.</div>
+						<div class="inquiry-text" th:text="${inquiry.content}">결제 후
+							영수증은 어디서 확인할 수 있나요?</div>
+					</div>
+				</div>
+
+				<!-- 문의가 없는 경우 -->
+				<div th:if="${inquiryList == null or #lists.isEmpty(inquiryList)}"
+					class="no-inquiries-message">
+					<p>아직 문의한 내역이 없습니다.</p>
+					<a href="/inquiry" class="inquiry-link">문의하러 가기</a>
+				</div>
+			</div>
+
+			<!-- 비로그인 상태일 때 -->
+			<div th:unless="${loggedInMember != null}" class="inquiry-list">
+				<div class="no-inquiries-message">
+					<p>로그인 후 문의 내역을 확인할 수 있습니다.</p>
+					<a href="/login" class="inquiry-link">로그인하기</a>
+				</div>
+			</div>
+		</section>
+
+		<!-- 하단 네비게이션 -->
+		<nav class="bottom-nav">
+			<a href="/" class="nav-item"><i class="fa-solid fa-house"></i><span>홈</span></a>
+			<a href="/restaurants" class="nav-item"><i
+				class="fa-solid fa-magnifying-glass"></i><span>주변 맛집</span></a> <a
+				href="/mypage" class="nav-item active"><i
+				class="fa-regular fa-user"></i><span>마이페이지</span></a> <a href="/more"
+				class="nav-item"><i class="fa-solid fa-bars"></i><span>더보기</span></a>
+		</nav>
+	</div>
+
+	<!-- 로그인 필요 알림창 -->
+	<div th:replace="/loginPopup :: loginPopup"></div>
+
+	<!-- 푸터 -->
+	<div th:replace="footer.html"></div>
+
+	<!-- JavaScript 파일 참조 -->
+	<script src="/js/loginPopup.js"></script>
+	<script src="/js/myPage.js"></script>
+</body>
+</html>

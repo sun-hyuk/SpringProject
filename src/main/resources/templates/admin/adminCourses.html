@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>맛집 추천 코스 등록 - EatoMeter</title>
+<!-- 필수 폰트 로드 -->
+<link rel="stylesheet"
+	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap">
+<!-- CSS 로드 -->
+<link rel="stylesheet" th:href="@{/css/admin/adminHeader.css}">
+<link rel="stylesheet" th:href="@{/css/admin/adminCourses.css}">
+<!-- 네이버 지도 API -->
+<script type="text/javascript"
+	src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=s2uzi3murw"></script>
+</head>
+<body>
+	<!-- 사이드바 및 헤더 인클루드 -->
+	<div th:replace="~{admin/adminHeader}"></div>
+
+	<div class="main-content">
+		<div class="course-register-container">
+			<h2>맛집 추천 코스 등록</h2>
+			<hr class="divider">
+
+			<!-- 코스 등록 폼 -->
+			<form id="courseForm" method="post" enctype="multipart/form-data"
+				th:action="@{/adminCourses}">
+				<div class="input-row">
+					<label for="course_name">코스 이름</label> <input type="text"
+						id="course_name" name="courseName" required>
+				</div>
+
+				<div class="input-row">
+					<label for="description">설명</label>
+					<textarea id="description" name="description" rows="3" required></textarea>
+				</div>
+
+				<div class="input-row">
+					<label for="image_file">대표 이미지</label>
+					<div class="upload-wrapper">
+						<span id="fileNameLabel" class="upload-label">이미지 업로드</span>
+						<button type="button" onclick="triggerFile()">이미지 등록하기</button>
+					</div>
+					<input type="file" id="image_file" name="imageFile"
+						accept="image/*" onchange="handleFileChange(this)">
+				</div>
+
+				<div class="input-row">
+					<label>태그 포함</label>
+					<table class="tag-table">
+						<thead>
+							<tr>
+								<th>태그</th>
+								<th>삭제</th>
+							</tr>
+						</thead>
+						<tbody id="tagTableBody">
+							<!-- 태그 데이터는 JavaScript로 동적 생성 -->
+						</tbody>
+					</table>
+				</div>
+
+				<div class="input-row">
+					<label>🤩음식점 추가하기🤩</label>
+					<button type="button" onclick="openRestaurantModal()">가게
+						선택하기</button>
+					<table class="store-table">
+						<thead>
+							<tr>
+								<th>가게명</th>
+								<th>삭제</th>
+							</tr>
+						</thead>
+						<tbody id="storeTableBody">
+							<!-- 선택된 음식점 목록은 JavaScript로 동적 생성 -->
+						</tbody>
+					</table>
+				</div>
+
+				<!-- 숨겨진 필드들 -->
+				<input type="hidden" id="tagsJson" name="tagsJson"> <input
+					type="hidden" id="storesJson" name="storesJson">
+
+				<button type="button" class="submit-btn" onclick="submitCourse()">등록</button>
+			</form>
+		</div>
+	</div>
+
+	<!-- 맛집 검색 모달 -->
+	<div id="restaurantModal" class="modal">
+		<div class="modal-content">
+			<span class="close" onclick="closeRestaurantModal()">&times;</span>
+			<h2>가게 선택</h2>
+			<div class="search-wrapper">
+				<input type="text" id="restaurantSearch"
+					placeholder="맛집 이름 검색 (선택 사항)">
+				<button type="button" onclick="searchRestaurant()">검색</button>
+			</div>
+			<div id="restaurantSelectMap"></div>
+			<div id="restaurantResults"></div>
+		</div>
+	</div>
+
+	<!-- 성공/실패 메시지 표시 -->
+	<div th:if="${successMessage}" class="alert alert-success">
+		<span th:text="${successMessage}"></span>
+	</div>
+
+	<div th:if="${errorMessage}" class="alert alert-error">
+		<span th:text="${errorMessage}"></span>
+	</div>
+
+	<!-- JavaScript 로드 -->
+	<script th:src="@{/js/admin/adminHeader.js}"></script>
+	<script th:src="@{/js/admin/adminCourses.js}"></script>
+
+	<!-- 서버에서 전달된 메시지 처리 -->
+	<script th:if="${successMessage}">
+        showMessage('success', '[[${successMessage}]]');
+    </script>
+
+	<script th:if="${errorMessage}">
+        showMessage('error', '[[${errorMessage}]]');
+    </script>
+</body>
+</html>

@@ -1,0 +1,153 @@
+/* 상단 검색바 */
+.top-bar {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	z-index: 1000;
+	background-color: white;
+	padding: 20px 25px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.container {
+	margin-top: 90px;
+	padding: 0 20px;
+}
+
+.icon {
+	display: block;
+	width: 12px;
+	height: 15px;
+	cursor: pointer;
+}
+
+.search-box {
+    position: relative;
+    flex: 1;
+    margin-left: 25px;
+}
+
+.search-bar {
+    width: 100%;
+    padding: 13px 12px 13px 35px;
+    font-size: 14px;
+    box-sizing: border-box;
+    border: 1px solid #000;
+    border-radius: 10px;
+}
+
+.search-icon-img {
+    position: absolute;
+    margin: 0 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
+    opacity: 0.6;
+}
+
+/* 섹션 공통 스타일 */
+.section {
+  margin-bottom: 30px;
+}
+
+.section-title {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+/* 태그 리스트 */
+.tag-list {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 5px;
+  scrollbar-width: none;
+}
+
+.tag-list::-webkit-scrollbar {
+  display: none;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 15px;
+  border-radius: 25px;
+  font-size: 13px;
+  border: 1px solid #ccc;
+  
+  white-space: nowrap;      /* 줄바꿈 방지 */
+  overflow: visible;        /* 내용 넘침 허용 */
+  text-overflow: unset;     /* 말줄임표 제거 */
+  max-width: none;          /* 최대 너비 제한 없음 */
+  text-decoration: none;
+  color: inherit;
+}
+
+.close-icon {
+  width: 14px;
+  height: 14px;
+  padding-left: 1px;
+  margin-left: 6px;
+  cursor: pointer;
+}
+
+/* 실시간 검색어 - 간격과 색깔 개선 */
+.rank-grid {
+  display: grid;
+  padding: 0;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px 24px;
+  font-size: 14px;
+}
+
+.rank-grid a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: #333;
+  padding: 8px 6px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.rank-grid a:hover {
+  background-color: #f8f9fa;
+  color: #007bff;
+}
+
+.rank-grid strong.rank {
+  font-weight: 800;
+  width: 16px;
+  color: #007bff;
+  font-size: 13px;
+}
+
+.rank-grid .keyword {
+  flex: 1;
+  font-size: 13px;
+  color: #333;
+  font-weight: 400;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 120px; /* 최대 너비 제한 */
+  min-width: 0; /* flex 아이템이 줄어들 수 있도록 */
+}
+
+/* change-number 완전 제거 */
+.rank-grid .change-number {
+  display: none !important;
+}
+
+.rank-grid .change-indicator {
+  display: none !important;
+}

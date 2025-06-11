@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" th:href="@{/css/ex.css}">
+</head>
+  <!-- footer.html 포함 -->
+  <div th:replace="/footer.html"></div>
+<body>
+ <header class="header">
+     <a href="javascript:history.back()" class="btn-back">
+     <img th:src="@{/images/vector-icon.png}" alt="뒤로가기" class="back-icon"/>
+     </a>
+     <h1>이름 적으시오</h1>
+ </header>
+<!-- 구분선 위까지 유지 -->

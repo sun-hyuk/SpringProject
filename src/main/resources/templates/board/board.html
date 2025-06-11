@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>게시판</title>
+<link rel="stylesheet" th:href="@{/css/board/board.css}">
+<link rel="stylesheet" th:href="@{/css/loginPopup.css}">
+</head>
+<body
+	th:attr="data-logged-in=${loggedInMember != null}, data-member-id=${loggedInMember != null ? loggedInMember.memberId : ''}">
+	<!-- 헤더 -->
+	<header class="header">
+		<a href="javascript:history.back()" class="btn-back"> <img
+			th:src="@{/images/vector-icon.png}" alt="뒤로가기" class="back-icon" />
+		</a>
+		<h1>게시판</h1>
+	</header>
+
+	<!-- 검색바 -->
+	<div class="search-section">
+		<div class="search-section-inner">
+			<div class="search-bar">
+				<img src="/images/board/search-icon.png" alt="검색"
+					class="search-icon"> <input type="text"
+					placeholder="게시판 키워드를 검색해주세요" class="search-input">
+			</div>
+			<button class="write-btn-small">
+				<img src="/images/board/pencil.png" alt="글쓰기"
+					class="pencil-icon-small">
+			</button>
+		</div>
+	</div>
+
+	<!-- 컨테이너 -->
+	<div class="container">
+		<!-- 게시글 목록 -->
+		<div class="board-list">
+			<div th:each="item : ${boardList}">
+				<a th:href="@{/boardDetail(boardId=${item.boardId})}"
+					class="board-link">
+					<div class="board-item" th:attr="data-board-id=${item.boardId}">
+						<div class="board-title">
+							<span class="title-text" th:text="${item.title}"></span> <span
+								class="comment-count" th:text="'[' + ${item.commentCount} + ']'"></span>
+						</div>
+						<div class="board-meta">
+							<span class="date"
+								th:text="${#dates.format(item.createAt, 'yy.MM.dd')}"></span> <span
+								class="separator">|</span> <span class="author"
+								th:text="${item.nickname}"></span>
+						</div>
+					</div>
+				</a>
+			</div>
+		</div>
+	</div>
+
+	<!-- 고정된 글쓰기 버튼 -->
+	<div class="fixed-write-container">
+		<button class="fixed-write-btn">
+			<span class="pencil-icon">✏️</span> <span>글 쓰기</span>
+		</button>
+	</div>
+
+	<!-- 로그인 필요 알림창 -->
+	<div th:replace="/loginPopup :: loginPopup"></div>
+
+	<!-- 푸터 -->
+	<div th:replace="/footer.html"></div>
+
+	<!-- JavaScript 파일 참조 -->
+	<script src="/js/board/board.js"></script>
+	<script src="/js/loginPopup.js"></script>
+</body>
+</html>

@@ -1,0 +1,344 @@
+/* reset & 전체박스 */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  font-family: "Apple SD Gothic Neo", sans-serif;
+  background: #fff;
+  overflow: hidden;
+  overflow-x: hidden;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+.container {
+  position: absolute;
+  top: 80px;
+  bottom: 70px;
+  left: 0;
+  right: 0;
+  width: 100%;
+  max-width: 450px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  background-color: #ffffff;
+  padding: 0 20px;
+}
+
+.container::-webkit-scrollbar {
+  display: none;
+}
+
+/* 헤더 */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 60px;
+  background: white;
+  border-bottom: 1px solid #eee;
+  z-index: 100;
+}
+
+.btn-back {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+.back-icon {
+  display: block;
+  width: 12px;
+  height: 15px;
+}
+
+.header h1 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+/* 컨텐츠 헤더 */
+.content-header {
+  padding: 20px 0;
+  border-bottom: 1px solid #f0f0f0;
+  margin-bottom: 20px;
+}
+
+.inquiry-count {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.inquiry-count p {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+
+.inquiry-count span {
+  color: #AE8670;
+  font-weight: 700;
+}
+
+.view-options {
+  display: flex;
+  gap: 12px;
+}
+
+.view-options img {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  opacity: 0.4;
+  transition: opacity 0.2s;
+}
+
+.view-options img.active-view {
+  opacity: 1;
+}
+
+/* 메시지 영역 */
+.login-required, .no-inquiries {
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.login-required p, .no-inquiries p {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+
+.btn-login, .btn-write-inquiry {
+  display: inline-block;
+  padding: 14px 28px;
+  background-color: #AE8670;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 15px;
+  transition: background-color 0.2s;
+}
+
+.btn-login:hover, .btn-write-inquiry:hover {
+  background-color: #9a7560;
+}
+
+.error-message {
+  text-align: center;
+  padding: 40px 20px;
+  color: #e53935;
+  font-size: 16px;
+}
+
+/* 그리드 뷰 */
+.inquiry-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.inquiry-item {
+  border: 1px solid #eee;
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.inquiry-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* 문의 프로필 */
+.inquiry-profile {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  border-bottom: 1px solid #f5f5f5;
+  background-color: #fafafa;
+}
+
+.profile-img {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+.profile-info {
+  flex: 1;
+}
+
+.username {
+  margin: 0 0 2px 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: #333;
+}
+
+.date {
+  margin: 0;
+  font-size: 11px;
+  color: #999;
+}
+
+.inquiry-status {
+  margin-left: auto;
+}
+
+.status-badge {
+  font-size: 11px;
+  padding: 4px 8px;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+.status-badge.ongoing {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.status-badge.completed {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+/* 문의 내용 */
+.inquiry-content {
+  padding: 16px;
+  min-height: 80px;
+  display: flex;
+  flex-direction: column;
+}
+
+.inquiry-header {
+  margin-bottom: 8px;
+}
+
+.inquiry-type {
+  font-size: 12px;
+  color: #AE8670;
+  font-weight: 600;
+  margin-right: 4px;
+}
+
+.inquiry-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #333;
+  margin: 0;
+  display: inline;
+  line-height: 1.3;
+}
+
+.inquiry-text {
+  font-size: 13px;
+  color: #666;
+  margin: 0;
+  line-height: 1.4;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  flex: 1;
+}
+
+/* 리스트 뷰 */
+.inquiry-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.inquiry-list .inquiry-item {
+  display: flex;
+  align-items: stretch;
+  border-radius: 12px;
+  overflow: hidden;
+  min-height: 80px;
+}
+
+.inquiry-list .inquiry-profile {
+  flex-direction: column;
+  justify-content: center;
+  min-width: 80px;
+  border-bottom: none;
+  border-right: 1px solid #f5f5f5;
+  text-align: center;
+  padding: 16px 12px;
+}
+
+.inquiry-list .profile-img {
+  margin: 0 auto 4px auto;
+}
+
+.inquiry-list .inquiry-status {
+  margin: 6px auto 0 auto;
+}
+
+.inquiry-list .inquiry-content {
+  flex: 1;
+  padding: 16px;
+  min-height: auto;
+  justify-content: center;
+}
+
+.inquiry-list .inquiry-header {
+  margin-bottom: 6px;
+}
+
+.inquiry-list .inquiry-text {
+  -webkit-line-clamp: 2;
+}
+
+/* 반응형 */
+@media (max-width: 320px) {
+  .inquiry-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 480px) {
+  .container {
+    max-width: 480px;
+  }
+  
+  .inquiry-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+}

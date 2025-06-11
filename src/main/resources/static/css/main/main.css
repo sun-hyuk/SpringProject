@@ -1,0 +1,590 @@
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #fff;
+    overflow: hidden; /* 스크롤 막기 */
+    height: 100vh;     /* 전체 높이 고정 */
+}
+
+.container {
+	height: 100vh; /* 전체 뷰포트 높이 */
+    overflow-y: scroll; /* 세로 스크롤 활성화 */
+	padding: 80px 0;
+	position: relative;
+	box-sizing: border-box;
+	z-index: 2
+}
+
+/* 상단 검색바 */
+.top-bar {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	z-index: 1000;
+	background-color: white;
+	padding: 20px 13px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+
+}
+
+.alarm-container {
+  position: relative;
+  display: inline-block;
+  margin-top: 3px;
+}
+
+.alarm-dot {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 8px;
+  height: 8px;
+  background-color: red;
+  border-radius: 50%;
+  display: none; /* 기본은 숨김 */
+}
+
+.icon {
+    width: 42px;
+    height: 35px;
+    cursor: pointer;
+}
+
+.icon2 {
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+}
+
+.icon2.bookmark-icon {
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+}
+
+.icon3.bookmark-icon {
+  	width: 20px;
+  	height: 20px;
+    cursor: pointer;
+}
+
+.search-box {
+    position: relative;
+    flex: 1;
+    margin: 0 7px;
+}
+
+.search-bar {
+    width: 100%;
+    padding: 8px 12px 8px 35px;
+    font-size: 14px;
+    box-sizing: border-box;
+    border: 1px solid #000;
+    border-radius: 10px;
+}
+
+.search-icon-img {
+    position: absolute;
+    margin: 0 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
+    opacity: 0.6;
+}
+
+.search-icon-img2 {
+    width: 18px;
+    height: 18px;
+    opacity: 0.6;
+    margin: 0 4px;
+}
+
+/* 위치 표시 */
+.location-box {
+    display: flex;
+    align-items: center;
+    margin-left: 13px;
+    margin-bottom: 10px;
+}
+
+.location {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+    margin: 0 5px;
+}
+
+.location-box .search-icon-img {
+    position: static;
+    transform: none;
+    width: 19px;
+    height: 19px;
+    opacity: 1;
+}
+
+/* 지역 모달 */
+.region-modal {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 9999;
+  justify-content: center;
+  align-items: center;
+}
+
+.region-modal.active {
+  display: block;
+}
+
+.region-modal-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 16px 16px 0 0;
+  background: #fff;
+  max-height: 80vh;
+  overflow-y: auto;
+  padding: 20px;
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between; /* 양쪽 정렬 */
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.modal-header h3 {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.modal-close-btn {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.region-modal-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+}
+
+.location-trigger {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.location-trigger:hover {
+  opacity: 0.8;
+}
+
+/* 갈색 검색바 */
+.search-header {
+    background-color: #cbb2a2;
+    color: #000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.brand {
+    font-size: 19px;
+    color: white;
+    font-weight: bold;
+}
+
+.right-group {
+    display: flex;
+    align-items: center;
+    margin-right: 8px;
+    min-width: 0; /* flex 축소 허용 */
+}
+
+.realtime-box {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    flex-shrink: 0; /* 절대 줄어들지 않음 */
+    white-space: nowrap; /* 줄바꿈 방지 */
+}
+
+.realtime-label {
+    font-size: 13px;
+    font-weight: bold;
+    margin-right: 2px;
+    flex-shrink: 0; /* 절대 줄어들지 않음 */
+}
+
+.dropdown-icon {
+    margin-left: 4px;
+    font-size: 12px;
+    flex-shrink: 0; /* 절대 줄어들지 않음 */
+}
+
+.rank-info {
+    margin-left: 8px;
+    font-size: 12px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 60px; /* 고정 최대 너비 */
+    flex-shrink: 1; /* 이것만 줄어들 수 있음 */
+    min-width: 0; /* flex 축소 허용 */
+}
+
+.rank-info strong {
+    color: #797C7B;
+}
+
+/* 실시간 검색어 펼침 영역 */
+.keyword-dropdown {
+    background-color: #cbb2a2;
+	padding: 10px 16px;
+	display: none;
+	flex-direction: column;
+	gap: 10px;
+	border-top: 1px solid #eee;
+}
+
+.keyword-dropdown h4 {
+	font-size: 16px;
+	margin: 4px 0 6px 5px;
+	text-align: left; /* 제목도 왼쪽 정렬 */
+	
+}
+
+.keyword-grid {
+	display: grid;
+	grid-template-columns: repeat(3, 85px); /* 3열 */
+	gap: 8px 24px; /* 행 간격 8px, 열 간격 24px */
+	justify-content: center;    /* ✨ 가운데 정렬 핵심 */
+	text-align: left;
+	margin-bottom: 4px;
+}
+
+.keyword-grid span {
+  width: 85px;       /* 최대 너비 설정 (필수!) */
+  display: inline-block;  /* 또는 block */
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.ellipsis {
+  overflow: hidden;           /* 넘치는 부분 숨김 */
+  white-space: nowrap;        /* 줄바꿈 금지 */
+  text-overflow: ellipsis;    /* 생략 부호(...) 표시 */
+}
+
+/* 배너 슬라이더 영역 */
+.banner-slider {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  margin: 20px auto;
+  box-sizing: border-box;
+  z-index: 1;
+}
+
+.slides {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+  width: 100%;
+  will-change: transform;
+}
+
+.slide {
+  flex: 0 0 100%; /* 슬라이드 하나는 전체 너비 차지 */
+  box-sizing: border-box;
+}
+
+.slide img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  vertical-align: middle;
+}
+
+.indicators {
+    position: absolute;
+    bottom: 12px; /* 이미지 내부 하단에 위치 */
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 6px;
+    z-index: 10;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    background-color: #ccc;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.dot.active {
+    background-color: #333;
+}
+
+/* 카테고리 영역 */
+.category-tabs {
+  margin: 20px 16px 10px;
+}
+
+.tab-buttons {
+  display: flex;
+  gap: 3px;
+  margin-bottom: 16px;
+}
+
+.tab {
+  background: none;
+  border: none;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 1px 6px 8px;
+  cursor: pointer;
+  color: #999;
+  border-bottom: 2px solid transparent;
+  margin-left: 10px
+}
+
+.tab.active {
+  color: black;
+  border-bottom: 4px solid black;
+}
+
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  text-align: center;
+  gap: 4px;
+}
+
+.category-item {
+  display: flex;             /* <a>를 플렉스 컨테이너로 */
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;     /* 기본 링크 밑줄 제거 */
+  color: inherit;            /* 텍스트 색을 상속받음 */
+  border-radius: 8px;
+  transition: background-color 0.2s;
+}
+
+.category-item img {
+  width: 70px;
+  height: 70px;
+}
+
+.category-item p {
+	font-size: 13px;
+	font-weight: bold;
+	margin-top:3px;
+}
+
+.category-divider {
+  height: 5px;
+  background-color: #ccc;  /* 색상은 원하는 대로 */
+  width: 100%;              /* 전체 너비 */
+  margin: 0 0 10px 0;                /* 여백 제거 */
+}
+
+.tab-slider {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.tab-slider::-webkit-scrollbar {
+  display: none;
+}
+
+.tab-content {
+  flex: 0 0 100%;
+  scroll-snap-align: start;
+  padding: 10px 0;
+  box-sizing: border-box;
+}
+
+/* best 음식 영역 */
+.category-best-section {
+  padding: 20px 16px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.section-title h3 {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.section-title p {
+  font-size: 13px;
+  color: #777;
+  margin: 4px 0 0;
+}
+
+.view-all {
+  font-size: 13px;
+  color: #555;
+  text-decoration: none;
+  margin-top: 6px;
+}
+
+.category-thumbnail-grid {
+  display: flex;
+  gap: 20px;
+  justify-content: flex-start;
+  /*flex-wrap: wrap;*/
+  overflow-x: auto;           /* 수평 스크롤 활성화 */
+  scrollbar-width: none;      /* Firefox에서 스크롤바 숨기기 */
+  -ms-overflow-style: none;   /* IE에서 스크롤바 숨기기 */
+}
+
+.category-thumbnail-grid::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Edge에서 스크롤바 숨기기 */
+}
+
+.category-thumbnail-item {
+  text-align: center;
+  width: 60px;
+  text-decoration: none;  /* 밑줄 제거 */
+  color: inherit;         /* 부모 색상 상속 */
+  font-weight: bold;
+  flex-shrink: 0;          /* 아이템들이 줄어들지 않도록 설정 */
+
+}
+
+.category-thumbnail-item img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 50%; /* 둥글게 */
+  border: 1px solid #eee;
+}
+
+.category-thumbnail-item p {
+  font-size: 13px;
+  margin-top: 5px;
+}
+
+/* 최근 방문한 맛집 영역 */
+.visited-section {
+  padding: 6px 16px;
+}
+
+.restaurant-card-list {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.restaurant-card-list::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Edge */
+}
+
+/* restaurant-card-list 내 모든 링크의 밑줄 제거 */
+.restaurant-card-list .restaurant-card a,
+.restaurant-card-list .restaurant-card a:link,
+.restaurant-card-list .restaurant-card a:visited {
+  text-decoration: none !important;
+  color: inherit !important;
+}
+
+
+.restaurant-card {
+  min-width: 140px;
+  max-width: 160px;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  flex-shrink: 0;
+  padding-bottom: 8px;
+}
+
+/* 썸네일 이미지 */
+.restaurant-card img {
+  width: 100%; /* 부모 요소의 너비에 맞게 */
+  height: 150px; /* 일정한 높이 설정 */
+  object-fit: cover; /* 이미지를 잘라서 부모 요소에 맞게 채우도록 */
+  border-radius: 8px; /* 모서리 둥글게 */
+  box-sizing: border-box; /* 이미지 크기가 부모 요소에 맞게 조정 */
+}
+
+/* 카드 상단: 가게명 + 북마크 아이콘 */
+.card-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-header-row h4 {
+  font-size: 15px;
+  font-weight: bold;
+  margin: 4px;
+  
+  
+}
+
+/* 북마크 아이콘 */
+.bookmark-icon {
+  background-image: url('/images/main/bookmark-empty.png'); /* 빈 아이콘 */
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  display: inline-block;
+}
+
+.bookmark-icon.active {
+  background-image: url('/images/main/bookmark-filled.png'); /* 채워진 아이콘 */
+}
+
+.rating {
+  font-size: 13px;
+  color: #555;
+  padding: 0 4px 8px;
+}
+
+.star {
+  color: #FFC107;
+  margin-right: 4px;
+}

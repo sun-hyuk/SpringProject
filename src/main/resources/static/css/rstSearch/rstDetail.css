@@ -1,0 +1,891 @@
+@charset "UTF-8";
+
+/* 리셋 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* 전체 컨테이너 가로스크롤 방지 */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Malgun Gothic', sans-serif;
+    background: #f8f9fa;
+    color: #333;
+    line-height: 1.6;
+    overflow-x: hidden; /* 전체 가로스크롤 방지 */
+    width: 100%;
+    max-width: 100vw;
+}
+
+/* 컨테이너 */
+.detail-container {
+    max-width: 390px; /* 아이폰12 Pro 크기 */
+    margin: 0 auto;
+    background: white;
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden; /* 가로스크롤 방지 */
+}
+
+/* 헤더 */
+.detail-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 390px; /* 아이폰12 Pro 크기 */
+    z-index: 1000;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    box-sizing: border-box; /* 패딩 포함한 전체 크기 계산 */
+}
+
+.back-btn, .share-btn, .bookmark-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    color: #333;
+}
+
+.back-btn:hover, .share-btn:hover, .bookmark-btn:hover {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.header-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.bookmark-btn svg.filled {
+    fill: #ff6b35;
+    stroke: #ff6b35;
+}
+
+/* 메인 이미지 */
+.main-image {
+    margin-top: 72px;
+    position: relative;
+    height: 280px;
+    overflow: hidden;
+}
+
+.restaurant-photo {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.restaurant-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.3) 100%);
+}
+
+.rating-badge {
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 8px 12px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-weight: 600;
+    font-size: 14px;
+    color: #333;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* 레스토랑 정보 */
+.restaurant-info {
+    padding: 24px 20px;
+    background: white;
+}
+
+.restaurant-name {
+    font-size: 28px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 16px;
+    line-height: 1.2;
+}
+
+.restaurant-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* 주소와 전화번호 텍스트 개선 */
+.address-info, .phone-info {
+    display: flex;
+    align-items: flex-start; /* 상단 정렬 */
+    gap: 12px;
+    font-size: 15px;
+    color: #666;
+    word-wrap: break-word;
+    line-height: 1.5;
+}
+
+.address-info span, .phone-info span {
+    word-wrap: break-word;
+    word-break: break-all; /* 긴 주소나 전화번호 강제 줄바꿈 */
+    flex: 1;
+}
+
+.address-info svg, .phone-info svg {
+    color: #999;
+    flex-shrink: 0;
+}
+
+/* 섹션 공통 스타일 */
+.menu-section, .rating-section, .reviews-section {
+    background: white;
+    margin-bottom: 8px;
+    padding: 24px 20px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.section-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1a1a1a;
+}
+
+.menu-count, .total-reviews {
+    font-size: 14px;
+    color: #666;
+    background: #f5f5f5;
+    padding: 4px 12px;
+    border-radius: 12px;
+}
+
+/* 메뉴 섹션 */
+.no-menu {
+    text-align: center;
+    padding: 60px 20px;
+    color: #999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+
+.no-menu p {
+    font-size: 16px;
+}
+
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.menu-card {
+    background: #fafafa;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.2s ease;
+    border: 1px solid #f0f0f0;
+}
+
+.menu-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.menu-image {
+    width: 100%;
+    height: 120px;
+    overflow: hidden;
+}
+
+.menu-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.menu-info {
+    padding: 16px;
+}
+
+.menu-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 8px;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.menu-desc {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 12px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-height: 1.4;
+}
+
+.menu-price {
+    font-size: 15px;
+    font-weight: 700;
+    color: #ff6b35;
+}
+
+.load-more-btn {
+    width: 100%;
+    padding: 12px;
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    color: #666;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+}
+
+.load-more-btn:hover {
+    background: #e9ecef;
+    color: #333;
+}
+
+/* 평점 섹션 */
+.rating-overview {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+}
+
+.rating-summary {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 80px;
+}
+
+.avg-score {
+    font-size: 36px;
+    font-weight: 700;
+    color: #1a1a1a;
+    line-height: 1;
+    margin-bottom: 8px;
+}
+
+.star-display .stars {
+    display: flex;
+    gap: 2px;
+}
+
+.rating-breakdown {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.rating-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+}
+
+.rating-label {
+    min-width: 30px;
+    color: #666;
+    font-size: 13px;
+}
+
+.rating-bar {
+    flex: 1;
+    height: 8px;
+    background: #f0f0f0;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.rating-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #FFD700 0%, #FFA500 100%);
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.rating-count {
+    min-width: 24px;
+    text-align: right;
+    color: #333;
+    font-weight: 500;
+    font-size: 13px;
+}
+
+/* 리뷰 섹션 */
+.reviews-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.sort-options {
+    display: flex;
+    gap: 8px;
+}
+
+.sort-btn {
+    padding: 8px 16px;
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 20px;
+    font-size: 14px;
+    color: #666;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.sort-btn:hover {
+    background: #e9ecef;
+    color: #333;
+}
+
+.sort-btn.active {
+    background: #ff6b35;
+    border-color: #ff6b35;
+    color: white;
+    font-weight: 500;
+}
+
+.write-review-btn {
+    background: #ff6b35;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.write-review-btn:hover {
+    background: #e55a2b;
+    transform: translateY(-1px);
+}
+
+/* 리뷰 리스트 */
+.review-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* 리뷰 아이템 레이아웃 개선 */
+.review-item {
+    background: #fafafa;
+    border: 1px solid #f0f0f0;
+    border-radius: 12px;
+    padding: 20px;
+    transition: all 0.2s ease;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden; /* 내용물이 밖으로 나가지 않도록 */
+    box-sizing: border-box;
+}
+
+.review-item:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    border-color: #e0e0e0;
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start; /* 상단 정렬로 변경 */
+    margin-bottom: 12px;
+    gap: 12px; /* 간격 추가 */
+}
+
+.review-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0; /* 줄어들지 않도록 */
+}
+
+.reviewer-name {
+    font-weight: 600;
+    color: #1a1a1a;
+    font-size: 15px;
+    word-wrap: break-word;
+    flex: 1;
+}
+
+.review-date {
+    font-size: 13px;
+    color: #999;
+}
+
+.review-rating {
+    margin-bottom: 12px;
+    font-size: 14px;
+    color: #ff6b35;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* 리뷰 텍스트 개선 */
+.review-text {
+    font-size: 15px;
+    color: #333;
+    line-height: 1.6;
+    margin-bottom: 16px;
+    word-wrap: break-word; /* 긴 단어 줄바꿈 */
+    word-break: break-word; /* 강제 줄바꿈 */
+    white-space: pre-wrap; /* 줄바꿈 문자 인식 */
+    overflow-wrap: break-word; /* 컨테이너 밖으로 나가는 텍스트 방지 */
+    max-width: 100%;
+}
+
+.review-images {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    margin-bottom: 16px;
+    padding-bottom: 4px;
+}
+
+.review-images img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+    flex-shrink: 0;
+    border: 1px solid #e9ecef;
+}
+
+.review-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.like-btn {
+    background: none;
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #666;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 20px;
+    transition: all 0.2s ease;
+}
+
+.like-btn:hover {
+    background: #f0f0f0;
+    color: #333;
+}
+
+.like-btn.liked {
+    color: #ff6b35;
+}
+
+.like-btn.liked svg {
+    fill: #ff6b35;
+    stroke: #ff6b35;
+}
+
+.report-btn {
+    background: none;
+    border: none;
+    color: #999;
+    font-size: 13px;
+    cursor: pointer;
+    padding: 6px 12px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.report-btn:hover {
+    background: #fff5f5;
+    color: #ff4757;
+}
+
+/* 페이지네이션 */
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 32px;
+    gap: 8px;
+}
+
+.pagination-container button {
+    min-width: 40px;
+    height: 40px;
+    border: 1px solid #e9ecef;
+    background: white;
+    color: #666;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.pagination-container button:hover {
+    background: #f8f9fa;
+    border-color: #dee2e6;
+}
+
+.pagination-container button.active {
+    background: #ff6b35;
+    border-color: #ff6b35;
+    color: white;
+    font-weight: 600;
+}
+
+/* 모달 */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    backdrop-filter: blur(4px);
+}
+
+.modal-content {
+    background: white;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 400px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    animation: modalSlideUp 0.3s ease;
+}
+
+@keyframes modalSlideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.modal-header h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #999;
+    padding: 4px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.close-btn:hover {
+    background: #f0f0f0;
+    color: #333;
+}
+
+.modal-body {
+    padding: 24px;
+}
+
+.modal-body textarea {
+    width: 100%;
+    min-height: 120px;
+    padding: 16px;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    font-size: 15px;
+    font-family: inherit;
+    resize: vertical;
+    line-height: 1.5;
+}
+
+.modal-body textarea:focus {
+    outline: none;
+    border-color: #ff6b35;
+    box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+}
+
+.modal-footer {
+    display: flex;
+    gap: 12px;
+    padding: 20px 24px;
+    border-top: 1px solid #f0f0f0;
+}
+
+.modal-footer button {
+    flex: 1;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.cancel-btn {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    color: #666;
+}
+
+.cancel-btn:hover {
+    background: #e9ecef;
+    color: #333;
+}
+
+.submit-btn {
+    background: #ff6b35;
+    border: 1px solid #ff6b35;
+    color: white;
+}
+
+.submit-btn:hover {
+    background: #e55a2b;
+    border-color: #e55a2b;
+}
+
+/* 메뉴 그리드 반응형 - 가로스크롤 방지 */
+@media (max-width: 480px) {
+    .detail-container {
+        max-width: 100vw; /* 뷰포트 전체 너비 */
+        overflow-x: hidden;
+    }
+    
+    .detail-header {
+        max-width: 100vw;
+        padding: 16px;
+    }
+    
+    .restaurant-info {
+        padding: 20px 16px;
+    }
+    
+    .menu-section, .rating-section, .reviews-section {
+        padding: 20px 16px;
+        overflow-x: hidden;
+    }
+    
+    .restaurant-name {
+        font-size: 24px;
+        word-wrap: break-word;
+    }
+    
+    .rating-overview {
+        flex-direction: column;
+        gap: 20px;
+        align-items: center;
+        width: 100%;
+    }
+    
+    .rating-breakdown {
+        width: 100%;
+    }
+    
+    .reviews-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 16px;
+        width: 100%;
+    }
+    
+    .sort-options {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    
+    .write-review-btn {
+        align-self: center;
+    }
+    
+    .menu-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        width: 100%;
+    }
+    
+    .modal-content {
+        width: 95%;
+        margin: 20px;
+        max-width: 90vw;
+    }
+    
+    /* 리뷰 아이템 가로스크롤 방지 */
+    .review-item {
+        width: 100%;
+        overflow-x: hidden;
+    }
+    
+    .review-text {
+        width: 100%;
+        max-width: 100%;
+    }
+}
+
+/* 스크롤바 스타일링 */
+.review-images::-webkit-scrollbar {
+    height: 4px;
+}
+
+.review-images::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 2px;
+}
+
+.review-images::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 2px;
+}
+
+.review-images::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+/* 메뉴 숨김/보임 처리 */
+.menu-card[style*="display: none"] {
+    display: none !important;
+}
+
+.menu-card[style*="display: block"] {
+    display: block !important;
+}
+
+/* 추가 개선 사항 */
+.section-divider {
+    height: 8px;
+    background: #f8f9fa;
+    margin: 0;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #999;
+}
+
+.empty-state svg {
+    margin-bottom: 16px;
+    opacity: 0.5;
+}
+
+/* 로딩 상태 */
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    color: #999;
+}
+
+.loading::after {
+    content: '';
+    width: 20px;
+    height: 20px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #ff6b35;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-left: 10px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* 하단 여백 (푸터 공간 확보) */
+.reviews-section {
+    margin-bottom: 80px; /* 원래 푸터 크기에 맞춰 조정 */
+    padding-bottom: 20px;
+}
+
+/* 모든 섹션의 가로스크롤 방지 */
+.restaurant-info,
+.menu-section, 
+.rating-section, 
+.reviews-section {
+    background: white;
+    margin-bottom: 8px;
+    padding: 24px 20px;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    box-sizing: border-box;
+}

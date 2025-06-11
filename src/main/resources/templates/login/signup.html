@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EatoMeter - 회원가입</title>
+<link rel="stylesheet" href="/css/login/signup.css">
+</head>
+<body>
+	<div class="container">
+		<!-- 닫기 버튼 -->
+		<button class="close-btn" onclick="history.back()">×</button>
+
+		<!-- 에러 메시지 -->
+		<div th:if="${error}" class="error-message"
+			style="color: red; text-align: center; margin-bottom: 1em;">
+			<p th:text="${error}"></p>
+		</div>
+
+		<!-- 회원가입 폼 -->
+		<form class="signup-form" action="/signup" method="post">
+			<div class="form-header">
+				<h2>회원가입</h2>
+			</div>
+
+			<div class="input-container">
+				<!-- 아이디 -->
+				<div class="input-group">
+					<label for="username" class="input-label">아이디(이메일)</label>
+					<div class="input-with-button">
+						<input type="email" id="username" name="username"
+							class="form-input" placeholder="아이디 주소" required>
+						<button type="button" class="check-btn">중복확인</button>
+					</div>
+					<small id="usernameCheckMsg" style="color: #999;"></small>
+				</div>
+
+				<!-- 비밀번호 -->
+				<div class="input-group">
+					<label for="password" class="input-label">비밀번호</label> <input
+						type="password" id="password" name="password" class="form-input"
+						placeholder="비밀번호를 입력하세요" required>
+				</div>
+
+				<!-- 비밀번호 확인 -->
+				<div class="input-group">
+					<label for="passwordConfirm" class="input-label">비밀번호 확인</label> <input
+						type="password" id="passwordConfirm" name="passwordConfirm"
+						class="form-input" placeholder="비밀번호를 한번 더 입력하세요" required>
+				</div>
+
+				<!-- 이름 -->
+				<div class="input-group">
+					<label for="name" class="input-label">이름</label> <input type="text"
+						id="name" name="name" class="form-input" placeholder="이름을 입력하세요"
+						required>
+				</div>
+
+				<!-- 닉네임 -->
+				<div class="input-group">
+					<label for="nickname" class="input-label">닉네임</label>
+					<div class="input-with-button">
+						<input type="text" id="nickname" name="nickname"
+							class="form-input" placeholder="닉네임을 입력하세요" required>
+						<button type="button" class="check-btn">중복확인</button>
+					</div>
+					<small id="nickCheckMsg"></small>
+				</div>
+
+				<!-- 전화번호 -->
+				<div class="input-group">
+					<label for="phone" class="input-label">전화번호</label> <input
+						type="tel" id="phone" name="phone" class="form-input"
+						placeholder="전화번호를 '-' 없이 입력하세요" required>
+				</div>
+				<small id="phoneCheckMsg"></small>
+			</div>
+
+			<button type="submit" class="signup-btn">회원가입하기</button>
+
+			<div class="footer-links">
+				<a href="/login" class="footer-link" id="login-link">로그인으로 이동</a> <span
+					class="divider">|</span> <a href="/" class="footer-link">홈으로 이동</a>
+			</div>
+		</form>
+	</div>
+
+	<script src="/js/signup.js"></script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>내가 작성한 글</title>
+<link rel="stylesheet" th:href="@{/css/myPost.css}">
+<script th:src="@{/js/myPost.js}" defer></script>
+</head>
+<body
+	th:attr="data-logged-in=${loggedInMember != null}, data-member-id=${loggedInMember != null ? loggedInMember.memberId : ''}">
+	<header class="header">
+		<a href="javascript:history.back()" class="btn-back"> <img
+			th:src="@{/images/vector-icon.png}" alt="뒤로가기" class="back-icon" />
+		</a>
+		<h1>내가 작성한 글</h1>
+	</header>
+
+	<div class="container">
+		<div class="tab-menu">
+			<button class="tab-btn active" data-tab="tab1">게시글</button>
+			<button class="tab-btn" data-tab="tab2">댓글</button>
+		</div>
+
+		<!-- 게시글 탭 -->
+		<div class="tab-content">
+			<div class="tab-pane active" id="tab1">
+				<!-- 게시글 리스트 뷰 -->
+				<div class="post-list">
+					<!-- 게시글 아이템 -->
+					<div class="post-item" th:each="board : ${myPosts}"
+						th:attr="data-board-id=${board.boardId}">
+						<div class="post-info">
+							<div class="post-header">
+								<p class="post-title">
+									<span th:text="${board.title}"></span> <span class="badge"
+										th:text="'[' + ${board.commentCount} + ']'">[7]</span>
+								</p>
+								<button class="btn-more">
+									<img th:src="@{/images/myPost/more-icon.png}" alt="더보기" />
+								</button>
+							</div>
+							<p class="post-content" th:text="${board.content}"></p>
+							<div class="post-meta">
+								<span class="likes"
+									th:text="|조회 ${board.views} · ${#dates.format(board.createAt, 'yyyy.MM.dd')}|"></span>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+			<div class="tab-pane" id="tab2">
+				<div class="post-list">
+					<div class="post-item" th:each="comment : ${myComments}"
+						th:attr="data-comment-id=${comment.commentId}, data-board-id=${comment.boardId}">
+						<div class="post-info">
+							<div class="post-header">
+								<a th:href="@{'/boardDetail?boardId=' + ${comment.boardId}}"
+									class="plain-link">
+									<p class="post-title" th:text="${comment.content}"></p>
+								</a>
+								<button class="btn-more">
+									<img th:src="@{/images/myPost/more-icon.png}" alt="더보기" />
+								</button>
+							</div>
+							<p class="post-subtitle">
+								<a th:href="@{'/boardDetail?boardId=' + ${comment.boardId}}"
+									class="plain-link"> <span th:text="${comment.boardTitle}">원글
+										제목</span>
+								</a>
+							</p>
+							<p class="post-date"
+								th:text="${#dates.format(comment.createAt, 'yyyy.MM.dd')}">작성일</p>
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+
+		</div>
+	</div>
+
+	<!-- footer.html 포함 -->
+	<div th:replace="/footer.html"></div>
+</body>
+</html>

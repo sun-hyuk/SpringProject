@@ -1,0 +1,240 @@
+/* reset & 전체박스 */
+body {
+    margin: 0;
+    padding: 0;
+
+    font-family: "Apple SD Gothic Neo", sans-serif;
+    background: #fff;
+}
+
+body {
+    overflow: hidden;
+}
+
+
+/* 헤더 */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    max-width: 100%; /* 모바일 컨테이너와 너비 맞추기 */
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    height: 60px;
+    border-bottom: 1px solid #eee;
+    background: #fff; /* 헤더 뒤로 콘텐츠가 비치지 않도록 */
+    z-index: 100; /* 스크롤 영역 위에 표시 */
+}
+
+.btn-back {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
+.back-icon {
+    display: block;
+    width: 12px;
+    height: 15px;
+}
+
+.header h1 {
+    margin: 0 auto;
+    font-size: 18px;
+    color: #333;
+}
+
+/* 신고 */
+.report-history-container {
+  font-family: 'Noto Sans KR', sans-serif;
+  padding: 70px 20px;
+  background-color: white;
+}
+
+.report-history-container h3 {
+  font-size: 16px;
+  margin-bottom: 20px;
+  margin-left: 4px;
+  color: #999; /* 회색 */
+  font-weight: 500;
+}
+
+.report-history-container h3 strong {
+  font-size: 18px;
+  color: #333;
+}
+
+.report-table {
+  border: 1px solid #f0e5df;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.report-table-header,
+.report-table-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3등분 */
+  text-align: center;
+  align-items: center;
+  padding: 12px 0;
+}
+
+.report-table-header {
+  background-color: #f0e5df;
+  color: #7a5c4d;
+  font-weight: bold;
+}
+
+.report-table-row {
+  font-size: 14px;
+  border-top: 1px solid #eee;
+}
+
+.report-table-row a {
+  color: #3b78d8;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.view-report-btn {
+    background: none;
+    border: none;
+    color: #3b78d8;
+    font-weight: 500;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 0;
+}
+
+/* 모달 스타일 */
+.modal {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+
+  /* flex 정렬은 JS에서 열 때 적용 or 아래에 유지 */
+  display: none; /* 처음엔 안보이도록 */
+}
+
+.modal.show {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 15px;
+    width: 85%;
+    max-width: 360px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    position: relative;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+/* 애니메이션 효과 추가 (선택사항) */
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.modal-username {
+	flex: 1;              /* 추가된 속성: 부모 flex 컨테이너 안에서 중앙으로 확장 */
+    text-align: center;   /* 텍스트를 요소 안에서 가운데 정렬 */
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+    font: bold;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #666;
+    padding: 0;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-body {
+    text-align: center;
+}
+
+.modal-warning {
+    color: #E53E3E;
+	font-size: 14px;
+	font-weight: bold;
+	margin-bottom: 15px;
+	text-align: center;
+}
+
+.report-info ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 15px 0;
+}
+
+.report-info li {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 0;
+  font-size: 14px;
+  color: #333;
+}
+
+.report-info .label {
+  font-weight: 500;
+  color: #444;
+}
+
+.report-info .value {
+  text-align: right;
+  flex: 1;
+  color: #222;
+}
+
+.report-info .bold {
+  font-weight: 700;
+}
+
+.modal-text-area {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  padding: 15px;
+  min-height: 80px;
+  color: #333;
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: left;
+}
+
+.modal-text-area p {
+    margin: 0;
+    font-size: 14px;
+    color: #333;
+    line-height: 1.4;
+}

@@ -1,0 +1,129 @@
+/* reset & 전체박스 */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  font-family: "Apple SD Gothic Neo", sans-serif;
+  background: #fff;
+  overflow: hidden;
+}
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+/* 스크롤 영역 */
+.container {
+  position: absolute;
+  top: 70px;
+  bottom: 70px;
+  left: 0;
+  right: 0;
+  width: 100%;
+  max-width: 450px;
+  margin: 15px auto 0;
+  box-sizing: border-box;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.container::-webkit-scrollbar {
+  display: none;
+}
+
+/* 헤더 */
+.header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 60px;
+  background: #fff;
+  border-bottom: 1px solid #eee;
+  z-index: 100;
+}
+.btn-back { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; text-decoration: none; }
+.back-icon { width: 12px; height: 15px; }
+.header h1 { font-size: 18px; font-weight: 600; color: #333; margin: 0; }
+
+/* 방문한 맛집 헤더 */
+.visited-header { padding: 0 20px 16px; }
+.visited-header h2 { font-size: 20px; font-weight: 700; color: #333; margin: 0 0 8px; letter-spacing: -0.3px; }
+.visited-description { font-size: 14px; color: #666; margin: 0; font-weight: 400; line-height: 1.4; }
+
+/* 방문한 맛집 리스트 */
+.visited-list { display: flex; flex-direction: column; background: #fff; margin-bottom: 20px; padding: 0; }
+
+/* 개별 아이템 */
+.visited-item {
+  padding: 16px 20px;
+  border-bottom: 1px solid #f0f0f0;
+  background: #fff;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.visited-item:hover { background-color: #fafafa; }
+.visited-item:last-child { border-bottom: none; }
+
+/* 링크 전체 레이아웃: 이미지와 정보가 가로로 배치 */
+.visited-item > a {
+  display: flex;
+  align-items: flex-start;
+  text-decoration: none;
+  color: inherit;
+  width: 100%;
+}
+
+/* 방문한 맛집 이미지 */
+.visited-image {
+  flex-shrink: 0;
+  width: 80px;
+  height: 80px;
+  margin-right: 16px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+.item-img { width: 100%; height: 100%; object-fit: cover; }
+
+/* 방문한 맛집 정보 영역 */
+.visited-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* 가게 이름 & 북마크 */
+.restaurant-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+.store-name { font-size: 17px; font-weight: 700; color: #333; margin: 0; letter-spacing: -0.3px; }
+
+/* 별점 · 분류 · 지역 */
+.rating-details {
+  display: flex;
+  align-items: center;
+  margin-bottom: 4px;
+}
+.rating-details .star { color: #ff9500; font-size: 14px; margin-right: 4px; }
+.rating-details .score { font-size: 14px; font-weight: 700; color: #333; margin-right: 4px; }
+.rating-details .dot { margin: 0 4px; color: #999; }
+.rating-details .details { font-size: 13px; color: #999; }
+
+/* 방문 시간 */
+.visited-time { font-size: 13px; color: #999; }
+
+/* 반응형 */
+@media (max-width: 480px) {
+  .visited-item { padding: 14px 16px; }
+  .visited-image { width: 70px; height: 70px; margin-right: 12px; }
+  .store-name { font-size: 16px; }
+  .visited-header h2 { font-size: 18px; }
+  .visited-description { font-size: 13px; }
+}

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>글쓰기</title>
+<link rel="stylesheet" th:href="@{/css/board/boardWrite.css}">
+</head>
+<body
+	th:attr="data-logged-in=${loggedInMember != null}, data-member-id=${loggedInMember != null ? loggedInMember.memberId : ''}">
+	<!-- 헤더 -->
+	<header class="header">
+		<a href="javascript:history.back()" class="btn-back"> <img
+			th:src="@{/images/vector-icon.png}" alt="뒤로가기" class="back-icon" />
+		</a>
+		<h1>글쓰기</h1>
+	</header>
+
+	<!-- 컨테이너 -->
+	<div class="container">
+		<!-- 글쓰기 폼 -->
+		<form class="write-form" id="writeForm" method="post"
+			th:action="@{/board/write}">
+			<!-- 제목 입력 영역 -->
+			<div class="input-group title-group">
+				<input type="text" id="title" name="title"
+					placeholder="제목을 입력해주세요 (20자 이내)" maxlength="20"
+					class="title-input">
+				<div class="char-count">
+					<span id="titleCount">0</span>/20
+				</div>
+			</div>
+
+			<!-- 내용 입력 영역 -->
+			<div class="input-group content-group">
+				<textarea id="content" name="content" placeholder="자유롭게 작성해주세요"
+					class="content-input"></textarea>
+			</div>
+		</form>
+	</div>
+
+	<!-- 작성완료 버튼 -->
+	<div class="submit-btn-container">
+		<button type="button" class="submit-btn" id="submitBtn">작성완료</button>
+	</div>
+
+	<!-- JavaScript 파일 참조 -->
+	<script src="/js/board/board.js"></script>
+</body>
+</html>

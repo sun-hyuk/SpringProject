@@ -1,0 +1,56 @@
+<!-- filterModal.html, th:fragment="filtermodal" 안쪽 부분 -->
+<div class="modal" id="filterModal" th:fragment="filtermodal">
+	<div class="modal-content">
+		<div class="filter-tab-bar">
+			<button class="tab" data-open-modal="filterModal" data-tab="region">지역</button>
+			<button class="tab" data-open-modal="filterModal" data-tab="type">음식
+				종류</button>
+			<button class="tab" data-open-modal="filterModal" data-tab="new">신상
+				가게</button>
+		</div>
+
+		<div class="filter-scroll-wrapper">
+			<!-- ① Region 섹션 -->
+			<div id="regionSection" class="filter-section"
+				data-tab-section="region">
+				<div class="filter-subtitle-wrap">
+					<h3>지역</h3>
+					<button class="reset-btn region-reset-btn">초기화</button>
+				</div>
+				<!-- 지역 버튼(대분류) -->
+				<div class="region-btn-container"></div>
+				<!-- 해당 지역의 상세 태그(소분류) -->
+				<div class="detail-tags"></div>
+			</div>
+			<div class="category-divider"></div>
+
+			<!-- ② Type 섹션 -->
+			<div id="typeSection" class="filter-section" data-tab-section="type">
+				<div class="filter-subtitle-wrap">
+					<h3>음식 종류</h3>
+					<button class="reset-btn type-reset-btn">초기화</button>
+				</div>
+				<div class="type-tag-container"></div>
+			</div>
+			<div class="category-divider"></div>
+
+			<!-- ③ New Store 섹션 -->
+			<div id="newSection" class="filter-section" data-tab-section="new">
+				<div class="filter-subtitle-wrap">
+					<h3>신상 가게</h3>
+					<button class="reset-btn new-reset-btn">초기화</button>
+				</div>
+				<div class="new-tag-container"></div>
+			</div>
+		</div>
+
+		<!-- “닫기”/“선택 완료” 버튼 영역 -->
+		<div class="filter-confirm-wrap">
+			<div class="button-row">
+				<button class="close-btn" data-close-modal>닫기</button>
+				<!-- 선택 완료 버튼: CSS에서 기본 display:none, 선택된 값이 있으면 JavaScript로 보이도록 제어 -->
+				<button class="confirm-btn" style="display: none;">선택 완료</button>
+			</div>
+		</div>
+	</div>
+</div>

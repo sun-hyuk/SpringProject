@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>회원탈퇴</title>
+<link rel="stylesheet" th:href="@{/css/myInfo/withdrawal.css}" />
+</head>
+<body>
+	<!-- 1) 헤더 -->
+	<header class="header">
+		<a href="javascript:history.back()" class="btn-back"> <img
+			th:src="@{/images/vector-icon.png}" alt="뒤로가기" class="back-icon" />
+		</a>
+		<h1>회원탈퇴</h1>
+		<!-- 완료 버튼은 form 밖에 두고 JS가 클릭 시 submit 처리 -->
+		<button type="button" class="btn-complete">완료</button>
+	</header>
+
+	<!-- 2) 스크롤 영역 -->
+	<div class="container">
+		<!-- form: POST /myInfo/withdrawal 으로 제출 -->
+		<form id="withdrawForm" th:action="@{/myInfo/withdrawal}"
+			method="post">
+			<section class="withdraw-warning">
+				<h2 class="warning-title">회원탈퇴 유의사항</h2>
+				<p class="warning-sub">회원 탈퇴 전에 꼭 확인하세요</p>
+				<ol class="warning-list">
+					<li>회원탈퇴 시 회원님의 개인정보는 모두 삭제 처리 됩니다.</li>
+					<li>회원탈퇴는 즉시 처리 됩니다.</li>
+					<li>회원탈퇴 시 회원님이 등록하신 일정, 게시글 등 모두 삭제되며, 재가입을 하더라도 복구되지<br />
+						않습니다.
+					</li>
+					<li>해당 ID로 재가입이 불가능합니다.</li>
+				</ol>
+			</section>
+
+			<div class="agree-box">
+				<input type="checkbox" id="agree" name="agree" /> <label for="agree">유의사항을
+					모두 확인하였으며, 회원탈퇴에 동의합니다.</label>
+			</div>
+		</form>
+	</div>
+
+	<script th:src="@{/js/myInfo/withdrawal.js}"></script>
+</body>
+</html>

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>관리자 대시보드</title>
+<!-- 필수 폰트 로드 -->
+<link rel="stylesheet"
+	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap">
+<!-- CSS 로드 -->
+<link rel="stylesheet" th:href="@{/css/admin/adminHeader.css}">
+<link rel="stylesheet" th:href="@{/css/admin/adminMain.css}">
+</head>
+<body>
+	<!-- 사이드바 및 헤더 인클루드 -->
+	<div th:replace="admin/adminHeader"></div>
+	<div class="main-content">
+		<div class="tasks">
+			<h2>오늘의 할 일</h2>
+			<hr class="divider">
+			<ul>
+				<li>사용자 관리 <span class="yellow-text" th:text="${userCount}">0</span>
+				</li>
+				<li>신고 관리 <span class="yellow-text" th:text="${reportCount}">0</span></li>
+				<li>가게 승인/관리 <span class="yellow-text"
+					th:text="${pendingCount}">0</span>
+				</li>
+				<li>문의 관리 <span class="yellow-text" th:text="${inquiryCount}">0</span></li>
+			</ul>
+		</div>
+
+		<div class="dashboard">
+			<!-- 사용자 관리 카드 -->
+			<div class="card">
+				<div class="card-header">
+					<h3>
+						<button onclick="location.href='/admin/users'">사용자 관리
+							&gt;</button>
+					</h3>
+				</div>
+				<table>
+					<thead>
+						<tr>
+							<th>이름</th>
+							<th>아이디</th>
+							<th>가입일</th>
+						</tr>
+					</thead>
+					<tbody>
+						<!-- 1) 최근 가입 회원이 있을 때 -->
+						<tr th:if="${latestUser != null}"
+							th:onclick="|location.href='@{/admin/users(id=${latestUser.memberId})}'|"
+							style="cursor: pointer;">
+							<td th:text="${latestUser.name}">홍길동</td>
+							<td th:text="${latestUser.memberId}">test@example.com</td>
+							<td th:text="${latestUserDate}">2025-06-09</td>
+						</tr>
+						<!-- 2) 한 건도 없으면 -->
+						<tr th:if="${latestUser == null}">
+							<td colspan="4" style="text-align: center;">최근 가입한 회원이 없습니다.
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<!-- 신고 관리 카드 -->
+			<div class="card">
+				<div class="card-header">
+					<h3>
+						<button onclick="location.href='/adminReports'">신고 관리
+							&gt;</button>
+					</h3>
+				</div>
+				<table>
+					<thead>
+						<tr>
+							<th>신고 ID</th>
+							<th>신고자</th>
+							<th>피신고자</th>
+							<th>신고일</th>
+							<th>상태</th>
+						</tr>
+					</thead>
+					<tbody>
+						<!-- 1) 최신 대기 중인 신고가 있을 때 -->
+						<tr th:if="${latestReport != null}"
+							th:onclick="|location.href='@{/adminReports}'|"
+							style="cursor: pointer;">
+							<td th:text="${latestReport.reportId}">1</td>
+							<td th:text="${latestReport.reporterMember.nickname}">홍길동</td>
+							<td th:text="${latestReport.reportedMember.nickname}">피신고자</td>
+							<td th:text="${latestReport.reportedAt}">2025-06-09</td>
+							<td th:text="${latestReport.status}">대기중</td>
+						</tr>
+						<!-- 2) 한 건도 없으면 -->
+						<tr th:if="${latestReport == null}">
+							<td colspan="6" style="text-align: center;">최근 대기 중인 신고가
+								없습니다.</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+
+
+
+
+
+			<!-- 관리자 대시보드 → 가게 관리 카드 -->
+			<div class="card">
+				<div class="card-header">
+					<h3>
+						<button onclick="location.href='/adminRstApproval'">가게
+							승인/관리 &gt;</button>
+					</h3>
+				</div>
+				<table>
+					<thead>
+						<tr>
+							<th>가게명</th>
+							<th>지역</th>
+							<th>등록일</th>
+						</tr>
+					</thead>
+					<tbody>
+						<!-- 1) 대기 중인 가게가 있을 때 -->
+						<tr th:if="${latestStore != null}"
+							th:onclick="|location.href='@{/adminRstApproval(rstId=${latestStore.rstId})}'|"
+							style="cursor: pointer;">
+							<!-- 여기서 rstName → name 으로 변경 -->
+							<td th:text="${latestStore.name}">가게 이름</td>
+							<td
+								th:text="${latestStore.regionLabel + ' ' + latestStore.region2Label}">
+								제주시 연동</td>
+							<!-- createdAt 포맷 -->
+							<td
+								th:text="${#temporals.format(latestStore.createdAt,'yyyy-MM-dd')}">
+								2025-06-09</td>
+						</tr>
+						<!-- 2) 한 건도 없으면 -->
+						<tr th:if="${latestStore == null}">
+							<td colspan="3" style="text-align: center;">등록 대기인 가게가 없습니다.
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<!-- 문의 관리 카드 -->
+			<div class="card">
+				<div class="card-header">
+					<h3>
+						<button onclick="location.href='/adminInquiry'">문의 관리
+							&gt;</button>
+					</h3>
+				</div>
+				<table>
+					<thead>
+						<tr>
+							<th>번호</th>
+							<th>유형</th>
+							<th>작성자</th>
+							<th>작성일</th>
+						</tr>
+					</thead>
+					<tbody>
+						<!-- 최신 문의가 있을 때 -->
+						<tr th:if="${latestInquiry != null}" style="cursor: pointer;"
+							th:onclick="|location.href='@{/adminInquiry}'|">
+							<td th:text="${latestInquiry.inquiryId}">1</td>
+							<td th:text="${latestInquiry.type}">계정문의</td>
+							<td th:text="${latestInquiry.memberId}">user123</td>
+							<td th:text="${latestInquiryDate}">2025-06-09</td>
+						</tr>
+						<!-- 한 건도 없을 때 -->
+						<tr th:if="${latestInquiry == null}">
+							<td colspan="5" style="text-align: center;">최근 대기중인 문의가
+								없습니다.</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<!-- JavaScript 로드 -->
+			<script th:src="@{/js/admin/adminHeader.js}"></script>
+			<script th:src="@{/js/admin/adminMain.js}"></script>
+</body>
+</html>

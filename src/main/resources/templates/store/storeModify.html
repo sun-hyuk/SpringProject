@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>가게 등록</title>
+<!-- CSS 파일 경로: /css/store/storeRegister.css -->
+<link rel="stylesheet" th:href="@{/css/store/storeModify.css}" />
+</head>
+<body>
+	<!-- ─── 1) 상단 고정 헤더 ────────────────────────────────────────────── -->
+	<header class="header">
+		<a href="javascript:history.back()" class="btn-back"> <img
+			th:src="@{/images/vector-icon.png}" alt="뒤로가기" class="back-icon" />
+		</a>
+		<h1>가게 정보 수정</h1>
+		<button type="submit" form="storeRegisterForm" class="btn-complete">완료</button>
+	</header>
+
+	<!-- ─── 2) 스크롤 가능한 메인 컨테이너 ────────────────────────────────── -->
+	<div class="container">
+		<form id="storeRegisterForm" class="form-group"
+			th:action="@{/store/update}" th:object="${store}" method="post"
+			enctype="multipart/form-data">
+
+			<!-- 숨겨진 ID 필드 (수정 시 필수) -->
+			<input type="hidden" th:field="*{rstId}" />
+
+			<!-- 가게 이름 -->
+			<div class="input-group">
+				<label for="storeName">가게 이름</label> <input id="storeName"
+					type="text" th:field="*{name}" placeholder="가게 이름을 입력하세요"
+					maxlength="20" class="input-field" />
+			</div>
+
+			<!-- 도로명 주소 입력 그룹 -->
+			<div class="input-group">
+				<label for="roadAddress">도로명 주소</label> <input id="roadAddress"
+					type="text" th:field="*{address}" placeholder="도로명 주소를 입력하세요"
+					class="input-field" />
+			</div>
+
+			<!-- 위도 -->
+			<div class="input-group">
+				<label for="latitude">위도</label> <input id="latitude" type="text"
+					th:field="*{latitude}" placeholder="예) 35.144318"
+					class="input-field" />
+			</div>
+
+			<!-- 경도 -->
+			<div class="input-group">
+				<label for="longitude">경도</label> <input id="longitude" type="text"
+					th:field="*{longitude}" placeholder="예) 129.036503"
+					class="input-field" />
+			</div>
+
+			<!-- 시 -->
+			<div class="input-group">
+				<label for="city">시</label> <input id="city" type="text"
+					th:field="*{regionLabel}" placeholder="예) 제주시, 서귀포시"
+					class="input-field" />
+			</div>
+
+			<!-- 읍/면/동 -->
+			<div class="input-group">
+				<label for="district">읍/면/동</label> <input id="district" type="text"
+					th:field="*{region2Label}" placeholder="예) 성산읍, 남원읍, 중문동"
+					class="input-field" />
+			</div>
+
+			<!-- 소개 -->
+			<div class="input-group">
+				<label for="intro">소개</label> <input id="intro" type="text"
+					th:field="*{intro}" placeholder="가게 소개를 입력하세요" maxlength="200"
+					class="input-field" />
+			</div>
+
+			<!-- 연락처 -->
+			<div class="input-group">
+				<label for="contact">연락처</label> <input id="contact" type="text"
+					th:field="*{phone}" placeholder="전화번호를 '-' 없이 입력하세요" maxlength="15"
+					class="input-field" />
+			</div>
+
+			<!-- 해시태그 -->
+			<div class="input-group">
+				<label for="hashtags">해시태그</label> <input id="hashtags" type="text"
+					th:field="*{tag}" placeholder="예) 맛집, 카페, 디저트" class="input-field" />
+			</div>
+
+			<!-- 대표 이미지 -->
+			<div class="input-group">
+				<label for="mainImage">대표 이미지</label>
+				<div class="image-upload-box">
+					<!-- 이미지 미리보기 (아래에 깔림) -->
+					<img th:src="@{${store.image}}" id="preview" class="preview"
+						style="display: block;" />
+
+					<!-- 업로드 버튼은 위에 뜨게 -->
+					<label for="mainImage" class="image-upload-label"> <span
+						class="plus-icon">＋</span> <span class="upload-text">수정 파일
+							첨부</span>
+					</label> <input type="file" id="mainImage" name="mainImage"
+						accept="image/*" class="input-file" />
+				</div>
+			</div>
+		</form>
+	</div>
+
+	<script src="/js/store/storeModify.js"></script>
+</body>
+</html>

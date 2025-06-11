@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EatoMeter - 로그인</title>
+<!-- /static/css/login/login.css 경로로 CSS가 로드됩니다 -->
+<link rel="stylesheet" th:href="@{/css/login/login.css}" />
+</head>
+<body>
+	<div class="container">
+		<!-- 닫기 버튼 -->
+		<button class="close-btn" onclick="history.back()">×</button>
+
+		<!-- 로고 섹션 -->
+		<div class="logo-section">
+			<img src="/images/login/eatometer-logo.png" alt="EatoMeter 로고"
+				class="main-logo">
+		</div>
+
+		<!-- 로그인 폼 -->
+		<form class="login-form" action="/login" method="post" id="loginForm">
+			<!-- ❶ 로그인 역할(role)을 구분할 hidden 필드 -->
+			<input type="hidden" name="role" id="roleField" value="user">
+
+			<div class="form-header">
+				<h2>로그인</h2>
+				<div class="tab-container">
+					<!-- ❷ 탭 버튼 (data-role="user" / data-role="admin") -->
+					<button type="button" class="tab active" data-role="user"
+						id="tabUser">회원</button>
+					<button type="button" class="tab" data-role="admin" id="tabAdmin">관리자</button>
+				</div>
+			</div>
+
+			<div th:if="${error}" class="login-error">
+				<p th:text="${error}">오류 메시지</p>
+			</div>
+
+			<div class="input-container">
+				<!-- 사용자가 입력하는 아이디 -->
+				<input type="text" name="username" class="form-input"
+					placeholder="아이디를 입력하세요" required>
+
+				<!-- 사용자가 입력하는 비밀번호 -->
+				<input type="password" name="password" class="form-input"
+					placeholder="비밀번호를 입력하세요" required>
+			</div>
+
+			<button type="submit" class="login-btn">로그인하기</button>
+
+			<div class="login-options">
+				<a href="/find-id" class="option-link">아이디 찾기</a> <span
+					class="divider">|</span> <a href="/find-password"
+					class="option-link">비밀번호 찾기</a> <span class="divider">|</span> <a
+					href="/signup" class="option-link" id="signup-link">회원가입</a>
+			</div>
+
+			<div class="footer-link">
+				<a href="/main" class="forgot-link">홈으로 이동</a>
+			</div>
+		</form>
+	</div>
+
+	<!-- 로그인 관련 JavaScript를 로드 -->
+	<script th:src="@{/js/login.js}"></script>
+</body>
+</html>

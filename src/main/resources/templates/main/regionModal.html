@@ -1,0 +1,44 @@
+<!-- 모달 전체 -->
+<div th:fragment="modal">
+	<div class="region-modal" id="regionModal">
+		<div class="region-modal-overlay" id="closeRegionModal"></div>
+
+		<div class="region-modal-content">
+
+			<!-- 모달 헤더 -->
+			<div class="modal-header">
+				<h3>관심지역 설정</h3>
+				<img src="/images/main/location/x.png" alt="닫기"
+					class="modal-close-btn" id="closeRegionButton">
+			</div>
+
+			<!-- 좌우 구조 -->
+			<div class="region-selector">
+
+				<!-- 왼쪽 지역 목록 -->
+				<div class="region-left">
+					<ul>
+						<li class="active" data-region="capital">전국</li>
+						<li data-region="seoul">서울</li>
+						<li data-region="busan">부산</li>
+						<li data-region="jeju">제주</li>
+						<li data-region="ulsan">울산</li>
+					</ul>
+				</div>
+
+				<!-- 오른쪽 지역 상세 -->
+				<div class="region-right">
+					<h4></h4>
+					<div class="region-tags"></div>
+				</div>
+			</div>
+
+			<!-- 하단 버튼 -->
+			<div class="region-buttons">
+				<button class="reset-btn">초기화</button>
+				<button class="confirm-btn" id="closeRegionButton">관심지역 설정
+					완료</button>
+			</div>
+		</div>
+	</div>
+</div>

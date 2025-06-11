@@ -1,0 +1,262 @@
+@charset "UTF-8";
+
+/* Enhanced Main Content Styles */
+.main-content h1 {
+    color: #333;
+    margin: 20px 0 15px 0;
+    font-size: 28px;
+    font-weight: 600;
+}
+
+/* Enhanced User Section */
+.user-section {
+    background-color: white;
+    padding: 25px;
+    margin-bottom: 30px;
+    border-radius: 8px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+}
+
+.user-section h2 {
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 22px;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 10px;
+}
+
+/* Enhanced Search Bar */
+.search-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    align-items: center;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.search-bar select {
+    padding: 8px 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    font-size: 14px;
+    min-width: 120px;
+    background-color: white;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23333%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+    background-repeat: no-repeat;
+    background-position: right 8px top 50%;
+    background-size: 10px auto;
+}
+
+.search-bar input[type="date"] {
+    padding: 8px 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    font-size: 14px;
+    background-color: white;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+}
+
+.search-bar button {
+    padding: 8px 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.search-bar button[type="submit"]:not([name="delete"]) {
+    background-color: #333;
+    color: white;
+}
+
+.search-bar button[name="delete"] {
+    background-color: #333;
+    color: white;
+}
+
+.search-bar button[type="button"] {
+    background-color: #333;
+    color: white;
+    border: 1px solid #ddd;
+}
+
+.search-bar button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.search-bar button[type="submit"]:not([name="delete"]):hover {
+    background-color: #222;
+}
+
+.search-bar button[name="delete"]:hover {
+    background-color: #b71c1c;
+}
+
+.search-bar button[type="button"]:hover {
+    background-color: #e0e0e0;
+}
+
+/* Enhanced Table */
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-top: 5px;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+th, td {
+    padding: 14px 12px;
+    text-align: left;
+    border: none;
+    border-bottom: 1px solid #eaeaea;
+}
+
+th {
+    background-color: #333;
+    color: white;
+    font-weight: 600;
+    font-size: 14px;
+    position: relative;
+}
+
+th button {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 0 5px;
+    font-size: 12px;
+    vertical-align: middle;
+}
+
+th button:hover {
+    transform: scale(1.2);
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+tbody tr {
+    background-color: white;
+    transition: background-color 0.2s;
+}
+
+tbody tr:hover {
+    background-color: #f5f9fa;
+}
+
+/* Checkbox styling */
+input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    accent-color: #333;
+}
+
+/* Pagination */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 25px;
+    flex-wrap: wrap;
+}
+
+.pagination a,
+.pagination strong {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 3px;
+    padding: 6px 12px;
+    border-radius: 4px;
+    text-decoration: none;
+    border: 1px solid #ccc;
+    color: #333;
+    transition: all 0.2s;
+    background-color: white;
+}
+
+.pagination a:hover {
+    background-color: #eee;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.pagination strong {
+    background-color: #333;
+    color: #fff;
+    font-weight: bold;
+    border: 1px solid #333;
+}
+
+/* Empty state */
+table tr td[colspan="7"] {
+    padding: 40px;
+    color: #666;
+    font-style: italic;
+    background-color: #f9f9f9;
+    text-align: center;
+}
+
+/* Member row initial state */
+.member-row {
+    display: table-row;
+}
+
+/* Load more button */
+#loadMoreBtn {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+#loadMoreBtn:hover {
+    background-color: #222;
+    transform: translateY(-1px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .search-bar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .search-bar select,
+    .search-bar input[type="date"] {
+        width: 100%;
+    }
+    
+    .search-bar button {
+        margin-top: 10px;
+    }
+    
+    table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+}

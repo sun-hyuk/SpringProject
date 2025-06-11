@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>신고내역 - EatoMeter</title>
+<link rel="stylesheet" th:href="@{/css/report.css}">
+</head>
+<body
+	th:attr="data-logged-in=${loggedInMember != null}, data-member-id=${loggedInMember != null ? loggedInMember.memberId : ''}">
+
+	<!-- 헤더 -->
+	<header class="header">
+		<a href="javascript:history.back()" class="btn-back"> <img
+			th:src="@{/images/vector-icon.png}" alt="뒤로가기" class="back-icon" />
+		</a>
+		<h1>신고내역</h1>
+	</header>
+
+	<!-- 신고 내역 테이블 -->
+	<div class="report-history-container">
+		<h3>
+			<strong th:text="${username}">사용자명</strong> 님의 신고내역
+		</h3>
+
+		<div class="report-table">
+			<div class="report-table-header">
+				<span>신고 유형</span> <span>신고 일시</span> <span>신고 내용</span>
+			</div>
+
+			<!-- 신고 리스트 반복 -->
+			<div th:each="report : ${reportList}" class="report-table-row">
+				<!-- 신고 유형 -->
+				<span th:text="${report.reportType}">댓글</span>
+
+				<!-- 신고 일시 -->
+				<span
+					th:text="${#temporals.format(report.reportedAt, 'yyyy-MM-dd HH:mm')}">2025-05-21
+					14:33</span>
+
+				<!-- 상세 보기 버튼 -->
+				<span>
+					<button type="button" class="view-report-btn"
+						th:attr="data-report-id=${report.id},
+                 data-type=${report.reportType},
+                 data-status=${report.statusName},
+                 data-reporter=${report.reporterNickname},
+                 data-reported=${report.reportedNickname},
+                 data-date=${#temporals.format(report.reportedAt, 'yyyy-MM-dd HH:mm')}">
+						보기</button>
+				</span>
+			</div>
+		</div>
+	</div>
+
+	<!-- 푸터 -->
+	<div th:replace="/footer.html"></div>
+
+	<!-- 신고 상세 팝업 -->
+	<div id="reportModal" class="modal">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3 class="modal-username">신고 상세 정보</h3>
+				<button class="modal-close" onclick="closeReportDetail()">&times;</button>
+			</div>
+			<div class="modal-body">
+				<div class="report-info">
+					<ul>
+						<li><span class="label">신고 유형</span><span class="value"
+							id="report-type"></span></li>
+						<li><span class="label">작성자</span><span class="value"
+							id="report-author"></span></li>
+						<li><span class="label">신고자</span><span class="value"
+							id="report-reporter"></span></li>
+						<li><span class="label">작성일</span><span class="value bold"
+							id="report-date"></span></li>
+					</ul>
+				</div>
+
+				<p id="report-result" class="modal-warning"></p>
+
+				<div class="modal-text-area">
+					<p id="report-content"></p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script th:src="@{/js/reportDetail.js}"></script>
+</body>
+</html>

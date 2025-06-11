@@ -1,0 +1,236 @@
+/* ======================================================
+   storeManage.css
+   ───────────────────────────────────────────────────────
+   “가게 관리” 화면 전용 스타일 시트
+   ====================================================== */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  font-family: "Apple SD Gothic Neo", sans-serif;
+  background: #fff;
+}
+
+body {
+  overflow: hidden; /* 헤더 고정 후 본문만 스크롤 */
+}
+
+.container {
+  position: absolute;
+  top: 60px;    /* 헤더 높이 */
+  bottom: 80px; /* footer 높이(약 80px) 만큼 위에서 끝남 */
+  left: 0;
+  right: 0;
+  max-width: 375px; /* 모바일 1:1 기준 */
+  margin: 0 auto;
+  padding: 0 16px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* storeManage.css 에 추가 */
+.no-data {
+    padding: 20px;
+    text-align: center;
+    color: #888;
+    font-size: 15px;
+}
+
+/* ── 1) 상단 고정 헤더 ───────────────────────────────── */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  max-width: 100%;     /* 모바일 컨테이너와 너비 맞추기 */
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  height: 60px;
+  border-bottom: 1px solid #eee;
+  background: #fff;      /* 헤더 뒤로 콘텐츠가 비치지 않도록 */
+  z-index: 100;          /* 스크롤 영역 위에 표시 */
+}
+
+/* 헤더 안의 콘텐츠만 중앙 정렬 */
+.header .container {
+  max-width: 375px;
+  margin: 0 auto;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+/* 뒤로가기 버튼 */
+.btn-back {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+.back-icon {
+  display: block;
+  width: 12px;
+  height: 15px;
+}
+
+/* ── 가게정보수정 버튼 및 아이콘 ───────────────────────── */
+.btn-edit {
+  display: flex;
+  align-items: center;
+  background: none;
+  border: none;
+  font-size: 14px;
+  font-weight : bold;
+  color: #333;
+  text-decoration: none;  /* a 태그의 밑줄 제거 */
+  cursor: pointer;
+  padding: 0;
+}
+
+.btn-edit .right-arrow-icon {
+  width: 16px;
+  height: 16px;
+  margin-left: 4px;
+  object-fit: contain;
+}
+
+
+/* 헤더 제목 */
+.header h1 {
+  margin: 0 auto;
+  font-size: 18px;
+  color: #333;
+}
+
+/* ── 3) 2차 pill 탭 ───────────────────────────────────── */
+.history-tabs {
+  display: flex;
+  background: #E4D6CE; /* 연한 베이지 계열 */
+  border-radius: 20px;
+  padding: 4px;
+  margin: 16px 0;
+}
+.pill {
+  flex: 1;
+  text-align: center;
+  padding: 8px 0;
+  font-size: 13px;
+  font-weight : bold;
+  color: #9E9E9E;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+.pill.active {
+  background: #FFF;
+  color: #AE8670;
+  font-weight: bold;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* ── 4) 가게 목록 카드 리스트 ───────────────────────────────── */
+.history-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* 각 가게 카드(리스트 항목) */
+.history-item {
+  background: #fff;
+  border: 1px solid #DDD;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+/* 카드의 마지막 항목 아래 여백 제거 */
+.history-item:last-child {
+  margin-bottom: 0;
+}
+
+/* 카드 헤더 (가게명 + 상태) */
+.item-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: #E4D6CE; /* 전체를 연한 베이지(#E4D6CE)로 변경 */
+}
+
+/* 가게명 */
+.store-name {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+}
+
+/* 상태 텍스트 */
+.status-text {
+  font-size: 13px;
+  font-weight: 500;
+}
+.status-text.pending {
+  color: #28A745;        /* 승인 대기중은 초록색 */
+  font-weight : bold;
+}
+.status-text.rejected {
+  color: #E74C3C;        /* 승인 거절은 빨간색 */
+  font-weight : bold;
+}
+
+/* ── 5) 카드 내용(바디) ───────────────────────────────────────── */
+.item-body {
+  padding: 12px 16px 16px 16px;
+  background: #FFF;
+}
+
+/* 정보 한 줄 */
+.info-row {
+  display: flex;
+  margin-bottom: 8px;
+}
+.info-row:last-child {
+  margin-bottom: 0;
+}
+
+/* 레이블(왼쪽) */
+.info-row .label {
+  width: 60px;          /* “주소”, “연락처”, “핵심태그” 레이블 너비 통일 */
+  font-size: 13px;
+  color: #888;
+}
+
+/* 값(오른쪽) */
+.info-row .value {
+  flex: 1;
+  font-size: 13px;
+  color: #333;
+}
+
+
+/* ── 7) 반응형(선택) ───────────────────────────────────────────── */
+@media (max-width: 360px) {
+  .store-name {
+    font-size: 15px;
+  }
+  .status-text {
+    font-size: 12px;
+  }
+  .info-row .label,
+  .info-row .value {
+    font-size: 12px;
+  }
+}

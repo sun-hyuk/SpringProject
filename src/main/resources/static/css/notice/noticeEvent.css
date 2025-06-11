@@ -1,0 +1,215 @@
+/* ===================================================
+   notice-detail.css
+   ───────────────────────────────────────────────────
+   공지사항 이벤트 페이지 전용 스타일
+   =================================================== */
+
+/* ── Reset & 공통 container ───────────────────────────────────────── */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  font-family: "Apple SD Gothic Neo", sans-serif;
+  background: #fff;
+}
+
+.container {
+  position: absolute;
+  top: 80px;             /* header 높이 만큼 내려서 시작 */
+  bottom: 80px;          /* footer 높이 만큼 위에서 끝나도록 */
+  left: 0;
+  right: 0;
+  max-width: 375px;
+  margin: 0 auto;
+  padding: 0 16px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ── 헤더 (뒤로가기 + 제목) ─────────────────────────────────────────── */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  max-width: 100%;     /* 모바일 컨테이너와 너비 맞추기 */
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  height: 60px;
+  border-bottom: 1px solid #eee;
+  background: #fff;      /* 헤더 뒤로 콘텐츠가 비치지 않도록 */
+  z-index: 100;          /* 스크롤 영역 위에 표시 */
+}
+
+.btn-back {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+.back-icon {
+  display: block;
+  width: 12px;
+  height: 15px;
+}
+
+.header h1 {
+  margin: 0 auto;
+  font-size: 18px;
+  color: #333;
+}
+
+/* ── 상세 헤더 (badge+제목, 날짜) ──────────────────────────────────── */
+.detail-header {
+  /* 기본적으로 flex가 필요하지만, 
+     내부 .header-top 과 .detail-date 가 세로로 쌓이도록 flex-direction: column */
+  display: flex;
+  flex-direction: column;
+  margin-top: 16px;
+  margin-bottom: 12px;
+}
+
+/* ① 배지 + 제목을 같은 줄에 나란히 배치할 래퍼 */
+.detail-header .header-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;       /* 배지와 제목 사이 간격 */
+}
+
+/* ② 노란 배지 스타일 */
+.detail-header .badge {
+  display: inline-block;
+  background-color: #FBBC04;   /* 노란 배경 */
+  color: #fff;                 /* 검은 글자 */
+  font-size: 13px;             /* 배지 내부 글자 크기 */
+  font-weight: 600;            /* 글자 두께 */
+  padding: 4px 10px;            /* 위아래 2px, 좌우 8px */
+  border-radius: 10px;         /* pill 형태(둥근 테두리) */
+  letter-spacing: 0.5px;       /* 글자 사이 자간 */
+  line-height: 1;
+}
+
+/* ③ 공지 제목 (badge 오른쪽에 위치) */
+.detail-header .detail-title {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  line-height: 1.4;
+}
+
+/* ④ 게시 날짜 (header-top 아래로 내려와서, left-align) */
+/*    margin-left 를 badge 너비 + gap 만큼 주면, 날짜가 제목 시작 위치와 동일해짐 */
+.detail-header .detail-date {
+  margin-top: 4px;      /* badge+제목과 날짜 간격 */
+  font-size: 12px;
+  color: #888;
+  /* 아래 margin-left 값은 배지 폭 + gap(8px) + 약간의 여유 */
+  /* 실제 '이벤트' 텍스트 길이에 따라 달라질 수 있지만, 
+     2px(패딩 위) + 8px(패딩 좌우) + 텍스트 너비(약 28px) + gap:8px 정도 감안해서 값 설정 */
+  margin-left: calc( (2px + 8px) * 2 + 28px + 8px );
+  /* 위 margin-left: 배지 전체 폭(약 2+8+텍스트너비28+8) + gap(8) 정도를 합산 */
+  /* 숫자를 조금씩 조정해서 “이벤트” 배지 바로 오른쪽과 일치시키세요! */
+  /* 만약 매핑된 텍스트가 '점검'이라면 조금 더 짧으니 margin-left를 줄여야 할 수도 있습니다. */
+  line-height: 1.2;
+}
+
+/* ── 구분선 ────────────────────────────────────────────────────────── */
+hr {
+  border: none;
+  border-top: 1px solid #eee;
+  margin: 0;
+  margin-bottom: 16px;
+}
+
+/* ── 상세 본문 ──────────────────────────────────────────────────────── */
+.detail-content {
+  font-size: 14px;
+  color: #333;
+  line-height: 1.6;
+  white-space: pre-wrap;  /* 줄바꿈 유지 */
+  margin-bottom: 20px;
+}
+
+.detail-content p {
+  margin: 0 0 12px;
+}
+
+.detail-content ul {
+  margin: 12px 0 0 16px;
+  padding: 0;
+  list-style: none;
+}
+
+.detail-content ul li {
+  position: relative;
+  margin-bottom: 8px;
+  padding-left: 12px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.detail-content ul li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #333;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* ── 당첨자 명단 ───────────────────────────────────────────────────── */
+.winners {
+  margin-bottom: 32px;
+}
+
+.winners ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.winners-title {
+  font-weight: bold;
+  font-size: 14px;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.winners ul li {
+  margin-bottom: 6px;
+  font-size: 14px;
+  color: #333;
+}
+
+/* ── 반응형(선택) ─────────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  /* 배지+제목 래퍼에서 gap만 줄일 수도 있습니다 */
+  .detail-header .header-top {
+    gap: 6px;
+  }
+  /* 날짜 margin-left 를 폰트 사이즈/패딩이 달라질 때마다 재조정하세요 */
+  .detail-header .detail-date {
+    font-size: 11px;
+    /* 필요 시 margin-left를 줄이거나 늘리세요. */
+    margin-left: calc((2px + 16px) * 2 + 24px + 6px);
+  }
+  .detail-header .detail-title {
+    font-size: 15px;
+  }
+  .detail-content {
+    font-size: 13px;
+  }
+  .winners-title, .winners ul li {
+    font-size: 13px;
+  }
+}

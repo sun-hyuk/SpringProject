@@ -1,0 +1,567 @@
+@charset "UTF-8";
+
+.divider {
+    border: none;
+    height: 2px;
+    background: linear-gradient(to right, #e1e1e1, #ccc, #e1e1e1);
+    margin: 15px 0;
+}
+
+/* 코스 등록 컨테이너 스타일 */
+.course-register-container {
+    max-width: 800px;
+    margin: 20px auto;
+    background-color: #fff;
+    padding: 30px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.course-register-container:hover {
+    box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+}
+
+.course-register-container h2 {
+    margin-bottom: 25px;
+    text-align: center;
+    color: #333;
+    font-size: 28px;
+    font-weight: 600;
+    position: relative;
+}
+
+.course-register-container h2:after {
+    content: "";
+    display: block;
+    width: 50px;
+    height: 4px;
+    background-color: #333;
+    margin: 12px auto 0;
+    border-radius: 2px;
+}
+
+/* 입력 행 스타일 */
+.input-row {
+    margin-bottom: 25px;
+    position: relative;
+}
+
+.input-row label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #555;
+    font-size: 15px;
+}
+
+.input-row input[type="text"],
+.input-row textarea {
+    width: 100%;
+    padding: 12px 15px;
+    box-sizing: border-box;
+    border: 1px solid #e1e1e1;
+    border-radius: 8px;
+    font-size: 15px;
+    transition: all 0.3s;
+    background-color: #fafbfc;
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+.input-row input[type="text"]:focus,
+.input-row textarea:focus {
+    border-color: #333;
+    box-shadow: 0 0 0 3px rgba(51, 51, 51, 0.2);
+    outline: none;
+    background-color: #fff;
+}
+
+/* 파일 업로드 영역 */
+.input-row input[type="file"] {
+    display: none;
+}
+
+.upload-wrapper {
+    display: flex;
+    align-items: center;
+    border: 1px solid #e1e1e1;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #fafbfc;
+    transition: all 0.3s ease;
+}
+
+.upload-wrapper:hover {
+    border-color: #333;
+}
+
+.upload-wrapper .upload-label {
+    flex: 1;
+    padding: 12px 15px;
+    background-color: transparent;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #666;
+    border: none;
+}
+
+.upload-wrapper button {
+    padding: 12px 20px;
+    cursor: pointer;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    font-weight: 600;
+    transition: background-color 0.3s;
+    white-space: nowrap;
+    margin-top: 20px;
+}
+
+.upload-wrapper button:hover {
+    background-color: #222;
+}
+
+/* 태그 테이블 */
+table.tag-table {
+    width: 100%;
+    border-spacing: 0;
+    margin-top: 12px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    border: 1px solid #e5e7eb;
+}
+
+table.tag-table th,
+table.tag-table td {
+    border: none;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 12px 15px;
+    text-align: left;
+}
+
+table.tag-table th {
+    background-color: #333;
+    color: #fff;
+    font-weight: 600;
+    border-bottom: 2px solid #222;
+}
+
+table.tag-table tr:hover {
+    background-color: #f9f9f9;
+}
+
+table.tag-table tr:last-child td {
+    border-bottom: none;
+}
+
+.add-row {
+    text-align: center;
+    color: #333;
+    cursor: pointer;
+    padding: 15px;
+    font-weight: 600;
+    transition: all 0.3s;
+    background-color: #f8f9fa;
+}
+
+.add-row:hover {
+    background-color: #e9ecef;
+    color: #222;
+}
+
+/* 음식점(가게) 테이블 */
+table.store-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-top: 12px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    border: 1px solid #e5e7eb;
+}
+
+table.store-table th,
+table.store-table td {
+    border: none;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 12px 15px;
+    text-align: left;
+}
+
+table.store-table th {
+    background-color: #333;
+    color: #fff;
+    font-weight: 600;
+    border-bottom: 2px solid #222;
+}
+
+table.store-table tr:hover {
+    background-color: #f9f9f9;
+}
+
+table.store-table tr:last-child td {
+    border-bottom: none;
+}
+
+.delete-btn {
+    cursor: pointer;
+    color: #e74c3c;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.delete-btn:hover {
+    background-color: #e74c3c;
+    color: #fff;
+    text-decoration: none;
+}
+
+/* 가게 선택 버튼 */
+.input-row button[type="button"] {
+    padding: 11px 18px;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s;
+    margin-bottom: 15px;
+}
+
+.input-row button[type="button"]:hover {
+    background-color: #222;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* 등록 버튼 */
+.submit-btn {
+    margin-top: 30px;
+    width: 100%;
+    padding: 14px 0;
+    background-color: #333;
+    color: #fff;
+    font-size: 17px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    border-radius: 8px;
+    transition: all 0.3s;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+.submit-btn:hover {
+    background-color: #222;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+}
+
+.submit-btn:active {
+    transform: translateY(0);
+}
+
+.submit-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* 모달 스타일 */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.5);
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 5% auto;
+    padding: 30px;
+    border: none;
+    width: 80%;
+    max-width: 800px;
+    position: relative;
+    border-radius: 12px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    animation: modalOpen 0.3s ease;
+}
+
+@keyframes modalOpen {
+    from {opacity: 0; transform: translateY(-20px);}
+    to {opacity: 1; transform: translateY(0);}
+}
+
+.close {
+    color: #888;
+    float: right;
+    font-size: 32px;
+    font-weight: bold;
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.close:hover {
+    color: #333;
+}
+
+.modal h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+    padding-right: 50px;
+}
+
+/* 검색 영역 */
+.search-wrapper {
+    display: flex;
+    margin-bottom: 15px;
+    border: 1px solid #e1e1e1;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+#restaurantSearch {
+    flex: 1;
+    padding: 12px 15px;
+    border: none;
+    font-size: 15px;
+    outline: none;
+    background-color: #fafbfc;
+}
+
+#restaurantSearch:focus {
+    background-color: #fff;
+}
+
+.search-wrapper button {
+    padding: 12px 20px;
+    background-color: #333;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s;
+    white-space: nowrap;
+}
+
+.search-wrapper button:hover {
+    background-color: #222;
+}
+
+/* 결과 테이블 (음식점 검색 결과) */
+.result-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-top: 15px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    border: 1px solid #e5e7eb;
+}
+
+.result-table th,
+.result-table td {
+    border: none;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 12px 15px;
+    text-align: left;
+}
+
+.result-table th {
+    background-color: #333;
+    color: #fff;
+    font-weight: 600;
+}
+
+.result-table tr:hover {
+    background-color: #f7f9fc;
+}
+
+.result-table tr:last-child td {
+    border-bottom: none;
+}
+
+.result-table td a {
+    color: #333;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.result-table td a:hover {
+    background-color: #333;
+    color: #fff;
+    text-decoration: none;
+}
+
+/* 네이버 지도 영역 (모달 내) */
+#restaurantSelectMap {
+    width: 100%;
+    height: 350px;
+    border-radius: 8px;
+    margin: 15px 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border: 1px solid #e5e7eb;
+}
+
+/* 알림 메시지 스타일 */
+.alert {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 20px;
+    border-radius: 8px;
+    color: white;
+    font-weight: 600;
+    z-index: 1001;
+    animation: slideIn 0.3s ease;
+    max-width: 300px;
+    word-wrap: break-word;
+}
+
+@keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+.alert-success {
+    background-color: #27ae60;
+    border-left: 4px solid #229954;
+}
+
+.alert-error {
+    background-color: #e74c3c;
+    border-left: 4px solid #c0392b;
+}
+
+/* 로딩 스피너 */
+.loading-spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #333;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* 검색 결과 없음 메시지 */
+.no-results {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+    font-style: italic;
+}
+
+/* 반응형 조정 */
+@media (max-width: 768px) {
+    .course-register-container {
+        margin: 10px;
+        padding: 20px;
+    }
+    
+    .upload-wrapper {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .upload-wrapper .upload-label {
+        border-bottom: 1px solid #e1e1e1;
+        border-radius: 0;
+    }
+    
+    .upload-wrapper button {
+        border-radius: 0 0 8px 8px;
+    }
+    
+    .search-wrapper {
+        flex-direction: column;
+    }
+    
+    #restaurantSearch {
+        border-bottom: 1px solid #e1e1e1;
+        border-radius: 0;
+    }
+    
+    .search-wrapper button {
+        border-radius: 0 0 8px 8px;
+    }
+    
+    .modal-content {
+        width: 95%;
+        margin: 2% auto;
+        padding: 20px;
+    }
+    
+    #restaurantSelectMap {
+        height: 250px;
+    }
+    
+    .result-table {
+        font-size: 14px;
+    }
+    
+    .result-table th,
+    .result-table td {
+        padding: 8px 10px;
+    }
+    
+    .alert {
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        right: 10px;
+        max-width: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .course-register-container h2 {
+        font-size: 24px;
+    }
+    
+    .input-row input[type="text"],
+    .input-row textarea {
+        font-size: 16px; /* iOS 줌 방지 */
+    }
+    
+    .modal-content {
+        padding: 15px;
+    }
+    
+    .modal h2 {
+        font-size: 20px;
+    }
+}

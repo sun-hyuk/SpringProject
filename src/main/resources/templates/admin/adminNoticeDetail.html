@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>공지 상세 정보</title>
+<link rel="stylesheet" href="/css/admin/adminNoticeDetail.css" />
+</head>
+<body>
+	<div class="modal-overlay" id="noticeModal">
+		<div class="modal-content">
+			<div class="modal-close" onclick="closeModal()">✕</div>
+			<h2>공지 상세 정보</h2>
+
+			<div class="info-box">
+				<span class="label">공지 번호:</span> <span
+					th:text="${notice.announcementId}">123</span>
+			</div>
+			<div class="info-box">
+				<span class="label">공지 유형:</span> <span
+					th:text="${notice.announcementType}">공지</span>
+			</div>
+			<div class="info-box">
+				<span class="label">작성자:</span> <span th:text="${notice.adminId}">admin</span>
+			</div>
+			<div class="info-box">
+				<span
+					th:text="${#dates.format(notice.createdAt, 'yyyy-MM-dd HH:mm')}">2025-06-03
+					10:00</span>
+			</div>
+			<div class="info-box" th:if="${notice.fileName != null}">
+				<span class="label">첨부파일:</span> <a th:href="@{${notice.filePath}}"
+					th:text="${notice.fileName}" target="_blank"
+					rel="noopener noreferrer">파일명.pdf</a>
+			</div>
+
+			<h4>공지 제목</h4>
+			<div class="info-box">
+				<div th:text="${notice.title}">공지 제목입니다.</div>
+			</div>
+
+			<h4>공지 내용</h4>
+			<div class="info-box">
+				<textarea readonly th:text="${notice.content}"></textarea>
+
+			</div>
+
+			<!-- 수정, 삭제 버튼 등 관리용 액션 영역 -->
+			<div class="btn-group">
+				<button type="button"
+					th:onclick="'window.location.href=\'/adminNoticeWrite?id=' + ${notice.announcementId} + '\''">수정</button>
+
+				<button type="button"
+					th:onclick="'deleteNotice(' + ${notice.announcementId} + ')'">삭제</button>
+
+			</div>
+			<script th:src="@{/js/admin/adminNoticeDetail.js}"></script>
+			<input type="hidden" name="announcementId"
+				th:value="${notice.announcementId}" />
+</body>
+</html>

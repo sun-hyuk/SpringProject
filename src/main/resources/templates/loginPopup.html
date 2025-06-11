@@ -1,0 +1,27 @@
+<!-- loginPopup.html -->
+<div class="login-required-overlay" id="loginRequiredPopup"
+	th:fragment="loginPopup" onclick="hideLoginPopup()">
+	<div class="login-required-popup" onclick="event.stopPropagation()">
+		<div class="popup-content">
+			<div class="icon">
+				<svg width="48" height="48" viewBox="0 0 24 24" fill="none"
+					stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="11" width="18" height="11" rx="2"
+						ry="2" />
+                    <circle cx="12" cy="16" r="1" />
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                </svg>
+			</div>
+
+			<h2>로그인이 필요합니다</h2>
+			<p>
+				이 서비스를 이용하시려면<br>먼저 로그인해주세요.
+			</p>
+
+			<div class="button-group">
+				<button class="btn-secondary" onclick="hideLoginPopup()">확인</button>
+				<button class="btn-primary" onclick="goToLogin()">로그인하러 가기</button>
+			</div>
+		</div>
+	</div>
+</div>

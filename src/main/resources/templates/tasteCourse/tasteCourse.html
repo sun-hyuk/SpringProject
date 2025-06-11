@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<!-- iPhone 12 Pro 대응 -->
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>맛집 코스</title>
+<link rel="stylesheet" th:href="@{/css/tasteCourse/tasteCourse.css}">
+<link rel="stylesheet" th:href="@{/css/loginPopup.css}">
+</head>
+<body th:attr="data-logged-in=${loggedInMember != null}">
+	<!-- 헤더 -->
+	<header class="header">
+		<a href="javascript:history.back()" class="btn-back"> <img
+			th:src="@{/images/vector-icon.png}" alt="뒤로가기" class="back-icon" />
+		</a>
+		<h1>하루 맛집 코스</h1>
+	</header>
+
+	<!-- 본문 -->
+	<div class="container">
+		<!-- 필터 -->
+		<div class="filter-container">
+			<select id="regionFilter" class="region-filter">
+				<option value="전체">전체</option>
+				<option value="서울">서울</option>
+				<option value="부산">부산</option>
+				<option value="제주">제주</option>
+				<option value="대구">대구</option>
+			</select>
+
+		</div>
+
+		<!-- 코스 카드 그리드 -->
+		<div class="course-grid" id="courseGrid"></div>
+	</div>
+
+	<!-- 로그인 팝업 -->
+	<div th:replace="loginPopup.html :: loginPopup"></div>
+
+	<!-- 공통 푸터 삽입 -->
+	<div th:replace="/footer.html"></div>
+
+	<script>
+    // 페이지 이동 함수
+    function navigateTo(url) {
+      window.location.href = url;
+    }
+    
+    // 로그인 필요 팝업 표시
+    function showLoginRequiredPopup() {
+      document.getElementById('loginRequiredPopup').classList.add('active');
+    }
+    
+    // 로그인 필요 팝업 숨기기
+    function hideLoginPopup() {
+      document.getElementById('loginRequiredPopup').classList.remove('active');
+    }
+    
+    // 로그인 페이지로 이동
+    function goToLogin() {
+      window.location.href = '/login';
+    }
+  </script>
+	<script th:src="@{/js/tasteCourse/tasteCourse.js}"></script>
+</body>
+</html>

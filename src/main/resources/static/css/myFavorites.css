@@ -1,0 +1,583 @@
+/* reset & 전체박스 */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  font-family: "Apple SD Gothic Neo", sans-serif;
+  background: #fff;
+  overflow: hidden; /* 전체 스크롤 방지 */
+  overflow-x: hidden; /* 가로 스크롤 완전 차단 */
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden; /* 가로 스크롤 방지 */
+}
+
+.container {
+  position: absolute;
+  top: 80px;             /* header 높이 만큼 내려서 시작 */
+  bottom: 70px;          /* footer 높이 만큼 위에서 끝나도록 */
+  left: 0;
+  right: 0;
+  width: 100%;
+  max-width: 450px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  overflow-y: auto;
+  overflow-x: hidden;    /* 가로 스크롤 방지 */
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;    /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+  background-color: #ffffff;
+}
+
+.container::-webkit-scrollbar {
+  display: none;
+}
+
+/* 헤더 */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 60px;
+  background: white;
+  border-bottom: 1px solid #eee;
+  z-index: 100;
+}
+
+.btn-back {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+.back-icon {
+  display: block;
+  width: 12px;
+  height: 15px;
+}
+
+.header h1 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+/* 탭 메뉴 */
+.tab-menu {
+  display: flex;
+  width: 100%;
+  background: white;
+  padding: 0 20px 0;
+  gap: 24px;
+}
+
+.tab-btn {
+  background: transparent;
+  border: none;
+  font-size: 16px;
+  font-weight: 400;
+  color: #999;
+  cursor: pointer;
+  position: relative;
+  padding: 1px 6px 8px;
+  white-space: nowrap;
+}
+
+.tab-btn.active {
+  color: #000;
+  border-bottom:2px solid black;
+}
+
+.tab-btn.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #000;
+}
+
+/* 탭 내용 */
+.tab-content {
+  width: 100%;
+  overflow-x: hidden; /* 가로 스크롤 방지 */
+}
+
+.tab-pane {
+  display: none;
+  width: 100%;
+  background-color: white;
+  overflow-x: hidden; /* 가로 스크롤 방지 */
+}
+
+.tab-pane.active {
+  display: block;
+}
+
+/* 찜 카운트 및 보기 옵션 */
+.favorite-count {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid #f2f2f2;
+}
+
+.favorite-count p {
+  font-size: 15px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+  letter-spacing: -0.3px;
+}
+
+.favorite-count span {
+  font-weight: 1000;
+  color: #AE8670;
+  margin-left: 4px;
+}
+
+.view-options {
+  display: flex;
+  gap: 8px;
+}
+
+.view-options img {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  opacity: 0.5;
+}
+
+.view-options img.active-view {
+  opacity: 1;
+}
+
+/* 공통 그리드 뷰 스타일 */
+.favorite-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding: 16px;
+  background-color: #ffffff;
+}
+
+.favorite-item {
+  background-color: white;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.favorite-image {
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.item-img {
+  width: 100%;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+}
+
+/* 맛집과 코스 아이템 공통 스타일 */
+.restaurant-item, .course-item {
+  border: 1px solid #eee;
+  border-radius: 12px;
+  margin: 0;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.restaurant-item:active, .course-item:active {
+  transform: scale(0.98);
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.restaurant-item .favorite-info, .course-item .favorite-info {
+  padding: 12px 14px 14px;
+}
+
+/* 맛집 아이템 텍스트 스타일 */
+.store-name {
+  margin: 0 0 6px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #333;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  letter-spacing: -0.3px;
+  line-height: 1.3;
+}
+
+.rating {
+  display: flex;
+  gap: 6px;
+  align-items: flex-start; /* 상단 정렬로 변경 */
+  pointer-events: none;
+}
+
+.rating-info {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0; /* 평점 부분이 줄어들지 않도록 */
+}
+
+.star {
+  color: #FFC107;
+  font-size: 13px;
+}
+
+.score {
+  font-size: 13px;
+  font-weight: 600;
+  color: #333;
+}
+
+.details {
+  margin-top: 2px;
+  font-size: 12px;
+  color: #888;
+  font-weight: 400;
+  line-height: 1.3;
+  display: inline-block;  /* 텍스트를 가로로 배치 */
+  white-space: nowrap;    /* 텍스트가 줄 바꿈 없이 한 줄로 표시 */
+  overflow: hidden;       /* 넘치는 텍스트는 숨기기 */
+  text-overflow: ellipsis; /* 넘치는 텍스트는 '...'으로 생략 */
+}
+
+
+/* 북마크 버튼 스타일 추가 */
+.restaurant-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 6px;
+}
+
+.bookmark-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.bookmark-btn:hover {
+  transform: scale(1.1);
+}
+
+.bookmark-icon {
+  width: 16px;
+  height: 16px;
+  transition: opacity 0.2s ease;
+}
+
+/* 코스 아이템 텍스트 스타일 */
+.title {
+  margin: 0 0 8px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #333;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  letter-spacing: -0.3px;
+  line-height: 1.3;
+}
+
+.stats {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* 클릭 가능한 아이콘들 스타일 */
+.likes, .comments, .share {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 12px;
+  color: #666;
+  font-weight: 500;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.likes.clickable, .comments.clickable, .share.clickable {
+  pointer-events: auto;
+}
+
+.likes:hover, .comments:hover, .share:hover {
+  transform: scale(1.05);
+}
+
+.heart-icon, .share-icon {
+  width: 13px;
+  height: 13px;
+  transition: opacity 0.2s ease;
+}
+
+.likes img, .comments img, .share img {
+  width: 13px;
+  height: 13px;
+  opacity: 0.7;
+}
+
+/* 활성 상태 스타일 */
+.likes.active .heart-icon,
+.comments.active .bookmark-icon {
+  opacity: 1;
+}
+
+/* ─────────────────────────────────────────
+   리스트 뷰 전용: 한 줄에 하나씩 카드 모양
+   ───────────────────────────────────────── */
+.favorite-list {
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+/* 리스트뷰용 카드 스타일 */
+.favorite-list .restaurant-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.06);
+  margin-bottom: 12px;
+  background-color: #fff;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.favorite-list .restaurant-item:last-child {
+  margin-bottom: 0;
+}
+
+.favorite-list .restaurant-item:active {
+  transform: scale(0.98);
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 좌측 이미지 */
+.favorite-list .restaurant-item .favorite-image {
+  width: 80px;
+  height: 80px;
+  margin-right: 12px;
+  border-radius: 8px;
+  overflow: hidden;
+  flex-shrink: 0;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.favorite-list .restaurant-item .item-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 우측 텍스트 영역 */
+.favorite-list .restaurant-item .favorite-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* 식당 이름 + 북마크 */
+.favorite-list .restaurant-item .restaurant-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 6px;
+}
+
+.favorite-list .restaurant-item .store-name {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 700;
+  color: #333;
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.favorite-list .restaurant-item .bookmark-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.favorite-list .restaurant-item .bookmark-btn:hover {
+  transform: scale(1.1);
+}
+
+.favorite-list .restaurant-item .bookmark-icon {
+  width: 18px;
+  height: 18px;
+  transition: opacity 0.2s ease;
+}
+
+/* 별점 */
+.favorite-list .restaurant-item .rating {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 4px;
+  pointer-events: none;
+}
+
+.favorite-list .restaurant-item .star {
+  color: #ff9500;
+  font-size: 14px;
+}
+
+.favorite-list .restaurant-item .score {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+/* 태그·주소 */
+.favorite-list .restaurant-item .details {
+  font-size: 13px;
+  color: #999;
+  font-weight: 400;
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 리스트 모드 호버 시 배경색 변화 */
+.favorite-list .restaurant-item:hover {
+  background-color: #fafafa;
+}
+
+/* 코스 리스트 뷰 스타일 */
+.favorite-list .course-item {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  border: none;
+  border-bottom: 1px solid #f0f0f0;
+  margin: 0;
+  border-radius: 0;
+  box-shadow: none;
+  background: white;
+  transition: background-color 0.2s ease;
+}
+
+.favorite-list .course-item:hover {
+  background-color: #fafafa;
+}
+
+.favorite-list .course-item:last-child {
+  border-bottom: none;
+}
+
+.favorite-list .course-item .favorite-image {
+  width: 80px;
+  height: 80px;
+  margin-right: 16px;
+  border-radius: 12px;
+  overflow: hidden;
+  flex-shrink: 0;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.favorite-list .course-item .item-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.favorite-list .course-item .favorite-info {
+  flex: 1;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.favorite-list .course-item .title {
+  margin: 0 0 10px;
+  font-size: 17px;
+  font-weight: 700;
+  color: #333;
+  line-height: 1.3;
+}
+
+.favorite-list .course-item .stats {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.favorite-list .course-item .likes,
+.favorite-list .course-item .comments,
+.favorite-list .course-item .share {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  color: #666;
+  font-weight: 500;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.favorite-list .course-item .likes img,
+.favorite-list .course-item .comments img,
+.favorite-list .course-item .share img {
+  width: 14px;
+  height: 14px;
+  opacity: 0.8;
+}

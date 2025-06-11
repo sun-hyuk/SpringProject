@@ -1,0 +1,219 @@
+:root { 
+  --mobile-max: 390px; 
+  --purple: #4f46e5;
+  --footer-height: 60px;
+}
+
+html, body {
+  margin: 0; 
+  padding: 0;
+  width: 100%; 
+  height: 100%;
+  font-family: "Apple SD Gothic Neo", sans-serif;
+  background: #fff; 
+  color: #222;
+  overflow: hidden; /* 전체 페이지 스크롤 방지 */
+}
+
+/* body를 스크롤 컨테이너로 변경 */
+body {
+  position: fixed;
+  top: 0;
+  bottom: var(--footer-height);
+  left: 0;
+  right: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+/* 웹킷 브라우저 스크롤바 숨김 */
+body::-webkit-scrollbar {
+  display: none;
+}
+
+/* 히어로 래퍼 */
+.hero-wrap {
+  position: relative;
+  width: 100%; 
+  max-width: var(--mobile-max);
+  margin: 0 auto;
+}
+
+/* 히어로 이미지 */
+.hero-image {
+  width: 100%;
+  display: block;
+}
+
+/* 백 버튼: 이미지 위, 좌측 상단 */
+.btn-back {
+  position: absolute;
+  left: 16px;
+  top: 16px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  z-index: 100;
+  background-color: white;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.back-icon {
+  display: block;
+  width: 12px;
+  height: 15px;
+}
+
+/* 디테일 컨테이너 */
+.detail-container {
+  max-width: var(--mobile-max);
+  margin: 0 auto;
+  padding: 20px 16px 40px; /* 하단 여백 충분히 */
+  box-sizing: border-box;
+}
+
+.course-date { 
+  font-size: 12px; 
+  color: #888; 
+  margin: 0 0 6px; 
+}
+
+.course-title { 
+  font-size: 19px; 
+  font-weight: 700; 
+  margin: 0 0 12px; 
+  line-height: 1.4; 
+}
+
+.action-row { 
+  display: flex; 
+  gap: 24px; 
+  align-items: center; 
+  margin-bottom: 20px; 
+}
+
+.action-btn {
+  display: flex; 
+  align-items: center; 
+  background: none; 
+  border: none;
+  font-size: 14px; 
+  color: #666; 
+  cursor: pointer; 
+  padding: 0;
+}
+
+.action-btn img { 
+  width: 18px; 
+  height: 18px; 
+  margin-right: 4px; 
+}
+
+.action-btn.liked, 
+.action-btn.bookmarked { 
+  color: #000; 
+}
+
+.course-desc { 
+  font-size: 14px; 
+  line-height: 1.6; 
+  white-space: pre-wrap; 
+  margin-bottom: 32px; 
+}
+
+.timeline-section h3 { 
+  font-size: 16px; 
+  font-weight: 700; 
+  margin: 0 0 12px; 
+}
+
+.start-time { 
+  font-size: 12px; 
+  color: #666; 
+  margin: 0 0 16px; 
+}
+
+.timeline-list { 
+  display: flex; 
+  flex-direction: column; 
+  gap: 14px; 
+  margin-bottom: 40px; /* 마지막 요소 여백 추가 */
+}
+
+.timeline-item { 
+  display: flex; 
+  gap: 12px; 
+  align-items: flex-start; 
+}
+
+.timeline-num {
+  width: 30px; 
+  height: 30px; 
+  border-radius: 50%;
+  background: var(--purple); 
+  color: #fff; 
+  font-size: 13px; 
+  font-weight: 700;
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.timeline-card {
+  flex: 1; 
+  background: #f5f6ff; 
+  border: 1px solid #dfe1ff;
+  border-radius: 10px; 
+  padding: 12px 14px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.04);
+}
+
+.timeline-card h4 { 
+  font-size: 14px; 
+  font-weight: 600; 
+  margin: 0 0 6px; 
+}
+
+.timeline-card p { 
+  font-size: 12px; 
+  color: #666; 
+  margin: 0; 
+}
+
+/* 푸터 고정 */
+footer, .footer {
+  position: fixed !important;
+  bottom: 0 !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  width: 100% !important;
+  max-width: var(--mobile-max) !important;
+  z-index: 1000 !important;
+}
+
+/* 반응형 대응 */
+@media screen and (max-width: 390px) {
+  footer, .footer {
+    max-width: 100vw;
+  }
+}
+
+/* 안전 영역 대응 (아이폰 노치 등) */
+@supports (padding: max(0px)) {
+  body {
+    bottom: calc(var(--footer-height) + env(safe-area-inset-bottom));
+    padding-top: env(safe-area-inset-top);
+  }
+  
+  .btn-back {
+    top: calc(16px + env(safe-area-inset-top));
+  }
+}

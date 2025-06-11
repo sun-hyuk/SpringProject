@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>게시글 상세</title>
+<link rel="stylesheet" href="css/board/boardDetail.css">
+<link rel="stylesheet" th:href="@{/css/loginPopup.css}">
+</head>
+<body
+	th:attr="data-logged-in=${loggedInMember != null}, data-member-id=${loggedInMember != null ? loggedInMember.memberId : ''}">
+	<div class="container">
+		<!-- 헤더 -->
+		<header class="header">
+			<a href="javascript:history.back()" class="btn-back"> <img
+				th:src="@{/images/vector-icon.png}" alt="뒤로가기" class="back-icon" />
+			</a>
+			<h1>게시판</h1>
+		</header>
+
+		<!-- 게시글 내용 -->
+		<div class="post-content"
+			th:attr="data-author-id=${board.memberId != null ? board.memberId : ''}">
+			<!-- 작성자 정보 -->
+			<div class="author-info">
+				<div class="author-main">
+					<div class="profile-img">
+						<img
+							th:src="${board.image} != null ? ${board.image} : '/images/profile.png'"
+							alt="프로필">
+					</div>
+					<div class="author-details">
+						<div class="author-name" th:text="${board.nickname}"></div>
+						<div class="post-time"
+							th:text="${#dates.format(board.createAt, 'MM/dd HH:mm')}"></div>
+					</div>
+				</div>
+
+				<!-- 오른쪽 more 버튼 -->
+				<button class="more-btn">
+					<img th:src="@{/images/board/more-icon.png}" alt="더보기">
+				</button>
+
+				<!-- 메뉴: 수정 / 삭제 -->
+				<div class="more-menu post" style="display: none;">
+					<button class="edit-post-btn" th:attr="data-id=${board.boardId}">수정하기</button>
+					<button class="delete-post-btn" th:attr="data-id=${board.boardId}">삭제하기</button>
+				</div>
+			</div>
+
+			<!-- 게시글 제목 -->
+			<div id="post-title-view" class="post-title" th:text="${board.title}"></div>
+			<input id="post-title-edit" class="post-title-input" type="text"
+				style="display: none;" />
+
+			<!-- 게시글 본문 -->
+			<div id="post-body-view" class="post-body"
+				th:utext="${#strings.replace(board.content, '\n', '<br/>')}"></div>
+			<textarea id="post-body-edit" class="post-body-textarea"
+				style="display: none;"></textarea>
+
+			<!-- 수정 완료/취소 버튼 -->
+			<div id="edit-controls" class="edit-controls"
+				style="display: none; margin: 8px 0;">
+				<button id="save-edit-btn">수정 완료</button>
+				<button id="cancel-edit-btn">취소</button>
+			</div>
+
+			<!-- 반응 버튼들 -->
+			<div class="reaction-section">
+				<button class="reaction-btn">
+					<img class="reaction-icon heart-icon board-like-icon"
+						th:src="${board.liked} ? '/images/board/heart-filled.png' : '/images/board/heart.png'"
+						th:attr="data-liked=${board.liked}" alt="좋아요" /> <span
+						class="reaction-count" th:text="${board.likes}"></span>
+				</button>
+				<button class="reaction-btn">
+					<img src="/images/board/comment.png" alt="댓글"
+						class="reaction-icon comment-icon"> <span
+						class="reaction-count" th:text="${board.commentCount}"></span>
+				</button>
+				<button class="reaction-btn">
+					<img src="/images/board/eye.png" alt="조회수"
+						class="reaction-icon eye-icon"> <span class="reaction-count"
+						th:text="${board.views}"></span>
+				</button>
+			</div>
+		</div>
+
+		<!-- 댓글 섹션 -->
+		<div class="comments-section">
+			<div class="comments-header">
+				<div class="comments-count">
+					댓글 목록 <span class="count-circle" th:text="${board.commentCount}"></span>
+				</div>
+			</div>
+
+			<div class="comments-list">
+				<!-- 상위 댓글 -->
+				<div class="comment-item" th:each="comment : ${commentList}"
+					th:if="${comment.parentId == null}"
+					th:attr="data-comment-id=${comment.commentId}, data-author-id=${comment.memberId}">
+
+					<!-- 상위 댓글 헤더 -->
+					<div class="reply-header">
+						<div class="reply-info">
+							<div class="reply-profile">
+								<img th:if="${comment.profile != null}"
+									th:src="@{${comment.profile}}" alt="프로필"> <img
+									th:if="${comment.profile == null}"
+									th:src="@{/images/profile.png}" alt="기본 프로필">
+							</div>
+							<div class="reply-meta">
+								<div class="reply-name" th:text="${comment.nickname}">닉네임</div>
+								<div class="comment-time"
+									th:text="${#dates.format(comment.createAt, 'MM/dd HH:mm')}">작성일</div>
+							</div>
+						</div>
+						<div class="reply-actions-top">
+							<button class="action-btn reply-btn">
+								<img th:src="@{/images/board/comment.png}" alt="댓글">
+							</button>
+							<button class="action-btn reply-like"
+								th:attr="data-comment-id=${comment.commentId}"
+								data-liked="false">
+								<img class="heart-icon comment-like-icon"
+									th:src="${comment.liked} ? '/images/board/heart-filled.png' : '/images/board/heart.png'"
+									th:attr="data-liked=${comment.liked}" />
+							</button>
+							<button class="action-btn more-btn2">
+								<img th:src="@{/images/board/more-icon.png}" alt="더보기">
+							</button>
+							<!-- 삭제 메뉴 (기본 숨김) -->
+							<div class="more-menu"
+								style="display: none; margin: 6px 2px 0 0;">
+								<button class="delete-btn" data-type="comment"
+									th:attr="data-id=${comment.commentId}">삭제하기</button>
+							</div>
+						</div>
+					</div>
+
+					<div class="comment-content" th:text="${comment.content}">내용</div>
+
+					<div class="reply-input-wrapper" style="display: none;">
+						<input type="text" class="reply-input" placeholder="대댓글을 입력하세요">
+						<button type="button" class="reply-send-btn">등록</button>
+					</div>
+
+					<!-- 대댓글 반복 -->
+					<div class="comment-reply" th:each="reply : ${commentList}"
+						th:if="${reply.parentId == comment.commentId}"
+						th:attr="data-comment-id=${reply.commentId}, data-author-id=${reply.memberId}">
+						<div class="reply-header">
+							<div class="reply-info">
+								<!-- 프로필 -->
+								<div class="reply-profile">
+									<img th:if="${reply.profile != null}"
+										th:src="@{${reply.profile}}" alt="프로필"> <img
+										th:if="${reply.profile == null}"
+										th:src="@{/images/profile.png}" alt="기본 프로필">
+								</div>
+								<!-- 이름 + 시간 -->
+								<div class="reply-meta">
+									<span class="reply-name" th:text="${reply.nickname}">닉네임</span>
+									<span class="reply-time"
+										th:text="${#dates.format(reply.createAt, 'MM/dd HH:mm')}">작성일</span>
+								</div>
+							</div>
+
+							<!-- 아이콘 -->
+							<div class="reply-actions-top action-buttons">
+								<button class="action-btn reply-like"
+									th:attr="data-comment-id=${reply.commentId}" data-liked="false">
+									<img class="heart-icon reply-like-icon"
+										th:src="${reply.liked} ? '/images/board/heart-filled.png' : '/images/board/heart.png'"
+										th:attr="data-liked=${reply.liked}" />
+								</button>
+								<button class="action-btn more-btn2">
+									<img th:src="@{/images/board/more-icon.png}" alt="더보기" />
+								</button>
+
+								<!-- 삭제 메뉴 (기본 숨김) -->
+								<div class="more-menu"
+									style="display: none; margin: 6px 13px 0 0;">
+									<button class="delete-btn" th:attr="data-id=${reply.commentId}">삭제하기</button>
+								</div>
+							</div>
+						</div>
+
+						<!-- 대댓글 내용 -->
+						<div class="reply-content" th:text="${reply.content}">내용</div>
+					</div>
+				</div>
+
+				<!-- 댓글 입력창 -->
+				<div class="comment-input-section">
+					<div class="comment-input-wrapper">
+						<img src="/images/board/pencil.png" alt="입력 아이콘"
+							class="comment-pencil-icon"> <input type="text"
+							id="commentInput" placeholder="댓글을 입력하세요" class="comment-input">
+						<button type="button" id="sendCommentBtn" class="send-btn">
+							<img src="/images/board/send.png" alt="전송" class="send-icon">
+						</button>
+					</div>
+				</div>
+
+				<!-- 로그인 팝업 -->
+				<div th:replace="/loginPopup :: loginPopup"></div>
+			</div>
+
+		</div>
+
+		<script th:src="@{/js/board/board.js}"></script>
+		<script th:src="@{/js/loginPopup.js}"></script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>이벤트 상세</title>
+<!-- eventDetail.css 를 로드 -->
+<link rel="stylesheet" th:href="@{/css/event/eventDetail.css}" />
+</head>
+<body>
+	<!-- ─── 상단 고정 헤더 ─────────────────────────────────────────────────── -->
+	<header class="header">
+		<a href="javascript:history.back()" class="btn-back"> <img
+			th:src="@{/images/vector-icon.png}" alt="뒤로가기" class="back-icon" />
+		</a>
+		<h1>이벤트</h1>
+	</header>
+
+	<!-- ─── 스크롤 가능한 메인 컨테이너 ───────────────────────────────────── -->
+	<div class="container">
+
+		<!-- 이벤트 제목 -->
+		<h2 class="event-title" th:text="${event.title}">이벤트 제목</h2>
+
+		<!-- 이벤트 기간 -->
+		<div class="event-period">
+			<span class="period-badge">이벤트 기간</span> <span class="period-date"
+				th:text="${#temporals.format(event.startDate, 'yyyy.MM.dd')} + ' ~ ' + ${#temporals.format(event.endDate, 'yyyy.MM.dd')}">
+				2025.05.20 ~ 2025.06.01 </span>
+		</div>
+
+		<!-- 메인 카드 (연한 초록 배경) -->
+		<div class="event-card">
+			<!-- 이미지 추가 영역 -->
+			<div class="event-image-wrap">
+				<img th:src="@{${event.imageUrl}}" alt="이벤트 이미지"
+					class="event-main-image" />
+			</div>
+
+			<div class="card-headline" th:text="${event.title}">카드 상단 문구</div>
+			<div class="card-subtitle" th:utext="${event.content}">상세 설명
+				HTML</div>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" th:href="@{/css/myInfo/nickname.css}" />
+</head>
+<body>
+	<!-- 헤더 -->
+	<header class="header">
+		<a href="javascript:history.back()" class="btn-back"> <img
+			th:src="@{/images/vector-icon.png}" alt="뒤로가기" class="back-icon" />
+		</a>
+		<h1>닉네임 변경</h1>
+		<!-- 완료 버튼 (폼 밖에 위치) -->
+		<button type="button" class="btn-complete">완료</button>
+	</header>
+
+	<!-- 스크롤 영역 -->
+	<div class="container">
+		<!-- id="nicknameForm" 을 추가 -->
+		<form id="nicknameForm" class="form-group"
+			th:action="@{/myInfo/nickname}" method="post">
+			<div class="input-group">
+				<label for="nickname">닉네임</label>
+				<!-- 세션에서 넘어온 member.nickname으로 초기값 바인딩 -->
+				<input id="nickname" name="nickname" type="text"
+					th:value="${member.nickname}" maxlength="20" class="input-field" />
+				<button type="button" class="btn-clear">
+					<img th:src="@{/images/myInfo/delete-icon.png}" alt="삭제"
+						class="clear-icon" />
+				</button>
+			</div>
+			<!-- 폼 내부에는 제출 버튼이 없습니다. JS가 헤더의 btn-complete를 감지해 submit 합니다 -->
+		</form>
+	</div>
+
+	<!-- 외부 JS 파일 불러오기: 실제 경로를 확인하세요 -->
+	<script th:src="@{/js/myInfo/nickname.js}"></script>
+</body>
+</html>

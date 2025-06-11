@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>가게 승인/관리 - YUMMY JEJU</title>
+<!-- 필수 폰트 로드 -->
+<link rel="stylesheet"
+	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap">
+<!-- CSS 로드 -->
+<link rel="stylesheet" th:href="@{/css/admin/adminHeader.css}">
+<link rel="stylesheet" th:href="@{/css/admin/adminRstApproval.css}">
+</head>
+<body>
+	<!-- 사이드바 및 헤더 인클루드 -->
+	<div th:replace="admin/adminHeader"></div>
+
+	<!-- 메인 컨텐츠 영역 -->
+	<main class="main-content">
+		<!-- 가게 승인 섹션 - 향상된 UI -->
+		<section class="approval-section">
+			<h2>가게 승인/관리</h2>
+
+			<div class="tabs">
+				<a href="/adminRstApproval" class="tab-btn active">승인 대기</a> <a
+					href="/adminRstList" class="tab-btn">가게 리스트</a>
+			</div>
+
+			<div class="table-container">
+				<table>
+					<thead>
+						<tr>
+							<th>식당 이름</th>
+							<th>주소</th>
+							<th>승인 요청일</th>
+							<th>관리</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:if="${totalCount == 0}">
+							<td colspan="4">승인 대기 중인 식당이 없습니다.</td>
+						</tr>
+						<tr th:each="restaurant : ${pendingRestaurants}"
+							th:if="${totalCount > 0}">
+							<td th:text="${restaurant.name}">맛있는 식당</td>
+							<td
+								th:text="${restaurant.regionLabel + ' ' + restaurant.region2Label}">제주시
+								연동</td>
+							<td
+								th:text="${restaurant.createdAt != null ? #strings.substring(restaurant.createdAt.toString(), 0, 10) : ''}">2024-01-01</td>
+							<td class="actions">
+								<!-- 승인 버튼 -->
+								<form method="post" action="/admin/restaurants/approve"
+									style="display: inline;">
+									<input type="hidden" name="rst_id"
+										th:value="${restaurant.rstId}"> <input type="hidden"
+										name="pageNum" th:value="${currentPage}"> <input
+										type="hidden" name="searchType"
+										th:value="${searchType != null ? searchType : ''}"> <input
+										type="hidden" name="searchKeyword"
+										th:value="${searchKeyword != null ? searchKeyword : ''}">
+									<button type="submit" class="approve">승인</button>
+								</form> <!-- 거절 버튼 = 삭제 -->
+								<form method="post" action="/admin/restaurants/reject"
+									style="display: inline;"
+									onsubmit="return confirm('정말 거절하시겠습니까?');">
+									<input type="hidden" name="rst_id"
+										th:value="${restaurant.rstId}"> <input type="hidden"
+										name="pageNum" th:value="${currentPage}"> <input
+										type="hidden" name="searchType"
+										th:value="${searchType != null ? searchType : ''}"> <input
+										type="hidden" name="searchKeyword"
+										th:value="${searchKeyword != null ? searchKeyword : ''}">
+									<button type="submit" class="reject">거절</button>
+								</form>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<!-- 페이지네이션 영역 -->
+			<div class="pagination" th:if="${totalPages > 0}">
+				<span th:each="i : ${#numbers.sequence(startPage, endPage)}">
+					<strong th:if="${i == currentPage}" th:text="${i}">1</strong> <a
+					th:if="${i != currentPage}"
+					th:href="@{/admin/restaurants/approval(pageNum=${i})}"
+					th:text="${i}">1</a>
+				</span>
+			</div>
+
+			<!-- 현재 상태 표시 -->
+			<div class="status-info">
+				<p>
+					총 <span th:text="${totalCount}">0</span>개의 승인 대기 중인 식당이 있습니다.
+				</p>
+			</div>
+		</section>
+	</main>
+
+	<!-- JavaScript 로드 -->
+	<script th:src="@{/js/admin/adminHeader.js}"></script>
+	<script th:src="@{/js/admin/adminRstApproval.js}"></script>
+
+	<!-- 승인/거절 성공 메시지 표시 -->
+	<script th:if="${approveSuccess == true}">
+        alert("가게가 성공적으로 승인되었습니다.");
+	    const approveUrl = new URL(window.location);
+	    approveUrl.searchParams.delete('approveSuccess');
+	    window.history.replaceState({}, document.title, approveUrl);
+    </script>
+
+	<script th:if="${rejectSuccess == true}">
+        alert("가게 등록이 거절되었습니다.");
+	    const rejectUrl = new URL(window.location);  <!-- 여기 이름 다르게 -->
+	    rejectUrl.searchParams.delete('rejectSuccess');
+	    window.history.replaceState({}, document.title, rejectUrl);
+    </script>
+</body>
+</html>

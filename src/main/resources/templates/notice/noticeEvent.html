@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<title>공지사항 상세</title>
+<link rel="stylesheet" th:href="@{/css/notice/noticeEvent.css}" />
+</head>
+<body>
+	<header class="header">
+		<a href="javascript:history.back()" class="btn-back"> <img
+			th:src="@{/images/vector-icon.png}" alt="뒤로가기" class="back-icon" />
+		</a>
+		<h1>공지사항</h1>
+	</header>
+
+	<div class="container">
+		<div class="detail-header">
+			<div class="header-top">
+				<span class="badge">이벤트</span>
+				<div class="detail-title">이벤트 당첨자 안내</div>
+			</div>
+			<div class="detail-date">2025.05.20</div>
+		</div>
+		<hr />
+
+		<div class="detail-content">
+			<p>여기에 상세 본문이 보입니다.(임시 텍스트)</p>
+		</div>
+		<div class="winners">
+			<ul>
+				<li class="winners-title">▶ 당첨자 명단(예시)</li>
+				<li>홍길동 (hong@example.com)</li>
+				<li>김철수 (chulsoo@example.com)</li>
+			</ul>
+		</div>
+	</div>
+</body>
+</html>

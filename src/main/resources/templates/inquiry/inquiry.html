@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>문의하기</title>
+<link rel="stylesheet" th:href="@{/css/inquiry/inquiry.css}">
+</head>
+<body>
+	<!-- 1) 헤더 -->
+	<header class="header">
+		<a href="javascript:history.back()" class="btn-back"> <img
+			th:src="@{/images/vector-icon.png}" alt="뒤로가기" class="back-icon" />
+		</a>
+		<h1>문의하기</h1>
+	</header>
+
+	<!-- 2) 스크롤 영역 -->
+	<div class="container">
+		<!-- 2-1) 탭 -->
+		<nav class="tabs">
+			<div class="tab active" data-target="write">문의하기</div>
+			<div class="tab" data-target="history">문의내역확인</div>
+		</nav>
+
+		<!-- 2-2) 문의 작성 폼 -->
+		<div id="write" class="tab-content">
+			<form class="inquiry-form" id="inquiryForm">
+				<!-- 카테고리 -->
+				<div class="form-group inquiry-group">
+					<select name="type" id="inquiryType" required>
+						<option value="" disabled selected>문의 카테고리</option>
+						<option value="계정문의">계정 문의</option>
+						<option value="가계문의">가게 문의</option>
+						<option value="기타">기타</option>
+					</select>
+				</div>
+
+				<!-- 제목 -->
+				<div class="form-group">
+					<input type="text" name="title" id="inquiryTitle" maxlength="50"
+						placeholder="제목을 입력해 주세요. (50자 이내)" required />
+				</div>
+
+				<!-- 내용 -->
+				<div class="form-group">
+					<textarea rows="6" name="content" id="inquiryContent"
+						maxlength="500" placeholder="문의 내용을 입력해 주세요. (500자 이내)" required></textarea>
+				</div>
+
+				<!-- 제출 버튼 -->
+				<button type="submit" class="btn-submit">문의하기</button>
+			</form>
+		</div>
+
+		<!-- 2-3) 문의내역 확인 -->
+		<div id="history" class="tab-content" style="display: none">
+			<!-- 1) 사용자명 + 인삿말 -->
+			<div class="history-header">
+				<span
+					th:text="${currentMemberNickname != null ? currentMemberNickname : '로그인필요'}">사용자</span>
+				님의 문의내역
+			</div>
+
+			<!-- 2) 2차 탭 (pill tabs) -->
+			<nav class="history-tabs">
+				<div class="pill active" data-filter="all">전체</div>
+				<div class="pill" data-filter="대기중">진행 중</div>
+				<div class="pill" data-filter="완료">답변 완료</div>
+			</nav>
+
+			<!-- 3) 총 카운트 -->
+			<div class="history-count">
+				총 <span id="inquiryCount">0</span>건의 문의가 있어요 😊
+			</div>
+
+			<!-- 4) 문의내역 리스트 -->
+			<ul class="history-list" id="historyList">
+			</ul>
+		</div>
+	</div>
+
+	<!-- 3) 푸터 -->
+	<div th:replace="footer.html"></div>
+
+	<!-- 4) JavaScript -->
+	<script>
+    // 전역 변수
+    let allInquiries = [];
+    let currentFilter = 'all';
+
+    // 페이지 로드 시 문의 목록 불러오기
+    document.addEventListener('DOMContentLoaded', function() {
+      loadInquiryList();
+    });
+
+    // 메인 탭 전환
+    document.querySelectorAll('.tabs .tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.tabs .tab')
+                .forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        document.querySelectorAll('.tab-content')
+                .forEach(c => c.style.display = 'none');
+        document.getElementById(tab.dataset.target).style.display = 'block';
+        
+        // 문의내역 탭으로 전환 시 목록 새로고침
+        if (tab.dataset.target === 'history') {
+          loadInquiryList();
+        }
+      });
+    });
+
+    // 문의 등록 폼 제출
+    document.getElementById('inquiryForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const formData = {
+        type: document.getElementById('inquiryType').value,
+        title: document.getElementById('inquiryTitle').value.trim(),
+        content: document.getElementById('inquiryContent').value.trim()
+      };
+
+      // 유효성 검사
+      if (!formData.type) {
+        alert('문의 카테고리를 선택해주세요.');
+        return;
+      }
+      if (!formData.title) {
+        alert('제목을 입력해주세요.');
+        return;
+      }
+      if (!formData.content) {
+        alert('내용을 입력해주세요.');
+        return;
+      }
+
+      // 서버로 전송
+      fetch('/inquiry/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          alert('문의가 성공적으로 등록되었습니다.');
+          // 폼 초기화
+          document.getElementById('inquiryForm').reset();
+          // 문의내역 탭으로 이동
+          document.querySelector('.tab[data-target="history"]').click();
+          // 목록 새로고침
+          loadInquiryList();
+        } else {
+          alert(data.message || '문의 등록에 실패했습니다.');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('문의 등록 중 오류가 발생했습니다.');
+      });
+    });
+
+    // 문의 목록 불러오기
+    function loadInquiryList() {
+      fetch('/inquiry/list')
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            allInquiries = data.inquiries;
+            updateInquiryCount();
+            renderInquiryList();
+          } else {
+            console.error('문의 목록 로드 실패:', data.message);
+          }
+        })
+        .catch(error => {
+          console.error('Error loading inquiry list:', error);
+        });
+    }
+
+    // 문의 개수 업데이트
+    function updateInquiryCount() {
+      const filteredInquiries = filterInquiries(currentFilter);
+      document.getElementById('inquiryCount').textContent = filteredInquiries.length;
+    }
+
+    // 문의 목록 필터링
+    function filterInquiries(filter) {
+      if (filter === 'all') {
+        return allInquiries;
+      }
+      return allInquiries.filter(inquiry => inquiry.status === filter);
+    }
+
+    // 문의 목록 렌더링
+    function renderInquiryList() {
+      const historyList = document.getElementById('historyList');
+      const filteredInquiries = filterInquiries(currentFilter);
+      
+      if (filteredInquiries.length === 0) {
+        historyList.innerHTML = '<li style="text-align: center; padding: 20px; color: #666;">문의 내역이 없습니다.</li>';
+        return;
+      }
+
+      historyList.innerHTML = filteredInquiries.map(inquiry => `
+        <li class="history-item" data-status="${inquiry.status}" data-id="${inquiry.inquiryId}">
+          <div class="item-header">
+            <span class="status-badge ${inquiry.status === '대기중' ? 'ongoing' : 'completed'}">
+              ${inquiry.status === '대기중' ? '진행중' : '답변 완료'}
+            </span>
+            <span class="status-divider">|</span>
+            <span class="inquiry-date">${inquiry.formattedCreatedAt}</span>
+            <button type="button" class="close-btn" onclick="deleteInquiry(${inquiry.inquiryId})">&times;</button>
+          </div>
+          <p class="item-message" onclick="viewInquiryDetail(${inquiry.inquiryId})" style="cursor: pointer;">
+            [${inquiry.typeDisplayName}] ${inquiry.title}
+          </p>
+        </li>
+      `).join('');
+    }
+
+    // history 탭 (pill) 이벤트
+    document.querySelectorAll('.history-tabs .pill').forEach(pill => {
+      pill.addEventListener('click', () => {
+        document.querySelectorAll('.history-tabs .pill')
+                .forEach(x => x.classList.remove('active'));
+        pill.classList.add('active');
+        currentFilter = pill.dataset.filter;
+        updateInquiryCount();
+        renderInquiryList();
+      });
+    });
+
+    // 문의 삭제
+    function deleteInquiry(inquiryId) {
+      if (!confirm('정말로 이 문의를 삭제하시겠습니까?')) {
+        return;
+      }
+
+      fetch(`/inquiry/${inquiryId}`, {
+        method: 'DELETE'
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          alert('문의가 삭제되었습니다.');
+          loadInquiryList(); // 목록 새로고침
+        } else {
+          alert(data.message || '문의 삭제에 실패했습니다.');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('문의 삭제 중 오류가 발생했습니다.');
+      });
+    }
+
+    // 문의 상세 보기
+    function viewInquiryDetail(inquiryId) {
+      window.location.href = `/inquiryDetail/${inquiryId}`;
+    }
+  </script>
+</body>
+</html>

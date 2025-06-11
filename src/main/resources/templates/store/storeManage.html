@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>가게 관리</title>
+<link rel="stylesheet" th:href="@{/css/store/storeManage.css}" />
+</head>
+<body th:if="${loggedInMember != null}"
+	th:attr="data-member-id=${loggedInMember.memberId}">
+	<!-- 1) 상단 고정 헤더 -->
+	<header class="header">
+		<a href="javascript:history.back()" class="btn-back"> <img
+			th:src="@{/images/vector-icon.png}" alt="뒤로가기" class="back-icon" />
+		</a>
+		<h1>가게 관리</h1>
+	</header>
+
+	<!-- 2) 스크롤 가능한 메인 영역 -->
+	<div class="container">
+		<!-- 2-1) 2차 탭 (pill) - 초기에는 active 클래스 없음 -->
+		<nav class="history-tabs">
+			<div class="pill" data-filter="myStores">내 가게 목록</div>
+			<div class="pill" data-filter="appRequests">가게 신청 내역</div>
+		</nav>
+
+		<!-- 2-2) "내 가게 목록" 탭 콘텐츠 (초기에는 숨김) -->
+		<ul class="history-list" id="myStores" style="display: none;">
+			<li th:if="${#lists.isEmpty(approvedList)}" class="no-data">해당
+				목록이 없습니다.</li>
+
+			<!-- A가게 -->
+			<li th:each="store : ${approvedList}" class="history-item">
+				<div class="item-header">
+					<span class="store-name" th:text="${store.name}">가게명</span> <a
+						th:href="@{/store/storeModify(rstId=${store.rstId})}"
+						class="btn-edit"> 가게정보수정 <img
+						th:src="@{/images/store/right-arrow-icon.png}" alt=">"
+						class="right-arrow-icon" />
+					</a>
+				</div>
+				<div class="item-body">
+					<div class="info-row">
+						<div class="label">주소</div>
+						<div class="value" th:text="${store.address}">주소</div>
+					</div>
+					<div class="info-row">
+						<div class="label">연락처</div>
+						<div class="value" th:text="${store.phone}">연락처</div>
+					</div>
+					<div class="info-row">
+						<div class="label">핵심태그</div>
+						<div class="value" th:text="${store.tag}">태그</div>
+					</div>
+				</div>
+			</li>
+		</ul>
+
+		<!-- 2-3) "가게 신청 내역" 보기 (초기에는 숨김) -->
+		<ul class="history-list" id="appRequests" style="display: none;">
+			<li th:if="${#lists.isEmpty(pendingList)}" class="no-data">해당
+				목록이 없습니다.</li>
+
+			<!-- A가게 (승인 대기중) -->
+			<li th:each="store : ${pendingList}" class="history-item"
+				data-status="pending">
+				<div class="item-header">
+					<span class="store-name" th:text="${store.name}">가게명</span> <span
+						class="status-text pending">승인 대기중</span>
+				</div>
+				<div class="item-body">
+					<div class="info-row">
+						<div class="label">주소</div>
+						<div class="value" th:text="${store.address}">주소</div>
+					</div>
+					<div class="info-row">
+						<div class="label">연락처</div>
+						<div class="value" th:text="${store.phone}">연락처</div>
+					</div>
+					<div class="info-row">
+						<div class="label">핵심태그</div>
+						<div class="value" th:text="${store.tag}">태그</div>
+					</div>
+				</div>
+			</li>
+		</ul>
+	</div>
+
+
+	<!-- 3) 푸터 포함 -->
+	<div th:replace="footer.html"></div>
+
+	<script src="/js/store/storeManage.js"></script>
+</body>
+</html>

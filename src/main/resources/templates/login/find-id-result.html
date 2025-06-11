@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EatoMeter - 아이디 찾기 결과</title>
+<link rel="stylesheet" th:href="@{/css/login/login.css}" />
+</head>
+<body>
+	<div class="container">
+		<!-- 닫기 버튼 -->
+		<button class="close-btn" onclick="history.back()">×</button>
+
+		<!-- 로고 -->
+		<div class="logo-section">
+			<img src="/images/login/eatometer-logo.png" alt="EatoMeter 로고"
+				class="main-logo">
+		</div>
+
+		<!-- 결과 메시지 -->
+		<div class="form-header">
+			<h2>아이디 찾기 결과</h2>
+		</div>
+
+		<div class="input-container">
+			<p th:if="${memberId != null}">
+				회원님의 아이디는 <strong th:text="${memberId}"></strong> 입니다.
+			</p>
+			<p th:unless="${memberId != null}">입력하신 정보와 일치하는 아이디가 없습니다.</p>
+		</div>
+
+		<div class="footer-link" style="margin-top: 30px;">
+			<a href="/login" class="forgot-link">로그인으로 이동</a>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,268 @@
+@charset "UTF-8";
+
+/* 이벤트 섹션 개선 */
+.event-section {
+    background-color: #fff;
+    margin-top: 20px;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+}
+
+.event-section h2 {
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 24px;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 10px;
+}
+
+/* 탭 메뉴 개선 */
+.tabs {
+    margin-bottom: 25px;
+    display: flex;
+    border-bottom: 1px solid #eaeaea;
+    padding-bottom: 2px;
+}
+
+.tabs .tab-btn {
+    display: inline-block;
+    text-decoration: none;
+    font-size: 16px;
+    margin-right: 25px;
+    padding: 10px 0;
+    color: #666;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s ease;
+    position: relative;
+    font-weight: 500;
+}
+
+.tabs .tab-btn:hover {
+    color: #333;
+}
+
+.tabs .tab-btn.active {
+    font-weight: 600;
+    color: #333;
+    border-bottom: 3px solid #333;
+}
+
+/* 메시지 스타일 */
+p[style*="color: green"] {
+    background-color: #e8f5e9;
+    padding: 12px 15px;
+    border-radius: 6px;
+    border-left: 4px solid #4caf50;
+    margin: 15px 0;
+    font-weight: 500;
+}
+
+p[style*="color: red"] {
+    background-color: #ffebee;
+    padding: 12px 15px;
+    border-radius: 6px;
+    border-left: 4px solid #f44336;
+    margin: 15px 0;
+    font-weight: 500;
+}
+
+/* 이벤트 폼 개선 */
+.event-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 10px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.event-form label {
+    font-weight: 600;
+    color: #333;
+    font-size: 15px;
+    margin-bottom: 6px;
+    display: block;
+}
+
+.input-guide {
+    font-size: 0.85em;
+    color: #777;
+    font-weight: normal;
+    margin-left: 5px;
+}
+
+.event-form input[type="text"],
+.event-form textarea,
+.event-form input[type="date"] {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.event-form input[type="text"]:focus,
+.event-form textarea:focus,
+.event-form input[type="date"]:focus {
+    outline: none;
+    border-color: #0d4d62;
+    box-shadow: 0 0 0 3px rgba(13, 77, 98, 0.1);
+}
+
+textarea {
+    resize: vertical;
+    height: 150px;
+    line-height: 1.5;
+}
+
+/* 이미지 업로드 개선 */
+.image-upload {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+}
+
+.upload-box {
+    width: 250px;
+    aspect-ratio: 1 / 1;
+    border: 2px dashed #ccc;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    background-color: #f9f9f9;
+    transition: all 0.2s ease;
+}
+
+.upload-box:hover {
+    border-color: #0d4d62;
+    background-color: #f0f7fa;
+}
+
+.upload-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: none;
+}
+
+#uploadText {
+    position: absolute;
+    color: #666;
+    font-size: 16px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#uploadText::before {
+    content: '📷';
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+.image-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.image-buttons button {
+    padding: 8px 14px;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    background-color: white;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.image-buttons button:hover {
+    background-color: #f5f5f5;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+/* 날짜 입력 영역 개선 */
+.date-inputs {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.date-inputs div {
+    display: flex;
+    flex-direction: column;
+    min-width: 200px;
+    flex: 1;
+}
+
+.date-inputs span {
+    font-weight: 500;
+    margin-bottom: 5px;
+    color: #555;
+    font-size: 14px;
+}
+
+.date-inputs input[type="date"] {
+    padding: 12px 14px;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.date-inputs input[type="date"]:focus {
+    outline: none;
+    border-color: #0d4d62;
+    box-shadow: 0 0 0 3px rgba(13, 77, 98, 0.1);
+}
+
+/* 등록 버튼 개선 */
+.submit-btn {
+    margin-top: 30px;
+    padding: 14px;
+    background-color: #333;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.submit-btn:hover {
+    background-color: #222;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.submit-btn:active {
+    transform: translateY(0);
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+    .date-inputs {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .date-inputs div {
+        width: 100%;
+    }
+}

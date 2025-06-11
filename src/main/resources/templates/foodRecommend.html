@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>음식 추천</title>
+<link rel="stylesheet" href="css/foodRecommend.css">
+</head>
+<body>
+	<!-- 기존 상단바 그대로 유지 -->
+	<div class="top-bar">
+		<img src="/images/vector-icon.png" alt="뒤로가기" class="icon">
+		<form id="searchForm" class="search-box">
+			<img src="/images/foodRecommend/search-icon.png" alt="검색"
+				class="search-icon-img"> <input type="text"
+				placeholder="매장, 지역명으로 검색해 보세요" class="search-bar">
+		</form>
+	</div>
+
+	<!-- 메인 컨텐츠 -->
+	<div class="main-container">
+		<!-- 질문 섹션 -->
+		<div class="question-section">
+			<h1 class="question-title">오늘 뭐 먹지?</h1>
+		</div>
+
+		<div class="gumball-container" id="gumballContainer">
+			<div class="gumball-top">
+				<div class="gumball-knob"></div>
+			</div>
+			<div class="gumball-globe">
+				<div class="candies">
+					<div class="candy" style="background-color: #ff9999;"></div>
+					<div class="candy" style="background-color: #99ff99;"></div>
+					<div class="candy" style="background-color: #9999ff;"></div>
+					<div class="candy" style="background-color: #ffff99;"></div>
+					<div class="candy" style="background-color: #ff99ff;"></div>
+					<div class="candy" style="background-color: #99ffff;"></div>
+					<div class="candy" style="background-color: #ffcc99;"></div>
+					<div class="candy" style="background-color: #cc99ff;"></div>
+				</div>
+			</div>
+			<div class="gumball-base" id="gumballBase">
+				<div class="gumball-hole"></div>
+				<div class="gumball-label">Click!!</div>
+			</div>
+		</div>
+
+		<!-- 버전 2: 그릇 스타일 (결과 화면) -->
+		<div class="bowl-container" id="bowlContainer">
+			<div class="bowl-top"></div>
+			<div class="bowl-bottom">
+				<div class="food-name" id="foodName">닭곰탕</div>
+			</div>
+		</div>
+
+		<!-- 버튼 섹션 (제거) -->
+		<div class="button-section" style="display: none;">
+			<div class="sub-buttons">
+				<button class="sub-btn" id="againBtn">다시 뽑기</button>
+				<button class="sub-btn" id="newBtn">새로 뽑기</button>
+			</div>
+		</div>
+
+		<!-- 결과 팝업 (처음에는 숨겨짐) -->
+		<div class="result-popup" id="resultPopup">
+			<div class="result-emoji">🎉</div>
+			<div class="result-food" id="resultFood">음식이름</div>
+		</div>
+	</div>
+
+	<script src="js/foodRecommend.js"></script>
+</body>
+</html>

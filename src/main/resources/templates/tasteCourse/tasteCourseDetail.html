@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title th:text="${course.title} + ' | 코스 상세'">코스 상세</title>
+<link rel="stylesheet"
+	th:href="@{/css/tasteCourse/tasteCourseDetail.css}" />
+<link rel="stylesheet" th:href="@{/css/loginPopup.css}">
+</head>
+<body
+	th:attr="data-logged-in=${loggedInMember != null}, data-member-id=${loggedInMember != null ? loggedInMember.memberId : ''}">
+
+	<div class="hero-wrap">
+		<img th:src="${course.image}" class="hero-image"
+			th:alt="${course.title}"
+			onerror="this.src='/images/tasteCourse/default.png'" /><a
+			href="javascript:history.back()" class="btn-back"> <img
+			src="/images/vector-icon.png" alt="뒤로가기" class="back-icon" /></a>
+	</div>
+
+	<main class="detail-container">
+		<!-- 생성일시 -->
+		<p class="course-date" th:text="${course.createAt}">2025년 5월 12일</p>
+
+		<!-- 제목 -->
+		<h2 class="course-title" th:text="${course.title}">코스 제목</h2>
+
+		<!-- 찜(북마크) 버튼 -->
+		<button class="action-btn bookmark-btn"
+			th:classappend="${isJjimmed} ? 'bookmarked'"
+			th:attr="data-course-id=${course.courseId}">
+			<img
+				th:src="${isJjimmed} ? '/images/tasteCourse/bookmark-filled.png' : '/images/tasteCourse/bookmark.png'"
+				alt="북마크" /> <span th:text="${course.jjimCount}">0</span>
+		</button>
+
+		<button class="action-btn share-btn">
+			<img src="/images/tasteCourse/share.png" alt="공유" />
+		</button>
+		</div>
+
+		<!-- 설명(Intro) -->
+		<section class="course-desc" th:text="${course.intro}">코스 설명
+		</section>
+
+		<!-- 코스 맛집 리스트 -->
+		<section class="timeline-section">
+			<h3>코스 타임라인</h3>
+			<div class="timeline-list">
+				<div th:each="rest, stat : ${restaurants}">
+					<div class="timeline-item">
+						<div class="timeline-num" th:text="${stat.index + 1}">1</div>
+						<div class="timeline-card">
+							<h4 th:text="${rest.name}">가게명</h4>
+							<p th:text="${rest.address}">주소</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<!-- 로그인 팝업 -->
+	<div th:replace="loginPopup.html :: loginPopup"></div>
+	<div th:replace="/footer.html"></div>
+
+	<script>
+    // 페이지 이동 함수
+    function navigateTo(url) {
+      window.location.href = url;
+    }
+    
+    // 로그인 필요 팝업 표시
+    function showLoginRequiredPopup() {
+      document.getElementById('loginRequiredPopup').classList.add('active');
+    }
+    
+    // 로그인 필요 팝업 숨기기
+    function hideLoginPopup() {
+      document.getElementById('loginRequiredPopup').classList.remove('active');
+    }
+    
+    // 로그인 페이지로 이동
+    function goToLogin() {
+	  const currentUrl = encodeURIComponent(window.location.href);
+	  window.location.href = `/login?redirectURL=${currentUrl}`;
+	}
+  </script>
+
+	<script th:src="@{/js/tasteCourse/tasteCourseDetail.js}" defer></script>
+</body>
+</html>

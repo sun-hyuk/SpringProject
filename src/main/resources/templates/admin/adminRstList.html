@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>가게 승인/관리 - YUMMY JEJU</title>
+<!-- 필수 폰트 로드 -->
+<link rel="stylesheet"
+	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap">
+<!-- CSS 로드 -->
+<link rel="stylesheet" th:href="@{/css/admin/adminHeader.css}">
+<link rel="stylesheet" th:href="@{/css/admin/adminRstList.css}">
+</head>
+<body>
+	<!-- 삭제 성공 메시지 표시 -->
+	<script th:if="${deleteSuccess == true}">
+        alert("삭제가 완료되었습니다.");
+    </script>
+
+	<!-- 사이드바 및 헤더 인클루드 -->
+	<div th:replace="admin/adminHeader"></div>
+
+	<!-- 메인 컨텐츠 영역 -->
+	<div class="main-content">
+		<!-- 가게 리스트 섹션 - 향상된 UI -->
+		<section class="approval-section">
+			<h2>가게 승인/관리</h2>
+
+			<!-- 탭 메뉴 - 위치 유지 -->
+			<div class="tabs">
+				<a href="/adminRstApproval" class="tab-btn">승인 대기</a> <a
+					href="/adminRstList" class="tab-btn active">가게 리스트</a>
+			</div>
+
+			<!-- 검색 바 - 향상된 UI -->
+			<form method="get" action="/adminRstList" class="search-bar">
+				<input type="hidden" name="pageNum" value="1" /> <select
+					name="searchType" class="filter-select">
+					<option value="all"
+						th:selected="${searchType == null or #strings.isEmpty(searchType)}">전체</option>
+					<option value="name" th:selected="${searchType == 'name'}">가게
+						이름</option>
+					<option value="location" th:selected="${searchType == 'location'}">위치</option>
+				</select> <input type="text" name="searchKeyword" class="search-input"
+					placeholder="검색어를 입력하세요"
+					th:value="${searchKeyword != null ? searchKeyword : ''}" />
+				<button type="submit" class="search-btn">검색</button>
+			</form>
+
+			<!-- 테이블 - 향상된 UI -->
+			<div class="table-container">
+				<table>
+					<thead>
+						<tr>
+							<th>No</th>
+							<th>가게 이름</th>
+							<th>위치</th>
+							<th>등록일</th>
+							<th>좋아요</th>
+							<th>상세보기</th>
+							<th>삭제</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:if="${#lists.isEmpty(restaurants)}">
+							<td colspan="7">등록된 가게가 없습니다.</td>
+						</tr>
+						<tr th:each="restaurant, iterStat : ${restaurants}"
+							th:if="${!#lists.isEmpty(restaurants)}">
+							<td
+								th:text="${totalCount - (currentPage - 1) * pageSize - iterStat.index}">1</td>
+
+							<!-- 가게 이름 강조 처리 -->
+							<td><span
+								th:if="${searchType == 'name' or searchType == 'all'}"
+								th:utext="${#strings.replace(restaurant.name, searchKeyword, '<mark>' + searchKeyword + '</mark>')}">
+							</span> <span th:if="${searchType != 'name' and searchType != 'all'}"
+								th:text="${restaurant.name}"></span></td>
+
+							<!-- 주소 강조 처리 -->
+							<td><span
+								th:if="${searchType == 'location' or searchType == 'all'}"
+								th:utext="${#strings.replace(restaurant.regionLabel + ' ' + restaurant.region2Label,
+                          searchKeyword, '<mark>' + searchKeyword + '</mark>')}">
+							</span> <span
+								th:if="${searchType != 'location' and searchType != 'all'}"
+								th:text="${restaurant.regionLabel + ' ' + restaurant.region2Label}"></span>
+							</td>
+
+							<td
+								th:text="${restaurant.createdAt != null ? #strings.substring(restaurant.createdAt.toString(), 0, 10) : ''}">
+								2024-01-01</td>
+							<td
+								th:text="${restaurant.jjimCount != null ? restaurant.jjimCount : 0}">0</td>
+							<td>
+								<form method="get" action="/adminRstListDetail"
+									style="display: inline;">
+									<input type="hidden" name="rst_id"
+										th:value="${restaurant.rstId}">
+									<button type="submit">상세보기</button>
+								</form>
+							</td>
+							<td>
+								<form method="post" action="/adminDeleteRestaurant"
+									style="display: inline;"
+									onsubmit="return confirm('정말 삭제하시겠습니까?');">
+									<input type="hidden" name="rst_id"
+										th:value="${restaurant.rstId}"> <input type="hidden"
+										name="pageNum" th:value="${currentPage}"> <input
+										type="hidden" name="searchType"
+										th:value="${searchType != null ? searchType : ''}"> <input
+										type="hidden" name="searchKeyword"
+										th:value="${searchKeyword != null ? searchKeyword : ''}">
+									<button type="submit">삭제</button>
+								</form>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<!-- 페이지네이션 - 향상된 UI -->
+			<div class="pagination" th:if="${totalPages > 0}">
+				<!-- 처음으로 -->
+				<a th:if="${currentPage > 1}"
+					th:href="@{/adminRstList(pageNum=1, searchType=${searchType}, searchKeyword=${searchKeyword})}"
+					title="처음으로">&laquo;</a>
+
+				<!-- 이전 페이지 그룹 -->
+				<a th:if="${startPage > 1}"
+					th:href="@{/adminRstList(pageNum=${startPage - 1}, searchType=${searchType}, searchKeyword=${searchKeyword})}"
+					title="이전">&lsaquo;</a>
+
+				<!-- 페이지 번호들 -->
+				<span th:each="i : ${#numbers.sequence(startPage, endPage)}">
+					<strong th:if="${i == currentPage}" th:text="${i}">1</strong> <a
+					th:if="${i != currentPage}"
+					th:href="@{/adminRstList(pageNum=${i}, searchType=${searchType}, searchKeyword=${searchKeyword})}"
+					th:text="${i}">1</a>
+				</span>
+
+				<!-- 다음 페이지 그룹 -->
+				<a th:if="${endPage < totalPages}"
+					th:href="@{/adminRstList(pageNum=${endPage + 1}, searchType=${searchType}, searchKeyword=${searchKeyword})}"
+					title="다음">&rsaquo;</a>
+
+				<!-- 마지막으로 -->
+				<a th:if="${currentPage < totalPages}"
+					th:href="@{/adminRstList(pageNum=${totalPages}, searchType=${searchType}, searchKeyword=${searchKeyword})}"
+					title="마지막으로">&raquo;</a>
+			</div>
+
+			<!-- 현재 상태 표시 -->
+			<div class="status-info">
+				<p>
+					전체 <span th:text="${totalCount}">0</span>개의 가게 중 <span
+						th:text="${#lists.size(restaurants) < pageSize ? #lists.size(restaurants) : pageSize}">0</span>개
+					표시 (페이지 <span th:text="${currentPage}">1</span>/<span
+						th:text="${totalPages == 0 ? 1 : totalPages}">1</span>)
+				</p>
+			</div>
+		</section>
+	</div>
+
+	<!-- JavaScript 로드 -->
+	<script th:src="@{/js/admin/adminHeader.js}"></script>
+	<script th:src="@{/js/admin/adminRstList.js}"></script>
+</body>
+</html>

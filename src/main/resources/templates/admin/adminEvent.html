@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>이벤트 등록/관리 - YUMMY JEJU</title>
+<link rel="stylesheet" th:href="@{/css/admin/adminEvents.css}">
+</head>
+<body>
+	<!-- 사이드바 및 헤더 인클루드 -->
+	<div th:replace="~{admin/adminHeader}"></div>
+
+	<!-- 메인 컨텐츠 영역 -->
+	<div class="main-content">
+		<!-- 이벤트 등록 섹션 - 향상된 UI -->
+		<section class="event-section">
+			<h2>이벤트 등록/관리</h2>
+
+			<!-- 이벤트 폼 - 향상된 UI -->
+			<form class="event-form" method="post"
+				th:action="@{/adminEvent/register}" enctype="multipart/form-data"
+				onsubmit="return validateDates()">
+				<div class="form-group">
+					<label> 이벤트 이름<span class="input-guide">(30자 이내 작성)</span>
+					</label> <input type="text" name="title" maxlength="30" required
+						placeholder="이벤트 제목을 입력하세요">
+				</div>
+
+				<div class="form-group">
+					<label>이벤트 설명</label>
+					<textarea name="content" placeholder="이벤트에 대한 상세 설명을 입력하세요"></textarea>
+				</div>
+
+				<div class="form-group">
+					<label>대표 이미지</label>
+					<div class="image-upload">
+						<div class="upload-box"
+							onclick="document.getElementById('imageInput').click();">
+							<img id="preview" /> <span id="uploadText">이미지 업로드</span>
+						</div>
+						<input type="file" id="imageInput" name="image" accept="image/*"
+							required onchange="previewImage(event)" style="display: none;">
+
+						<!-- 컨트롤 버튼들 -->
+						<div class="image-buttons">
+							<button type="button"
+								onclick="document.getElementById('imageInput').click();">🔄
+								다시 선택</button>
+							<button type="button" onclick="clearPreview()">❌ 삭제</button>
+						</div>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label>이벤트 기간 설정</label>
+					<div class="date-inputs">
+						<div>
+							<span>시작 날짜</span> <input type="date" name="startDate" required>
+						</div>
+						<div>
+							<span>종료 날짜</span> <input type="date" name="endDate" required>
+						</div>
+					</div>
+				</div>
+
+				<button type="submit" class="submit-btn">이벤트 등록</button>
+			</form>
+		</section>
+	</div>
+
+	<script th:src="@{/js/admin/adminEvent.js}"></script>
+</body>
+</html>

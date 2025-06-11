@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>공지사항</title>
+<link rel="stylesheet" th:href="@{/css/notice/noticeList.css}">
+</head>
+<body>
+	<!-- footer.html 포함 (필요하다면 경로 수정) -->
+	<div th:replace="/footer.html"></div>
+
+	<header class="header">
+		<a href="javascript:history.back()" class="btn-back"> <img
+			th:src="@{/images/vector-icon.png}" alt="뒤로가기" class="back-icon" />
+		</a>
+		<h1>공지사항</h1>
+	</header>
+
+	<div class="container">
+		<!-- 탭 필터링 -->
+		<nav class="tabs">
+			<div class="tab active" data-filter="전체">전체</div>
+			<div class="tab" data-filter="점검">점검</div>
+			<div class="tab" data-filter="이벤트">이벤트</div>
+		</nav>
+
+		<ul class="notice-list">
+			<!--
+        Controller에서 Model에 "notices"라는 이름으로 List<AnnouncementDTO>를 넘겨주었다고 가정
+        announcementType 필드는 한글("점검", "이벤트", "공지" 등)로 들어 있어야 합니다.
+      -->
+			<li th:each="notice : ${notices}"
+				th:attr="data-type=${notice.announcementType}">
+				<!-- 공지 유형(배지) --> <span class="badge"
+				th:text="${notice.announcementType}">공지</span> <!-- 공지 제목 -->
+				<div class="title" th:text="${notice.title}">공지 제목</div> <!-- 공지 작성일(yyyy.MM.dd) -->
+				<div class="date"
+					th:text="${#dates.format(notice.createdAt, 'yyyy.MM.dd')}">
+					2025.05.20</div> <!-- 상세보기 링크 --> <a
+				th:href="@{/notice/{id}(id=${notice.announcementId})}" class="arrow">&gt;</a>
+			</li>
+		</ul>
+	</div>
+
+	<script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const tabs  = document.querySelectorAll('.tabs .tab');
+      const items = document.querySelectorAll('.notice-list li');
+
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          // 1) active 클래스 토글
+          tabs.forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+
+          // 2) 필터링: 탭 data-filter 값(한글)과 li data-type(한글) 비교
+          const filter = tab.dataset.filter; // "전체", "점검", "이벤트"
+          items.forEach(item => {
+            const itemType = item.dataset.type; // ex: "점검" 또는 "이벤트" 또는 "공지"
+            if (filter === '전체' || itemType === filter) {
+              item.style.display = 'flex';
+            } else {
+              item.style.display = 'none';
+            }
+          });
+        });
+      });
+    });
+  </script>
+</body>
+</html>

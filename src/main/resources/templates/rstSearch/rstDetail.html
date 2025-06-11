@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="/css/rstSearch/rstDetail.css">
+<link rel="stylesheet" th:href="@{/css/loginPopup.css}">
+<title th:text="${restaurant.name} + ' - EatoMeter'">집밥 전문점 -
+	EatoMeter</title>
+</head>
+<body th:attr="data-logged-in=${loggedInMember != null}">
+	<div class="detail-container">
+		<!-- 헤더 -->
+		<header class="detail-header">
+			<button class="back-btn" onclick="history.back()">
+				<svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M15 18L9 12L15 6" stroke="currentColor"
+						stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+			</button>
+			<div class="header-actions">
+				<button class="share-btn">
+					<svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path
+							d="M4 12V20C4 20.5523 4.44772 21 5 21H19C19.5523 21 20 20.5523 20 20V12"
+							stroke="currentColor" stroke-width="2" />
+                        <path d="M16 6L12 2L8 6" stroke="currentColor"
+							stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M12 2V15" stroke="currentColor"
+							stroke-width="2" stroke-linecap="round" />
+                    </svg>
+				</button>
+				<button class="bookmark-btn" onclick="toggleJjim()">
+					<svg id="jjimIcon" width="24" height="24" viewBox="0 0 24 24"
+						fill="none" th:class="${isJjim ? 'filled' : ''}">
+                        <path
+							d="M19 21L12 16L5 21V5C5 3.89543 5.89543 3 7 3H17C18.1046 3 19 3.89543 19 5V21Z"
+							stroke="currentColor" stroke-width="2" stroke-linecap="round"
+							stroke-linejoin="round" />
+                    </svg>
+				</button>
+			</div>
+		</header>
+
+		<!-- 메인 이미지 -->
+		<div class="main-image">
+			<div class="restaurant-photo">
+				<img th:src="${restaurant.image}" alt="식당 이미지">
+				<div class="image-overlay">
+					<div class="rating-badge">
+						<svg width="16" height="16" viewBox="0 0 24 24" fill="#FFD700">
+                            <path
+								d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                        </svg>
+						<span th:text="${averageRating}">4.5</span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- 레스토랑 정보 -->
+		<div class="restaurant-info">
+			<h1 class="restaurant-name" th:text="${restaurant.name}">청회병</h1>
+			<div class="restaurant-meta">
+				<div class="address-info">
+					<svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                        <path
+							d="M21 10C21 17 12 23 12 23S3 17 3 10C3 5.02944 7.02944 1 12 1C16.9706 1 21 5.02944 21 10Z"
+							stroke="currentColor" stroke-width="2" />
+                        <circle cx="12" cy="10" r="3"
+							stroke="currentColor" stroke-width="2" />
+                    </svg>
+					<span th:text="${restaurant.address}">부산광역시 중구...</span>
+				</div>
+				<div class="phone-info">
+					<svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                        <path
+							d="M22 16.92V19.92C22 20.52 21.52 21 20.92 21C9.4 21 0 11.6 0 0.08C0 -0.52 0.48 -1 1.08 -1H4.08C4.68 -1 5.16 -0.52 5.16 0.08V3.08C5.16 3.68 4.68 4.16 4.08 4.16H2.12C2.64 7.84 5.16 10.36 8.84 10.88V8.92C8.84 8.32 9.32 7.84 9.92 7.84H12.92C13.52 7.84 14 8.32 14 8.92V11.92C14 12.52 13.52 13 12.92 13C10.36 13 7.84 15.52 7.84 18.08C7.84 18.68 8.32 19.16 8.92 19.16H11.92C12.52 19.16 13 18.68 13 18.08V16.12C16.68 15.6 19.2 13.08 19.72 9.4H17.76C17.16 9.4 16.68 8.92 16.68 8.32V5.32C16.68 4.72 17.16 4.24 17.76 4.24H20.76C21.36 4.24 21.84 4.72 21.84 5.32V16.92H22Z"
+							fill="currentColor" />
+                    </svg>
+					<span th:text="${restaurant.phone}">051-123-4567</span>
+				</div>
+			</div>
+		</div>
+
+		<!-- 메뉴 섹션 -->
+		<section class="menu-section">
+			<div class="section-header">
+				<h2 class="section-title">메뉴</h2>
+				<div class="menu-count"
+					th:if="${menus != null and !menus.isEmpty()}"
+					th:text="${menus.size()} + '개'">5개</div>
+			</div>
+
+			<div class="no-menu" th:if="${menus == null or menus.isEmpty()}">
+				<svg width="48" height="48" viewBox="0 0 24 24" fill="none">
+                    <path
+						d="M12 2C6.48 2 2 6.48 2 12S6.48 22 12 22 22 17.52 22 12 17.52 2 12 2ZM13 17H11V15H13V17ZM13 13H11V7H13V13Z"
+						fill="#E0E0E0" />
+                </svg>
+				<p>등록된 메뉴가 없습니다</p>
+			</div>
+
+			<div class="menu-grid" id="menuList"
+				th:if="${menus != null and !menus.isEmpty()}">
+				<div class="menu-card" th:each="menu, iterStat : ${menus}"
+					th:attr="data-index=${iterStat.index}">
+					<div class="menu-image">
+						<img th:src="${menu.image}" alt="메뉴 이미지">
+					</div>
+					<div class="menu-info">
+						<h3 class="menu-name" th:text="${menu.name}">메뉴명</h3>
+						<p class="menu-desc" th:text="${menu.content}">메뉴 설명</p>
+						<div class="menu-price" th:text="${menu.price}">15,000원</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="more-btn-wrapper" th:if="${menus.size() > 4}">
+				<button id="loadMoreBtn" onclick="loadMoreMenus()"
+					class="load-more-btn">
+					<span>더보기</span>
+					<svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                        <path d="M6 9L12 15L18 9" stroke="currentColor"
+							stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+				</button>
+			</div>
+		</section>
+
+		<!-- 평점 통계 섹션 -->
+		<section class="rating-section">
+			<div class="section-header">
+				<h2 class="section-title">방문자 리뷰</h2>
+				<div class="total-reviews" th:text="'총 ' + ${totalReviews} + '개'">총
+					127개</div>
+			</div>
+
+			<div class="rating-overview">
+				<div class="rating-summary">
+					<div class="avg-score" th:text="${averageRating}">5.0</div>
+					<div class="star-display">
+						<div class="stars">
+							<svg width="20" height="20" viewBox="0 0 24 24" fill="#FFD700">
+                                <path
+									d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                            </svg>
+							<svg width="20" height="20" viewBox="0 0 24 24" fill="#FFD700">
+                                <path
+									d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                            </svg>
+							<svg width="20" height="20" viewBox="0 0 24 24" fill="#FFD700">
+                                <path
+									d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                            </svg>
+							<svg width="20" height="20" viewBox="0 0 24 24" fill="#FFD700">
+                                <path
+									d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                            </svg>
+							<svg width="20" height="20" viewBox="0 0 24 24" fill="#FFD700">
+                                <path
+									d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                            </svg>
+						</div>
+					</div>
+				</div>
+
+				<div class="rating-breakdown">
+					<div class="rating-row" th:each="i : ${ratingList}">
+						<span class="rating-label" th:text="${i} + '점'">5점</span>
+						<div class="rating-bar">
+							<div class="rating-fill"
+								th:style="|width: ${widthMap[i.intValue()]}|"></div>
+						</div>
+						<span class="rating-count"
+							th:text="${reviewCounts[i.intValue()] != null ? reviewCounts[i.intValue()] : 0}">89</span>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- 리뷰 섹션 -->
+		<section class="reviews-section">
+			<input type="hidden" id="restaurantId" th:value="${restaurant.rstId}" />
+
+			<div class="reviews-header">
+				<div class="sort-options">
+					<button class="sort-btn active" onclick="loadReviews('latest', 0)">최신순</button>
+					<button class="sort-btn" onclick="loadReviews('high', 0)">평점높은순</button>
+					<button class="sort-btn" onclick="loadReviews('low', 0)">평점낮은순</button>
+				</div>
+
+				<button id="writeReviewBtn" class="write-review-btn">
+					<svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 4V20M4 12H20" stroke="currentColor"
+							stroke-width="2" stroke-linecap="round" />
+                    </svg>
+					리뷰 작성
+				</button>
+			</div>
+
+			<div class="review-list" id="reviewList">
+				<!-- AJAX로 로드될 리뷰들 -->
+			</div>
+
+			<div class="pagination-container" id="reviewPagination">
+				<!-- 페이지네이션 버튼들 -->
+			</div>
+		</section>
+	</div>
+
+	<!-- 신고 모달 -->
+	<div id="reportModal" class="modal-overlay" style="display: none;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3>리뷰 신고</h3>
+				<button class="close-btn" onclick="closeReportModal()">
+					<svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M18 6L6 18M6 6L18 18"
+							stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                    </svg>
+				</button>
+			</div>
+			<div class="modal-body">
+				<input type="hidden" id="reportReviewId">
+				<textarea id="reportReason" placeholder="신고 사유를 상세히 입력해주세요..."
+					rows="4"></textarea>
+			</div>
+			<div class="modal-footer">
+				<button class="cancel-btn" onclick="closeReportModal()">취소</button>
+				<button class="submit-btn" onclick="submitReviewReport()">신고하기</button>
+			</div>
+		</div>
+	</div>
+
+	<!-- 좋아요 템플릿 -->
+	<template id="like-template">
+		<div class="review-actions">
+			<button class="like-btn" id="like-btn-REVIEW_ID"
+				onclick="toggleReviewLike(REVIEW_ID)">
+				<svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                    <path
+						d="M20.84 4.61C20.3292 4.099 19.7228 3.69364 19.0554 3.41708C18.3879 3.14052 17.6725 2.99817 16.95 2.99817C16.2275 2.99817 15.5121 3.14052 14.8446 3.41708C14.1772 3.69364 13.5708 4.099 13.06 4.61L12 5.67L10.94 4.61C9.9083 3.5783 8.50903 2.9987 7.05 2.9987C5.59096 2.9987 4.19169 3.5783 3.16 4.61C2.1283 5.6417 1.5487 7.041 1.5487 8.5C1.5487 9.959 2.1283 11.3583 3.16 12.39L12 21.23L20.84 12.39C21.351 11.8792 21.7563 11.2728 22.0329 10.6053C22.3095 9.93789 22.4518 9.22248 22.4518 8.5C22.4518 7.77752 22.3095 7.06211 22.0329 6.39467C21.7563 5.72723 21.351 5.1208 20.84 4.61V4.61Z"
+						stroke="currentColor" stroke-width="2" stroke-linecap="round"
+						stroke-linejoin="round" />
+                </svg>
+				<span id="like-count-REVIEW_ID">0</span>
+			</button>
+		</div>
+	</template>
+
+	<script>
+ 	// 로그인 필요 팝업 표시
+    function showLoginRequiredPopup() {
+      document.getElementById('loginRequiredPopup').classList.add('active');
+    }
+    
+    // 로그인 필요 팝업 숨기기
+    function hideLoginPopup() {
+      document.getElementById('loginRequiredPopup').classList.remove('active');
+    }
+    
+ 	// 로그인 페이지로 이동
+    function goToLogin() {
+	    const currentUrl = encodeURIComponent(window.location.href);
+	    window.location.href = '/login?redirectURL=' + currentUrl;
+	}
+    </script>
+
+
+	<!-- 로그인 팝업 -->
+	<div th:replace="loginPopup.html :: loginPopup"></div>
+	<div th:replace="footer.html"></div>
+	<script src="/js/rstSearch/rstDetail.js"></script>
+</body>
+</html>

@@ -1,0 +1,172 @@
+/* reset & 전체박스 */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  font-family: "Apple SD Gothic Neo", sans-serif;
+  background: #fff;
+}
+
+body {
+  overflow: hidden;
+}
+
+.container {
+  position: absolute;
+  top: 80px;             /* header 높이 만큼 내려서 시작 */
+  bottom: 69px;          /* footer 높이 만큼 위에서 끝나도록 */
+  left: 0;
+  right: 0;
+  max-width: 375px;
+  margin: 0 auto;
+  padding: 0 16px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* 헤더 (기존) */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  max-width: 100%;     /* 모바일 컨테이너와 너비 맞추기 */
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  height: 60px;
+  border-bottom: 1px solid #eee;
+  background: #fff;      /* 헤더 뒤로 콘텐츠가 비치지 않도록 */
+  z-index: 100;          /* 스크롤 영역 위에 표시 */
+}
+
+/* 헤더 안의 콘텐츠만 중앙 정렬 */
+.header .container {
+  max-width: 375px;
+  margin: 0 auto;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.btn-back {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+.back-icon {
+  display: block;
+  width: 12px;
+  height: 15px;
+}
+
+.header h1 {
+  margin: 0 auto;
+  font-size: 18px;
+  color: #333;
+}
+
+/* ──────────────────────────────────────────
+   공통 섹션 카드 스타일
+────────────────────────────────────────── */
+.section-card {
+  background: #fff;               /* 카드 본문은 흰색 */
+  border: 1px solid #E4D6CE;      /* 카드 테두리에 베이지 색 */
+  border-radius: 12px;
+  overflow: hidden;               /* 헤더 배경이 둥글게 나옵니다 */
+  margin-bottom: 16px;
+}
+/* 큰 섹션 헤더 */
+.section-card .section-header {
+  background-color: #E4D6CE;      /* 요청하신 베이지 */
+  padding: 12px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+.section-card .card-items {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px 16px;
+  padding: 16px;                  /* 헤더 아래 내용과 간격 */
+}
+
+/* 하나의 카드 아이템 */
+.card-item {
+  padding-left: 15px;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #333;
+  font-size: 14px;
+}
+.card-item img {
+  padding-right: 5px;
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+}
+
+/* 세부 서브섹션 */
+.subsection {
+  margin-top: 16px;
+}
+.sub-header {
+  padding-left: 20px;       /* 왼쪽에 여백을 줘서 오른쪽으로 이동 */
+  font-size: 13px;
+  font-weight: 600;
+  color: #9E6A4F;          /* 요청하신 브라운 톤 */
+  margin-bottom: 8px;
+}
+
+/* ──────────────────────────────────────────
+   로그인/회원탈퇴 버튼
+────────────────────────────────────────── */
+.section-card .btn-group {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px;
+}
+
+.btn-group button {
+  flex: 1;
+  padding: 12px 0;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.btn-link {
+  background: none;
+  border: none;
+  font-size: 14px;
+  color: #333;
+  text-decoration: none;
+  cursor: pointer;
+  padding: 8px 16px;
+}
+
+.btn-logout {
+  color: #e74c3c;
+  border-color: #e74c3c;
+}
+
+.btn-withdraw {
+  color: #3498db;
+  border-color: #3498db;
+}

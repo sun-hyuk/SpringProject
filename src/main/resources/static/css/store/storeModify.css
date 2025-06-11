@@ -1,0 +1,194 @@
+/* ======================================================
+   storeRegister.css
+   ───────────────────────────────────────────────────────
+   “가게 등록” 폼 전용 스타일 시트
+   ====================================================== */
+
+/* ──  Reset & 전체박스  ───────────────────────────────── */
+html, body {
+  margin: 0; padding: 0;
+  width: 100%; height: 100%;
+  font-family: "Apple SD Gothic Neo", sans-serif;
+  background: #fff;
+}
+body {
+  overflow: hidden;  /* 헤더 고정 후 본문만 스크롤되도록 */
+}
+
+/* ──  1) 헤더 (고정)  ─────────────────────────────────── */
+.header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+  background: #fff;
+  z-index: 100;
+}
+/* 뒤로가기 버튼 */
+.btn-back {
+  position: absolute;
+  left: 16px;
+  width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+}
+.back-icon {
+  width: 12px;
+  height: 15px;
+  display: block;
+}
+/* 헤더 제목 */
+.header h1 {
+  margin: 0 auto;
+  font-size: 18px;
+  color: #333;
+  font-weight: bold;
+}
+/* 제출 버튼 */
+.btn-complete {
+  position: absolute;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 14px;
+  color: #007AFF;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* ──  2) 스크롤 영역  ─────────────────────────────────── */
+.container {
+  position: absolute;
+  top: 60px;   /* 헤더 높이만큼 아래에서 시작 */
+  bottom: 0;   /* 푸터가 없으므로 화면 하단까지 스크롤 */
+  left: 0; right: 0;
+  max-width: 375px;   /* 모바일 1:1 비율 */
+  margin: 0 auto;
+  padding: 0 16px 20px;      /* 좌우·상하 여백 */
+  box-sizing: border-box;
+  overflow-y: auto;   /* 세로 스크롤 활성화 */
+  -webkit-overflow-scrolling: touch; /* iOS 부드러운 스크롤 */
+}
+/* 스크롤바 숨기기 (웹킷 브라우저) */
+.container::-webkit-scrollbar {
+  display: none;
+}
+
+/* ──  3) 입력 그룹  ─────────────────────────────────────── */
+/* 각 input-group 은 위쪽 margin으로 구분 */
+.input-group {
+  margin-top: 24px; /* 그룹 간 간격 */
+}
+
+/* label 은 block 레벨로 설정하여 input 위쪽에 내려앉도록 */
+.input-group label {
+  display: block;
+  margin-bottom: 4px; /* 레이블과 입력 칸 사이 간격 */
+  font-size: 12px;
+  font-weight : bold;
+  color: #000000;
+}
+
+/* 입력 칸 기본 스타일 */
+.input-field {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  box-sizing: border-box;
+  color: #333;
+}
+
+/* ──  4) 대표 이미지 업로드 박스  ───────────────────────── */
+.image-upload-box {
+  position: relative;
+  width: 100%;
+  height: 120px;   /* 적당한 높이 지정 */
+  margin-top: 8px; /* label과 input 사이 간격 */
+  border: 1px dashed #ccc;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  background: #fafafa;
+}
+
+/* 클릭 가능한 레이블(plus 기호 + “파일 첨부하기” 텍스트) */
+.image-upload-label {
+  position: absolute;
+  z-index: 2;  /* 위로 올라오게 */
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #888;
+  font-size: 12px;
+}
+.plus-icon {
+  font-size: 24px;
+  color: #888;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.upload-text {
+  font-size: 12px;
+  color: #888;
+}
+
+/* 이미지가 꽉 채우도록 */
+.preview {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;  /* 뒤로 감 */
+  border-radius: 8px;
+}
+
+/* 실제 파일 input (보이지 않게 숨김) */
+.input-file {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  z-index: 3; /* 제일 위에 배치해서 클릭 가능하게 */
+  cursor: pointer;
+}
+
+/* ──  5) 반응형(선택)  ─────────────────────────────────────── */
+@media (max-width: 360px) {
+  .header h1 {
+    font-size: 17px;
+  }
+  .btn-complete {
+    font-size: 13px;
+  }
+  .input-field {
+    font-size: 13px;
+  }
+  .input-group label {
+    font-size: 11px;
+    left: 10px;
+  }
+  .btn-clear .clear-icon {
+    width: 14px;
+    height: 14px;
+  }
+  .image-upload-box {
+    height: 100px;
+  }
+  .plus-icon {
+    font-size: 20px;
+  }
+  .upload-text {
+    font-size: 11px;
+  }
+}

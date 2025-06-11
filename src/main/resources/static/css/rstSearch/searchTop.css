@@ -1,0 +1,48 @@
+.top-bar {
+    position: fixed;
+    top: 0;
+	left: 0;
+	right: 0;
+    z-index: 1000;
+	padding: 20px 25px;
+    display: flex;
+    align-items: center;
+
+    justify-content: space-between;
+}
+
+/* 뒤로가기 아이콘: 검색창 왼쪽 바깥 */
+.back-icon {
+    display: block;
+	width: 12px;
+	height: 15px;
+	cursor: pointer;
+}
+
+/* 검색창 박스 자체 */
+.search-box {
+    position: relative;
+    flex: 1;
+    margin-left: 25px;
+}
+
+/* 검색 아이콘 */
+.search-icon-img {
+    position: absolute;
+    margin: 0 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
+    opacity: 0.6;
+}
+
+/* 입력창 */
+.search-bar {
+    width: 100%;
+    padding: 13px 12px 13px 35px;
+    font-size: 14px;
+    box-sizing: border-box;
+    border: 1px solid #000;
+    border-radius: 10px;
+}
