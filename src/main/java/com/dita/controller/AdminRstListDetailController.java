@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dita.dto.RestaurantDTO;
 import com.dita.dto.ReviewDTO;
@@ -55,4 +57,17 @@ public class AdminRstListDetailController {
 
 	    return "admin/adminRstListDetail";
 	}
+	
+	@PostMapping("/adminDeleteReview")
+	public String deleteReview(@RequestParam("review_id") int reviewId,
+	                           @RequestParam("rst_id")   int rstId,
+	                           @RequestParam(defaultValue = "1") int page,
+	                           RedirectAttributes ra) {
+
+	    reviewService.deleteReviewById(reviewId);    // 여기서 호출 ✅
+	    ra.addFlashAttribute("deleteSuccess", true);
+
+	    return "redirect:/adminRstListDetail?rst_id=" + rstId + "&page=" + page;
+	}
+
 }
