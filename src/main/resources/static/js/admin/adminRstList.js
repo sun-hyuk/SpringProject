@@ -1,7 +1,7 @@
 // 페이지 로드 시 실행
 document.addEventListener('DOMContentLoaded', function() {
-    // 검색 폼 개선
-    enhanceSearchForm();
+    // 이미지 로드 에러 처리
+    setupImageErrorHandling();
     
     // 테이블 행 애니메이션
     animateTableRows();
@@ -9,54 +9,80 @@ document.addEventListener('DOMContentLoaded', function() {
     // 키보드 단축키 설정
     setupKeyboardShortcuts();
     
-    // 정렬 기능 추가
-    setupTableSorting();
+    // 리뷰 삭제 버튼 개선
+    enhanceDeleteButtons();
     
-    // 통계 정보 업데이트
-    updateStatistics();
+    // 이미지 확대 기능
+    setupImageZoom();
     
-    // 삭제 확인 개선
-    enhanceDeleteConfirmation();
-    
-    // 검색어 하이라이트
-    highlightSearchTerm();
+    // 자동 새로고침 설정 (리뷰 업데이트 확인)
+    setupAutoRefresh();
 });
 
-// 검색 폼 개선
-function enhanceSearchForm() {
-    const searchForm = document.querySelector('.search-bar');
-    const searchInput = document.querySelector('.search-input');
+// 리뷰 삭제 함수 (전역 함수로 HTML에서 호출)
+function deleteReview(reviewId, rstId, currentPage) {
+    if (!reviewId || !rstId) {
+        alert('삭제할 리뷰 정보가 올바르지 않습니다.');
+        return;
+    }
     
-    // Enter 키로 검색 실행
-    if (searchInput) {
-        searchInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                searchForm.submit();
-            }
-        });
+    const confirmMessage = '해당 리뷰를 정말 삭제하시겠습니까?\n\n이 작업은 되돌릴 수 없습니다.';
+    if (confirm(confirmMessage)) {
+        const deleteBtn = event.target;
+        const originalText = deleteBtn.textContent;
+        deleteBtn.disabled = true;
+        deleteBtn.innerHTML = '<span class="loading"></span>';
+
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '/adminDeleteReview';  // ✅ 컨트롤러 경로와 일치
+
+        // ✅ name 속성만 정확히 맞추면 끝
+        const reviewIdInput = document.createElement('input');
+        reviewIdInput.type = 'hidden';
+        reviewIdInput.name = 'review_id';  // ❗ 컨트롤러의 @RequestParam 이름과 일치시킴
+        reviewIdInput.value = reviewId;
+
+        const rstIdInput = document.createElement('input');
+        rstIdInput.type = 'hidden';
+        rstIdInput.name = 'rst_id';
+        rstIdInput.value = rstId;
+
+        const pageInput = document.createElement('input');
+        pageInput.type = 'hidden';
+        pageInput.name = 'pageNum';
+        pageInput.value = currentPage || 1;
+
+        form.append(reviewIdInput, rstIdInput, pageInput);
+        document.body.appendChild(form);
+        form.submit();
     }
 }
 
-// 검색어 하이라이트
-function highlightSearchTerm() {
-    const searchInput = document.querySelector('.search-input');
-    if (!searchInput) return;
-    
-    const searchKeyword = searchInput.value;
-    if (!searchKeyword || !searchKeyword.trim()) return;
-    
-    const tableRows = document.querySelectorAll('tbody tr');
-    tableRows.forEach(row => {
-        const cells = row.querySelectorAll('td');
-        cells.forEach((cell, index) => {
-            // 상세보기, 삭제 버튼 컬럼 제외 (index 5, 6)
-            if (index === 5 || index === 6) return;
-            
-            const originalText = cell.textContent;
-            if (originalText.toLowerCase().includes(searchKeyword.toLowerCase())) {
-                const regex = new RegExp(`(${searchKeyword})`, 'gi');
-                cell.innerHTML = originalText.replace(regex, '<mark style="background-color: #fff3cd; padding: 2px 4px; border-radius: 3px;">$1</mark>');
-            }
+
+// 가게 목록으로 돌아가기
+function goBack() {
+    // 이전 페이지 정보가 있다면 사용, 없다면 기본 가게 목록으로
+    const referrer = document.referrer;
+    if (referrer && referrer.includes('/adminRstList')) {
+        window.history.back();
+    } else {
+        window.location.href = '/adminRstList';
+    }
+}
+
+// 이미지 에러 처리
+function setupImageErrorHandling() {
+    const images = document.querySelectorAll('img');
+    images.forEach(img => {
+        img.addEventListener('error', function() {
+            this.src = '/images/no-image.jpg';
+            this.alt = '이미지를 불러올 수 없습니다';
+            this.style.opacity = '0.7';
+        });
+        
+        img.addEventListener('load', function() {
+            this.style.opacity = '1';
         });
     });
 }
@@ -72,7 +98,7 @@ function animateTableRows() {
                 row.style.transition = 'all 0.3s ease';
                 row.style.opacity = '1';
                 row.style.transform = 'translateY(0)';
-            }, index * 50);
+            }, index * 100);
         }
     });
 }
@@ -80,13 +106,10 @@ function animateTableRows() {
 // 키보드 단축키 설정
 function setupKeyboardShortcuts() {
     document.addEventListener('keydown', function(e) {
-        // Ctrl/Cmd + F: 검색 입력 필드에 포커스
-        if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
-            e.preventDefault();
-            const searchInput = document.querySelector('.search-input');
-            if (searchInput) {
-                searchInput.focus();
-                searchInput.select();
+        // ESC: 가게 목록으로 돌아가기
+        if (e.key === 'Escape') {
+            if (confirm('가게 목록으로 돌아가시겠습니까?')) {
+                goBack();
             }
         }
         
@@ -96,19 +119,24 @@ function setupKeyboardShortcuts() {
             window.location.reload();
         }
         
-        // Escape: 검색 초기화
-        if (e.key === 'Escape') {
-            const searchInput = document.querySelector('.search-input');
-            const searchType = document.querySelector('.filter-select');
-            if (searchInput && searchInput.value) {
-                searchInput.value = '';
-                searchType.value = '';
-                // 전체 보기로 리다이렉트
-                window.location.href = '/adminRstList';
+        // Ctrl/Cmd + 방향키: 페이지네이션
+        if ((e.ctrlKey || e.metaKey) && e.key === 'ArrowLeft') {
+            e.preventDefault();
+            const prevLink = document.querySelector('.pagination a[title="이전"]');
+            if (prevLink) {
+                window.location.href = prevLink.href;
             }
         }
         
-        // Ctrl/Cmd + H: 도움말 표시
+        if ((e.ctrlKey || e.metaKey) && e.key === 'ArrowRight') {
+            e.preventDefault();
+            const nextLink = document.querySelector('.pagination a[title="다음"]');
+            if (nextLink) {
+                window.location.href = nextLink.href;
+            }
+        }
+        
+        // Ctrl/Cmd + H: 도움말
         if ((e.ctrlKey || e.metaKey) && e.key === 'h') {
             e.preventDefault();
             showKeyboardHelp();
@@ -116,122 +144,130 @@ function setupKeyboardShortcuts() {
     });
 }
 
-// 테이블 정렬 기능
-function setupTableSorting() {
-    const headers = document.querySelectorAll('th');
-    headers.forEach((header, index) => {
-        // 상세보기, 삭제 컬럼은 정렬 제외
-        if (index === 5 || index === 6) return;
+// 리뷰 삭제 버튼 개선
+function enhanceDeleteButtons() {
+    const deleteButtons = document.querySelectorAll('.delete-review-btn');
+    deleteButtons.forEach(button => {
+        // 호버 효과 개선
+        button.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-2px) scale(1.05)';
+        });
         
-        header.style.cursor = 'pointer';
-        header.title = '클릭하여 정렬';
+        button.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0) scale(1)';
+        });
         
-        header.addEventListener('click', function() {
-            sortTable(index);
+        // 더블 클릭 방지
+        let clickTimeout = null;
+        button.addEventListener('click', function(e) {
+            if (clickTimeout) {
+                clearTimeout(clickTimeout);
+                clickTimeout = null;
+                e.preventDefault();
+                return;
+            }
+            
+            clickTimeout = setTimeout(() => {
+                clickTimeout = null;
+            }, 1000);
         });
     });
 }
 
-let currentSortColumn = -1;
-let sortAscending = true;
-
-function sortTable(columnIndex) {
-    const table = document.querySelector('table tbody');
-    const rows = Array.from(table.rows);
-    
-    // 빈 행 제외
-    const dataRows = rows.filter(row => !row.querySelector('td[colspan]'));
-    
-    if (dataRows.length === 0) return;
-    
-    // 정렬 방향 결정
-    if (currentSortColumn === columnIndex) {
-        sortAscending = !sortAscending;
-    } else {
-        sortAscending = true;
-        currentSortColumn = columnIndex;
-    }
-    
-    dataRows.sort((a, b) => {
-        const aText = a.cells[columnIndex].textContent.trim();
-        const bText = b.cells[columnIndex].textContent.trim();
-        
-        let comparison = 0;
-        
-        switch(columnIndex) {
-            case 0: // No (숫자)
-            case 4: // 좋아요 (숫자)
-                comparison = parseInt(aText) - parseInt(bText);
-                break;
-            case 3: // 등록일 (날짜)
-                comparison = new Date(aText) - new Date(bText);
-                break;
-            default: // 문자열
-                comparison = aText.localeCompare(bText);
-                break;
-        }
-        
-        return sortAscending ? comparison : -comparison;
-    });
-    
-    // 테이블 재구성
-    table.innerHTML = '';
-    if (dataRows.length === 0) {
-        table.innerHTML = '<tr><td colspan="7">등록된 가게가 없습니다.</td></tr>';
-    } else {
-        dataRows.forEach(row => table.appendChild(row));
-    }
-    
-    // 정렬 표시 업데이트
-    updateSortIndicators(columnIndex);
-    
-    // 정렬 후 다시 애니메이션
-    animateTableRows();
-}
-
-function updateSortIndicators(sortedColumn) {
-    const headers = document.querySelectorAll('th');
-    headers.forEach((header, index) => {
-        // 기존 정렬 표시 제거
-        header.textContent = header.textContent.replace(' ↑', '').replace(' ↓', '');
-        
-        // 현재 정렬된 컬럼에 표시 추가
-        if (index === sortedColumn) {
-            header.textContent += sortAscending ? ' ↑' : ' ↓';
-        }
+// 이미지 확대 기능
+function setupImageZoom() {
+    const images = document.querySelectorAll('.store-image-container img');
+    images.forEach(img => {
+        img.style.cursor = 'pointer';
+        img.addEventListener('click', function() {
+            showImageModal(this.src, this.alt);
+        });
     });
 }
 
-// 삭제 확인 개선
-function enhanceDeleteConfirmation() {
-    const deleteForms = document.querySelectorAll('form[action*="adminDeleteRestaurant"]');
-    deleteForms.forEach(form => {
-        form.onsubmit = function(e) {
-            const restaurantName = this.closest('tr').querySelector('td:nth-child(2)').textContent.trim();
-            const confirmMessage = `'${restaurantName}' 가게를 정말 삭제하시겠습니까?\n\n이 작업은 되돌릴 수 없습니다.`;
-            
-            return confirm(confirmMessage);
-        };
+// 이미지 모달 표시
+function showImageModal(src, alt) {
+    const modal = document.createElement('div');
+    modal.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.8);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        cursor: pointer;
+    `;
+    
+    const img = document.createElement('img');
+    img.src = src;
+    img.alt = alt;
+    img.style.cssText = `
+        max-width: 90%;
+        max-height: 90%;
+        object-fit: contain;
+        border-radius: 8px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    `;
+    
+    modal.appendChild(img);
+    document.body.appendChild(modal);
+    
+    // 모달 닫기
+    modal.addEventListener('click', function() {
+        document.body.removeChild(modal);
     });
+    
+    // ESC로 모달 닫기
+    const closeModal = function(e) {
+        if (e.key === 'Escape') {
+            document.body.removeChild(modal);
+            document.removeEventListener('keydown', closeModal);
+        }
+    };
+    document.addEventListener('keydown', closeModal);
 }
 
-// 통계 정보 업데이트
-function updateStatistics() {
-    const dataRows = document.querySelectorAll('tbody tr:not([style*="display: none"]):not(:has(td[colspan]))');
-    const emptyRow = document.querySelector('tbody tr td[colspan]');
+// 자동 새로고침 (선택사항)
+function setupAutoRefresh() {
+    // 개발 환경에서는 비활성화
+    if (window.location.hostname === 'localhost') return;
     
-    if (emptyRow) return;
-    
-    // 상태 정보 업데이트
-    const statusInfo = document.querySelector('.status-info p');
-    if (statusInfo && dataRows.length > 0) {
-        const totalSpan = statusInfo.querySelector('span:first-child');
-        const displayedSpan = statusInfo.querySelector('span:nth-child(2)');
-        
-        if (totalSpan && displayedSpan) {
-            displayedSpan.textContent = Math.min(dataRows.length, 9); // pageSize
+    // 5분마다 리뷰 업데이트 확인
+    setInterval(() => {
+        if (!document.hidden) {
+            checkForUpdates();
         }
-    }
+    }, 5 * 60 * 1000);
+}
+
+// 업데이트 확인 (AJAX 요청)
+function checkForUpdates() {
+    const rstId = getRestaurantIdFromUrl();
+    if (!rstId) return;
+    
+    fetch(`/api/restaurant/${rstId}/review-count`)
+        .then(response => response.json())
+        .then(data => {
+            const currentCount = document.querySelectorAll('tbody tr:not([style*="display: none"]):not(:has(td[colspan]))').length;
+            if (data.count !== currentCount) {
+                if (confirm('새로운 리뷰가 등록되었습니다. 페이지를 새로고침하시겠습니까?')) {
+                    window.location.reload();
+                }
+            }
+        })
+        .catch(error => {
+            console.log('업데이트 확인 중 오류:', error);
+        });
+}
+
+// URL에서 레스토랑 ID 추출
+function getRestaurantIdFromUrl() {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get('rst_id');
 }
 
 // 성공/오류 메시지 표시
@@ -248,7 +284,7 @@ function showMessage(type, message) {
         font-weight: bold;
         z-index: 1000;
         transition: all 0.3s ease;
-        ${type === 'success' ? 'background-color: #28a745;' : 'background-color: #dc3545;'}
+        ${type === 'success' ? 'background-color: #27ae60;' : 'background-color: #e74c3c;'}
     `;
     messageDiv.textContent = message;
     
@@ -261,156 +297,20 @@ function showMessage(type, message) {
     }, 3000);
 }
 
-// 가게 상세 정보 미리보기 (호버 시)
-function setupRestaurantPreview() {
-    const restaurantNames = document.querySelectorAll('tbody td:nth-child(2)');
-    restaurantNames.forEach(nameCell => {
-        if (nameCell.textContent.trim() && !nameCell.querySelector('[colspan]')) {
-            nameCell.style.cursor = 'pointer';
-            nameCell.style.textDecoration = 'underline';
-            nameCell.style.color = '#0d4d62';
-            
-            nameCell.addEventListener('mouseenter', function() {
-                const row = this.closest('tr');
-                const restaurantData = {
-                    name: row.cells[1].textContent.trim(),
-                    location: row.cells[2].textContent.trim(),
-                    date: row.cells[3].textContent.trim(),
-                    likes: row.cells[4].textContent.trim()
-                };
-                showPreviewTooltip(this, restaurantData);
-            });
-            
-            nameCell.addEventListener('mouseleave', function() {
-                hidePreviewTooltip();
-            });
-        }
-    });
-}
-
-// 미리보기 툴팁 표시
-function showPreviewTooltip(element, data) {
-    const tooltip = document.createElement('div');
-    tooltip.id = 'restaurant-tooltip';
-    tooltip.style.cssText = `
-        position: absolute;
-        background: #333;
-        color: white;
-        padding: 10px;
-        border-radius: 5px;
-        font-size: 12px;
-        z-index: 1000;
-        max-width: 200px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-        pointer-events: none;
-    `;
-    
-    tooltip.innerHTML = `
-        <strong>${data.name}</strong><br>
-        위치: ${data.location}<br>
-        등록일: ${data.date}<br>
-        좋아요: ${data.likes}개
-    `;
-    
-    const rect = element.getBoundingClientRect();
-    tooltip.style.left = rect.left + window.scrollX + 'px';
-    tooltip.style.top = (rect.bottom + window.scrollY + 10) + 'px';
-    
-    document.body.appendChild(tooltip);
-}
-
-// 미리보기 툴팁 숨기기
-function hidePreviewTooltip() {
-    const tooltip = document.getElementById('restaurant-tooltip');
-    if (tooltip) {
-        tooltip.remove();
-    }
-}
-
-// 검색 필터 저장/복원
-function setupSearchMemory() {
-    const searchForm = document.querySelector('.search-bar');
-    if (searchForm) {
-        searchForm.addEventListener('submit', function() {
-            const searchType = document.querySelector('.filter-select').value;
-            const searchKeyword = document.querySelector('.search-input').value;
-            
-            localStorage.setItem('adminRestaurantSearchType', searchType);
-            localStorage.setItem('adminRestaurantSearchKeyword', searchKeyword);
-        });
-    }
-    
-    // 페이지 로드 시 검색 조건 복원
-    const urlParams = new URLSearchParams(window.location.search);
-    if (!urlParams.has('searchType') && !urlParams.has('searchKeyword')) {
-        const savedSearchType = localStorage.getItem('adminRestaurantSearchType');
-        const savedSearchKeyword = localStorage.getItem('adminRestaurantSearchKeyword');
-        
-        if (savedSearchType) {
-            document.querySelector('.filter-select').value = savedSearchType;
-        }
-        if (savedSearchKeyword) {
-            document.querySelector('.search-input').value = savedSearchKeyword;
-        }
-    }
-}
-
-// CSV 내보내기 기능
-function exportRestaurantList() {
-    const restaurants = [];
-    const tableRows = document.querySelectorAll('tbody tr:not([style*="display: none"])');
-    
-    tableRows.forEach(row => {
-        if (!row.querySelector('td[colspan]')) {
-            restaurants.push({
-                no: row.cells[0].textContent.trim(),
-                name: row.cells[1].textContent.trim(),
-                location: row.cells[2].textContent.trim(),
-                date: row.cells[3].textContent.trim(),
-                likes: row.cells[4].textContent.trim()
-            });
-        }
-    });
-    
-    if (restaurants.length === 0) {
-        alert('내보낼 데이터가 없습니다.');
-        return;
-    }
-    
-    // CSV 형식으로 변환
-    const csvContent = [
-        ['번호', '가게이름', '위치', '등록일', '좋아요'],
-        ...restaurants.map(r => [r.no, r.name, r.location, r.date, r.likes])
-    ].map(row => row.join(',')).join('\n');
-    
-    // 파일 다운로드
-    const blob = new Blob(['\ufeff' + csvContent], { type: 'text/csv;charset=utf-8;' });
-    const link = document.createElement('a');
-    const url = URL.createObjectURL(blob);
-    link.setAttribute('href', url);
-    link.setAttribute('download', `restaurant_list_${new Date().toISOString().split('T')[0]}.csv`);
-    link.style.visibility = 'hidden';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    
-    showMessage('success', 'CSV 파일이 다운로드되었습니다.');
-}
-
-// 키보드 단축키 도움말 표시
+// 키보드 단축키 도움말
 function showKeyboardHelp() {
     const helpContent = `
         <h4>키보드 단축키</h4>
         <ul style="text-align: left; line-height: 1.6;">
-            <li><strong>Ctrl/Cmd + F:</strong> 검색창 포커스</li>
+            <li><strong>ESC:</strong> 가게 목록으로 돌아가기</li>
             <li><strong>F5:</strong> 페이지 새로고침</li>
-            <li><strong>ESC:</strong> 검색 초기화</li>
+            <li><strong>Ctrl/Cmd + ←:</strong> 이전 페이지</li>
+            <li><strong>Ctrl/Cmd + →:</strong> 다음 페이지</li>
             <li><strong>Ctrl/Cmd + H:</strong> 이 도움말 표시</li>
-            <li><strong>테이블 헤더 클릭:</strong> 컬럼별 정렬</li>
+            <li><strong>이미지 클릭:</strong> 이미지 확대보기</li>
         </ul>
         <div style="margin-top: 15px;">
             <button onclick="closeKeyboardHelp()" style="background: #333; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">닫기</button>
-            <button onclick="exportRestaurantList(); closeKeyboardHelp();" style="background: #28a745; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; margin-left: 10px;">CSV 내보내기</button>
         </div>
     `;
     
@@ -459,12 +359,101 @@ function closeKeyboardHelp() {
     }
 }
 
+// 리뷰 통계 표시
+function showReviewStats() {
+    const reviews = document.querySelectorAll('tbody tr:not(:has(td[colspan])):not([id])');
+    if (reviews.length === 0) return;
+    
+    // 통계 정보 계산
+    const totalReviews = reviews.length;
+    const reviewsPerPage = Math.min(totalReviews, 8); // pageSize와 동일
+    
+    // 통계 정보 표시
+    const statsContainer = document.createElement('div');
+    statsContainer.style.cssText = `
+        margin-top: 10px;
+        padding: 10px;
+        background-color: #f8f9fa;
+        border-radius: 6px;
+        text-align: center;
+        font-size: 14px;
+        color: #666;
+    `;
+    statsContainer.innerHTML = `현재 페이지에 ${reviewsPerPage}개의 리뷰가 표시되고 있습니다.`;
+    
+    const table = document.querySelector('table');
+    table.parentNode.insertBefore(statsContainer, table.nextSibling);
+}
+
+// 접근성 개선
+function setupAccessibility() {
+    // 테이블에 aria-label 추가
+    const table = document.querySelector('table');
+    if (table) {
+        table.setAttribute('aria-label', '가게 리뷰 목록');
+    }
+    
+    // 버튼에 aria-label 추가
+    const deleteButtons = document.querySelectorAll('.delete-review-btn');
+    deleteButtons.forEach((button, index) => {
+        const row = button.closest('tr');
+        const reviewContent = row.querySelector('td:nth-child(2)').textContent.trim();
+        const shortContent = reviewContent.length > 20 ? reviewContent.substring(0, 20) + '...' : reviewContent;
+        button.setAttribute('aria-label', `"${shortContent}" 리뷰 삭제`);
+    });
+    
+    // 페이지네이션 링크에 aria-label 추가
+    const paginationLinks = document.querySelectorAll('.pagination a');
+    paginationLinks.forEach(link => {
+        const text = link.textContent.trim();
+        if (text === '‹') {
+            link.setAttribute('aria-label', '이전 페이지');
+        } else if (text === '›') {
+            link.setAttribute('aria-label', '다음 페이지');
+        } else {
+            link.setAttribute('aria-label', `${text}페이지로 이동`);
+        }
+    });
+}
+
+// 인쇄 기능
+function printRestaurantDetail() {
+    const printWindow = window.open('', '_blank');
+    const restaurantName = document.querySelector('.detail-value').textContent;
+    
+    printWindow.document.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>${restaurantName} - 상세정보</title>
+            <style>
+                body { font-family: 'Noto Sans KR', sans-serif; margin: 20px; }
+                .detail-item { margin-bottom: 15px; }
+                .detail-item label { font-weight: bold; }
+                table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+                th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+                th { background-color: #f5f5f5; }
+                @media print { .no-print { display: none !important; } }
+            </style>
+        </head>
+        <body>
+            ${document.querySelector('.store-detail').innerHTML}
+        </body>
+        </html>
+    `);
+    
+    printWindow.document.close();
+    printWindow.focus();
+    printWindow.print();
+    printWindow.close();
+}
+
 // 페이지 로드 완료 후 실행
 window.addEventListener('load', function() {
     // URL 파라미터 확인
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('deleteSuccess') === 'true') {
-        showMessage('success', '가게가 성공적으로 삭제되었습니다.');
+        showMessage('success', '리뷰가 성공적으로 삭제되었습니다.');
         
         // URL 정리
         urlParams.delete('deleteSuccess');
@@ -473,20 +462,31 @@ window.addEventListener('load', function() {
     }
     
     // 추가 기능 초기화
-    setupRestaurantPreview();
-    setupSearchMemory();
+    showReviewStats();
+    setupAccessibility();
+    
+    // 페이지 로드 완료 메시지
+    console.log('가게 상세 페이지가 로드되었습니다.');
 });
 
 // 에러 처리
 window.addEventListener('error', function(e) {
-    console.error('페이지 에러:', e.error);
-    showMessage('error', '일시적인 오류가 발생했습니다. 페이지를 새로고침해주세요.');
+	// 리소스 로딩 에러는 무시
+    if (e.target && e.target.tagName && e.target.tagName.toLowerCase() === 'img') {
+        return;
+    }
+
+    // 진짜 JS 에러일 때만 처리
+    if (e.error) {
+        console.error('페이지 에러:', e.error);
+        showMessage('error', '일시적인 오류가 발생했습니다. 페이지를 새로고침해주세요.');
+    }
 });
 
 // 브라우저 뒤로가기/앞으로가기 처리
 window.addEventListener('popstate', function(e) {
     setTimeout(() => {
-        highlightSearchTerm();
-        updateStatistics();
+        // 페이지 상태 복원
+        animateTableRows();
     }, 100);
 });
